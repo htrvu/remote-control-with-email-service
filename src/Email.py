@@ -2,18 +2,33 @@
 # https://codehandbook.org/how-to-read-email-from-gmail-using-python/
 
 # import smtplib
+from curses.ascii import EM
 import imaplib
 import email
 from utils import *
+import email.message
+from smtplib import SMTP_SSL, SMTP_SSL_PORT
 
 class Email:
     def __init__(self, server, port):
+        SMTP_HOST = 'smtp.googlemail.com'
         self.SMTP_SERVER = server 
         self.SMTP_PORT = port
         self.mail = imaplib.IMAP4_SSL(server)
+        self.smtp_server = SMTP_SSL(SMTP_HOST, port = SMTP_SSL_PORT)
+        self.smtp_server.set_debuglevel(1)
 
     def login(self, username, password):
         self.mail.login(username, password)
+    
+    def connect_to_smtp(self, username, passowrd):
+        self.smtp_server.login(username, passowrd)
+
+    def logout_imap(self):
+        pass
+
+    def logout_smtp(self):
+        pass
 
     # add more features
     def read_email(self):
@@ -58,15 +73,32 @@ class Email:
 
                 print(subject)
                 print(content)
-
         except Exception as e:
             print('Error! ', end='')
             print(str(e))
 
+    def send_mail(self, _email):
+        try:
+            self.smtp_server.sendmail(_email['From'], _email['To'], _email.as_bytes())
+        except Exception as e:
+            print(e)
+            return False
+        return True
+
+def build_email_content(mail_from, mail_to, header, body):
+    email_message = email.message.EmailMessage()
+    email_message.add_header('To', ', '.join(mail_to))
+    email_message.add_header('From', mail_from)
+    email_message.add_header('Subject', header)
+    email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
+    email_message.set_content(body)
+    return email_message
 
 if __name__ == '__main__':
     EMAIL = "bot.remote.1@gmail.com"
     PWD = "yiggxtcpnmegepuu"
     gmail = Email('imap.gmail.com', 993)
-    gmail.login(EMAIL, PWD)
-    gmail.read_email()
+    # gmail.login(EMAIL, PWD)
+    gmail.connect_to_smtp(EMAIL, PWD)
+    # gmail.read_email()
+    gmail.send_mail(build_email_content(EMAIL, ['dotrann.1412@gmail.com'], 'header', 'body'))
