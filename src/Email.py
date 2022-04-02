@@ -4,7 +4,6 @@
 # import smtplib
 import imaplib
 import email
-# import base64
 from utils import *
 
 class Email:
@@ -21,29 +20,31 @@ class Email:
         try:
             self.mail.select('inbox')
 
-            _, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary in:unread"') # specify the primary category
+            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary in:unread"') # specify the primary category
         
             id_list = mail_ids[0].split()
-
+            if len(id_list) == 0:
+                print('All mails are read')
+                return
+            
             first_email_id = int(id_list[0])
             latest_email_id = int(id_list[-1])
 
-            cnt = 0
             for i in range(latest_email_id, first_email_id - 1, -1):
                 # 'data' will be [(header, content), b')']
-                _, data = self.mail.fetch(str(i), '(RFC822)')
+                status, data = self.mail.fetch(str(i), '(RFC822)')
 
                 msg = email.message_from_bytes(data[0][1])
                 
                 subject = msg['subject']
                 content = msg['content']
 
-                # base64 decode for subject
-                if subject.startswith('=?UTF-8?'):
-                    subject = subject.split('?')[-2]
-                    subject = base64_decode(subject)
+                # decode subject
+                subject, encoding = email.header.decode_header(subject)[0]
+                if encoding:
+                    subject = str(subject, encoding)
 
-                # base64 decode for subject
+                # decode content
                 if msg.is_multipart():
                     content = ''
                     # on multipart we have the text msg and another things like annex, and html version
