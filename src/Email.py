@@ -21,7 +21,7 @@ class Email:
         try:
             self.mail.select('inbox')
 
-            _, mail_ids = self.mail.search(None, 'ALL')
+            _, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary in:unread"') # specify the primary category
         
             id_list = mail_ids[0].split()
 
