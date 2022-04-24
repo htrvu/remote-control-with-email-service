@@ -2,6 +2,7 @@ import base64
 import yaml
 import email.message
 import datetime
+import GlobalVariables
 
 def base64_decode(str):
     str = base64.b64decode(str)
@@ -20,7 +21,7 @@ class text_format:
     NORMAL = ['','']
     DEBUG = ['\033[91m', '[DEBUG]: ']
 
-def load_config(config_file):
+def load_config(config_file = GlobalVariables.checkpoint_file_path):
     with open(config_file, 'r') as f:
         return yaml.safe_load(f)
 
