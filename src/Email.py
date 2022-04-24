@@ -2,13 +2,14 @@
 # https://codehandbook.org/how-to-read-email-from-gmail-using-python/
 
 # import smtplib
-from curses.ascii import EM
+# from curses.ascii import EM
 import imaplib
 import email
 from utils import *
 import email.message
 import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
+# from Controller import *
 
 class Email:
     def __init__(self, server, port):
@@ -76,12 +77,16 @@ class Email:
                 # decode content
                 if msg.is_multipart():
                     content = ''
-                    # on multipart we have the text msg and another things like annex, and html version
-                    # of the msg, in that case we loop through the email payload
+                #     # on multipart we have the text msg and another things like annex, and html version
+                #     # of the msg, in that case we loop through the email payload
                     for part in msg.get_payload():
-                        # if the content type is text/plain, we extract it
+                #         # if the content type is text/plain, we extract it
                         if part.get_content_type() == 'text/plain':
                             content += part.get_payload()
+                    try:
+                        content = base64_decode(content)
+                    except Exception as e:
+                        print_color('Error at ' + subject, text_format.FAIL)
 
                     try:
                         content = base64_decode(content)
@@ -89,9 +94,12 @@ class Email:
                         print_color(str(e), text_format.FAIL)
 
                 mail_list.append({'subject': subject, 'content': content})
+                
         except Exception as e:
             print_color('Something went wrong while checking the mail box', text_format.FAIL)
             print(str(e))
+        
+        return subjects, contents
 
         return mail_list
 
@@ -103,25 +111,11 @@ class Email:
             return False
         return True
 
-    def build_email_content(mail_from, mail_to, header, body):
+    def build_email_content(mail_from, mail_to, header, body, format = 'html'):
         email_message = email.message.EmailMessage()
         email_message.add_header('To', ', '.join(mail_to))
         email_message.add_header('From', mail_from)
         email_message.add_header('Subject', header)
         email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
-        email_message.set_content(body)
+        email_message.set_content(body, format)
         return email_message
-
-
-if __name__ == '__main__':
-    EMAIL = "bot.remote.1@gmail.com"
-    PWD = "yiggxtcpnmegepuu"
-    gmail = Email('imap.gmail.com', 993)
-    gmail.login(EMAIL, PWD)
-    # gmail.connect_to_smtp(EMAIL, PWD)
-    mail_list = gmail.read_email(timerange = {'from': '2022/04/23 22/00'})
-    for mail in mail_list:
-        print('subject', mail['subject'])
-        print('content', mail['content'])
-        print('-------------------------------------------------')
-    # gmail.send_mail(build_email_content(EMAIL, ['dotrann.1412@gmail.com'], 'header', 'body'))
