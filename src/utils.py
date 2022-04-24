@@ -1,6 +1,7 @@
 import base64
 import yaml
 import email.message
+import datetime
 
 def base64_decode(str):
     str = base64.b64decode(str)
@@ -17,6 +18,7 @@ class text_format:
     BOLD = ['\033[1m', '']
     UNDERLINE = ['\033[4m', '']
     NORMAL = ['','']
+    DEBUG = ['\033[91m', '[DEBUG]: ']
 
 def load_config(config_file):
     with open(config_file, 'r') as f:
@@ -24,3 +26,21 @@ def load_config(config_file):
 
 def print_color(message, option = text_format.NORMAL, end = '\n'):
     print(f'{option[0]}{option[1]}{message} {text_format.ENDC[0]}', end = end)
+
+def date_format_str():
+    return r"%Y-%m-%d"
+
+def datetime_format_str():
+    return r"%Y-%m-%d %H:%M:%S"
+
+def date_today():
+    return datetime.datetime.now().strftime(date_format_str())
+
+def datetime_now_str():
+    return datetime.datetime.now().strftime(datetime_format_str())
+
+def time_in_range(start: datetime, end: datetime, x: datetime, time_format = datetime_format_str()):
+    if start <= end:
+        return start <= x <= end
+    else:
+        return start <= x or x <= end
