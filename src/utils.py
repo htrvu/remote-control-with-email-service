@@ -23,4 +23,4 @@ def load_config(config_file):
         return yaml.safe_load(f)
 
 def print_color(message, option = text_format.NORMAL, end = '\n'):
-    print(f'{option[0]}{option[1]}{message} {text_format.UNDERLINE[0]}', end = end)
+    print(f'{option[0]}{option[1]}{message} {text_format.ENDC[0]}', end = end)
