@@ -31,17 +31,17 @@ class Email:
         pass
 
     # add more features
-    def read_email(self):
-        email_list = []
+    def read_email(self, category, box, timerange):
+        mail_list = []
         try:
             self.mail.select('inbox')
 
-            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary before:2022/04/23"') # specify the primary category
+            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary after:2022/04/23"') # specify the primary category
 
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
-                return
+                return []
             
             first_email_id = int(id_list[0])
             latest_email_id = int(id_list[-1])
@@ -70,18 +70,17 @@ class Email:
                         if part.get_content_type() == 'text/plain':
                             content += part.get_payload()
 
-                    content = base64_decode(content)
+                    try:
+                        content = base64_decode(content)
+                    except Exception as e:
+                        print_color(str(e), text_format.FAIL)
 
-                print(subject)
-                print(content)
-
-                email_list.append({'subject': subject, 'content': content})
-
+                mail_list.append({'subject': subject, 'content': content})
         except Exception as e:
             print_color('Something went wrong while checking the mail box', text_format.FAIL)
             print(str(e))
 
-        return email_list
+        return mail_list
 
     def send_mail(self, _email):
         try:
@@ -107,5 +106,9 @@ if __name__ == '__main__':
     gmail = Email('imap.gmail.com', 993)
     gmail.login(EMAIL, PWD)
     # gmail.connect_to_smtp(EMAIL, PWD)
-    gmail.read_email()
+    mail_list = gmail.read_email()
+    for mail in mail_list:
+        print('subject', mail['subject'])
+        print('content', mail['content'])
+        print('-------------------------------------------------')
     # gmail.send_mail(build_email_content(EMAIL, ['dotrann.1412@gmail.com'], 'header', 'body'))
