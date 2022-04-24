@@ -7,6 +7,7 @@ import imaplib
 import email
 from utils import *
 import email.message
+import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
 # from Controller import *
 
@@ -32,18 +33,21 @@ class Email:
         pass
 
     # add more features
-    def read_email(self):
-        subjects, contents = [], []
+    def read_email(self, time_from, time_to = datetime.datetime.now().strftime(datetime_format_str()), category = 'primary', box = 'anywhere'):
+        mail_list = []
+
+        date_from = datetime.datetime.strptime(time_from, datetime_format_str()).strftime(date_format_str())
+        date_to = datetime.datetime.strptime(time_to, datetime_format_str()).strftime(date_format_str())
 
         try:
             self.mail.select('inbox')
 
-            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary"') # specify the primary category
-        
+            status, mail_ids = self.mail.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from} before:{date_to}"') # specify the primary category
+
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
-                return
+                return []
             
             first_email_id = int(id_list[0])
             latest_email_id = int(id_list[-1])
@@ -51,6 +55,14 @@ class Email:
             for i in range(latest_email_id, first_email_id - 1, -1):
                 # 'data' will be [(header, content), b')']
                 status, data = self.mail.fetch(str(i), '(RFC822)')
+
+                date = email.message_from_bytes(data[0][1])['date']
+                datetime_obj = repr(email.utils.parsedate_to_datetime(repr(date)))
+
+                if not time_in_range(datetime_obj, time_from, time_to):
+                    continue
+
+                print_color(f'DATE: {datetime_obj}', text_format.DEBUG)
 
                 msg = email.message_from_bytes(data[0][1])
                 
@@ -76,14 +88,20 @@ class Email:
                     except Exception as e:
                         print_color('Error at ' + subject, text_format.FAIL)
 
-                subjects.append(subject)
-                contents.append(content)
+                    try:
+                        content = base64_decode(content)
+                    except Exception as e:
+                        print_color(str(e), text_format.FAIL)
+
+                mail_list.append({'subject': subject, 'content': content})
                 
         except Exception as e:
             print_color('Something went wrong while checking the mail box', text_format.FAIL)
             print(str(e))
         
         return subjects, contents
+
+        return mail_list
 
     def send_mail(self, _email):
         try:
@@ -101,19 +119,3 @@ class Email:
         email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
         email_message.set_content(body, format)
         return email_message
-
-
-# if __name__ == '__main__':
-    # controller = Controller()
-
-    # EMAIL = "bot.remote.1@gmail.com"
-    # PWD = "yiggxtcpnmegepuu"
-    # gmail = Email('imap.gmail.com', 993)
-    # gmail.login(EMAIL, PWD)
-    # gmail.read_email()
-    # gmail.connect_to_smtp(EMAIL, PWD)
-
-    # table = controller.respond('list_processes')
-
-    # s = '<table border="1"><tr><th style="font-weights: bold;">Description</th><th style="font-weights: bold;">Id</th><th style="font-weights: bold;">ThreadCount</th></tr><tr><td>Description</td><td>Id</td><td>ThreadCount</td></tr><tr><td>-----------</td><td>--</td><td>-----------</td></tr><tr><td>Application Frame Host</td><td>6684</td><td>2</td></tr><tr><td>Google Chrome</td><td>2448</td><td>29</td></tr><tr><td>Visual Studio Code</td><td>12968</td><td>30</td></tr><tr><td>NVIDIA Share</td><td>19608</td><td>31</td></tr><tr><td>Rainmeter desktop customization tool</td><td>10056</td><td>10</td></tr><tr><td>Settings</td><td>12856</td><td>25</td></tr><tr><td></td><td>15128</td><td>17</td></tr><tr><td>WindowsTerminal.exe</td><td>9300</td><td>9</td></tr><tr><td>WindowsTerminal.exe</td><td>14216</td><td>9</td></tr></table>'
-    # gmail.send_mail(Email.build_email_content(mail_from = EMAIL, mail_to = ['hoangnhuquynh2015@gmail.com'], header = 'header', body = table))
