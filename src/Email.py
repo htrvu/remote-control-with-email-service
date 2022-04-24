@@ -7,6 +7,7 @@ import imaplib
 import email
 from utils import *
 import email.message
+import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
 
 class Email:
@@ -31,12 +32,16 @@ class Email:
         pass
 
     # add more features
-    def read_email(self, category, box, timerange):
+    def read_email(self, time_from, time_to = datetime.datetime.now().strftime(datetime_format_str()), category = 'primary', box = 'anywhere'):
         mail_list = []
+
+        date_from = datetime.datetime.strptime(time_from, datetime_format_str()).strftime(date_format_str())
+        date_to = datetime.datetime.strptime(time_to, datetime_format_str()).strftime(date_format_str())
+
         try:
             self.mail.select('inbox')
 
-            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary after:2022/04/23"') # specify the primary category
+            status, mail_ids = self.mail.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from} before:{date_to}"') # specify the primary category
 
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
@@ -49,6 +54,14 @@ class Email:
             for i in range(latest_email_id, first_email_id - 1, -1):
                 # 'data' will be [(header, content), b')']
                 status, data = self.mail.fetch(str(i), '(RFC822)')
+
+                date = email.message_from_bytes(data[0][1])['date']
+                datetime_obj = repr(email.utils.parsedate_to_datetime(repr(date)))
+
+                if not time_in_range(datetime_obj, time_from, time_to):
+                    continue
+
+                print_color(f'DATE: {datetime_obj}', text_format.DEBUG)
 
                 msg = email.message_from_bytes(data[0][1])
                 
@@ -106,7 +119,7 @@ if __name__ == '__main__':
     gmail = Email('imap.gmail.com', 993)
     gmail.login(EMAIL, PWD)
     # gmail.connect_to_smtp(EMAIL, PWD)
-    mail_list = gmail.read_email()
+    mail_list = gmail.read_email(timerange = {'from': '2022/04/23 22/00'})
     for mail in mail_list:
         print('subject', mail['subject'])
         print('content', mail['content'])
