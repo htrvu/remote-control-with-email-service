@@ -32,11 +32,12 @@ class Email:
 
     # add more features
     def read_email(self):
+        email_list = []
         try:
             self.mail.select('inbox')
 
-            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary in:unread"') # specify the primary category
-        
+            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary in:unread after:2022/04/23"') # specify the primary category
+
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
@@ -70,11 +71,17 @@ class Email:
                             content += part.get_payload()
 
                     content = base64_decode(content)
+
                 print(subject)
                 print(content)
+
+                email_list.append({'subject': subject, 'content': content})
+
         except Exception as e:
             print_color('Something went wrong while checking the mail box', text_format.FAIL)
             print(str(e))
+
+        return email_list
 
     def send_mail(self, _email):
         try:
