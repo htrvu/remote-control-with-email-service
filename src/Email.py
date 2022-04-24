@@ -98,9 +98,7 @@ class Email:
         except Exception as e:
             print_color('Something went wrong while checking the mail box', text_format.FAIL)
             print(str(e))
-        
-        return subjects, contents
-
+            
         return mail_list
 
     def send_mail(self, _email):

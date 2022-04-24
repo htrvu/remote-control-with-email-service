@@ -52,8 +52,6 @@ def html_image(base64_data):
 def print_color(message, option = text_format.NORMAL, end = '\n'):
     print(f'{option[0]}{option[1]}{message} {text_format.ENDC[0]}', end = end)
     
-
-
 def date_format_str():
     return r"%Y-%m-%d"
 
