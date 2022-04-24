@@ -36,7 +36,7 @@ class Email:
         try:
             self.mail.select('inbox')
 
-            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary in:unread after:2022/04/23"') # specify the primary category
+            status, mail_ids = self.mail.search(None, 'X-GM-RAW "category:primary before:2022/04/23"') # specify the primary category
 
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
@@ -105,5 +105,7 @@ if __name__ == '__main__':
     EMAIL = "bot.remote.1@gmail.com"
     PWD = "yiggxtcpnmegepuu"
     gmail = Email('imap.gmail.com', 993)
-    gmail.connect_to_smtp(EMAIL, PWD)
-    gmail.send_mail(Email.build_email_content(mail_from = EMAIL, mail_to = ['dotrann.1412@gmail.com'], header = 'header', body = 'body'))
+    gmail.login(EMAIL, PWD)
+    # gmail.connect_to_smtp(EMAIL, PWD)
+    gmail.read_email()
+    # gmail.send_mail(build_email_content(EMAIL, ['dotrann.1412@gmail.com'], 'header', 'body'))
