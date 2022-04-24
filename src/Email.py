@@ -25,7 +25,7 @@ class Email:
         self.smtp_server.login(username, passowrd)
 
     def logout_imap(self):
-        pass
+        self.mail.logout()
 
     def logout_smtp(self):
         pass
@@ -39,7 +39,7 @@ class Email:
         
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
-                print('All mails are read')
+                print_color('All mails are read', text_format.OKGREEN)
                 return
             
             first_email_id = int(id_list[0])
@@ -70,11 +70,10 @@ class Email:
                             content += part.get_payload()
 
                     content = base64_decode(content)
-
                 print(subject)
                 print(content)
         except Exception as e:
-            print('Error! ', end='')
+            print_color('Something went wrong while checking the mail box', text_format.FAIL)
             print(str(e))
 
     def send_mail(self, _email):
@@ -85,12 +84,19 @@ class Email:
             return False
         return True
 
+    def build_email_content(mail_from, mail_to, header, body):
+        email_message = email.message.EmailMessage()
+        email_message.add_header('To', ', '.join(mail_to))
+        email_message.add_header('From', mail_from)
+        email_message.add_header('Subject', header)
+        email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
+        email_message.set_content(body)
+        return email_message
+
 
 if __name__ == '__main__':
     EMAIL = "bot.remote.1@gmail.com"
     PWD = "yiggxtcpnmegepuu"
     gmail = Email('imap.gmail.com', 993)
-    # gmail.login(EMAIL, PWD)
     gmail.connect_to_smtp(EMAIL, PWD)
-    # gmail.read_email()
-    gmail.send_mail(build_email_content(EMAIL, ['dotrann.1412@gmail.com'], 'header', 'body'))
+    gmail.send_mail(Email.build_email_content(mail_from = EMAIL, mail_to = ['dotrann.1412@gmail.com'], header = 'header', body = 'body'))
