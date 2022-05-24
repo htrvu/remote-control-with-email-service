@@ -77,10 +77,10 @@ class Email:
                 # decode content
                 if msg.is_multipart():
                     content = ''
-                #     # on multipart we have the text msg and another things like annex, and html version
-                #     # of the msg, in that case we loop through the email payload
+                    # on multipart we have the text msg and another things like annex, and html version
+                    # of the msg, in that case we loop through the email payload
                     for part in msg.get_payload():
-                #         # if the content type is text/plain, we extract it
+                        # if the content type is text/plain, we extract it
                         if part.get_content_type() == 'text/plain':
                             content += part.get_payload()
                     try:

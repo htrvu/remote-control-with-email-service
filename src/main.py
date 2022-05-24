@@ -3,7 +3,7 @@
     split thread
 '''
 
-from Email import Email
+from email import Email
 from Controller import Controller
 import threading
 import time
@@ -66,6 +66,13 @@ def main():
 
     _check_email_thread.join()
     _show_notification_thead.join()
+
+    email = Email()
+
+    # while True:
+    #     mails = email.read_email()
+    #     for mail in mails:
+    #         # new thread to process this request       
 
 if __name__ == '__main__':
     main()
