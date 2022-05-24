@@ -8,6 +8,23 @@ def base64_decode(str):
     str = base64.b64decode(str)
     return str.decode('utf-8')
 
+def build_email_content(mail_from, mail_to, header, body, format = 'html', data = None):
+    email_message = email.message.EmailMessage()
+    email_message.add_header('To', ', '.join(mail_to))
+    email_message.add_header('From', mail_from)
+    email_message.add_header('Subject', header)
+    email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
+    email_message.set_content(body, format)
+
+    # if data is not None:
+        # attach image to this mail
+        # email_message.add_attachment(base64_data, maintype='image', subtype='png')
+        # # or
+        # attach video to this mail
+        # email_message.add_attachment(base64_data, maintype='video', subtype='mp4')
+
+    return email_message
+
 class text_format:
     HEADER = ['\033[95m', '']
     OKBLUE = ['\033[94m', '']

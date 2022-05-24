@@ -1,15 +1,8 @@
-
-'''
-    split thread
-'''
-
 from email import Email
-from Controller import Controller
 import threading
 import time
-import utils
-from plyer import notification
 from utils import *
+from constants import *
 
 def show_notification_thead(timeout = 60):
     while (True):
@@ -36,43 +29,42 @@ def setup():
 
 
 def main():
-    CMD_ID = 'VDT'
-    # EMAIL = "bot.remote.1@gmail.com"
-    # PWD = "yiggxtcpnmegepuu"
     # gmail = Email('imap.gmail.com', 993)
-    # gmail.login(EMAIL, PWD)
+    host_mail = Email()
+    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
 
-    controller = Controller()
+    # controller = Controller()
 
     # VDT help
     # VDT list_apps
     # VDT list_processes
     # VDT shut_down
     # subjects, contents = gmail.read_email()
-    subjects = ['VDT help', 'VDT list_apps']
-    for subject in subjects:
-        if not subject.startswith(CMD_ID):
-            continue
+    # subjects = ['VDT help', 'VDT list_apps']
+    # for subject in subjects:
+    #     if not subject.startswith(CMD_ID):
+    #         continue
     
-        request = subject[len(CMD_ID):]
-        respond = controller.respond(request)
-        print(respond)
+    #     request = subject[len(CMD_ID):]
+    #     respond = controller.respond(request)
+    #     print(respond)
 
-    _show_notification_thead = threading.Thread(target = show_notification_thead, args = ())
-    _check_email_thread = threading.Thread(target = check_email_thread, args = ())
+    # _show_notification_thead = threading.Thread(target = show_notification_thead, args = ())
+    # _check_email_thread = threading.Thread(target = check_email_thread, args = ())
     
-    _check_email_thread.start()
-    _show_notification_thead.start()
+    # _check_email_thread.start()
+    # _show_notification_thead.start()
 
-    _check_email_thread.join()
-    _show_notification_thead.join()
+    # _check_email_thread.join()
+    # _show_notification_thead.join()
 
-    email = Email()
+    # email = Email()
 
     # while True:
     #     mails = email.read_email()
     #     for mail in mails:
     #         # new thread to process this request       
+
 
 if __name__ == '__main__':
     main()

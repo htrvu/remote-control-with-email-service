@@ -7,21 +7,7 @@ class Controller:
         # }
         return
 
-    def __show_helps(self):
-        return '''
-            ------ Remote control app with Email service ------
-            Authors:
-                Hoang Trong Vu
-                Tran Ngoc Do
-                Tran Huu Thien
-
-            Command list:
-                VDT help                show helps
-                VDT list_apps           list the running apps
-                VDT list_processes      list the running process
-                VDT shut_down           shut down the computer
-                ...                     ...
-        '''
+    
 
     def __process(self, cmd, id = None):
         return

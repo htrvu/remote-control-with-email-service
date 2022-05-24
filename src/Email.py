@@ -9,30 +9,26 @@ from utils import *
 import email.message
 import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
-# from Controller import *
+
+from constants import *
 
 class Email:
-    def __init__(self, server, port):
-        SMTP_HOST = 'smtp.googlemail.com'
-        self.SMTP_SERVER = server 
-        self.SMTP_PORT = port
-        self.mail = imaplib.IMAP4_SSL(server)
+    def __init__(self):
+        # self.SMTP_HOST = SMTP_HOST
+        # self.SMTP_SERVER = server 
+        # self.SMTP_PORT = port
+        self.imap_server = imaplib.IMAP4_SSL(IMAP_HOST)
         self.smtp_server = SMTP_SSL(SMTP_HOST, port = SMTP_SSL_PORT)
         self.smtp_server.set_debuglevel(1)
 
     def login(self, username, password):
-        self.mail.login(username, password)
-    
-    def connect_to_smtp(self, username, passowrd):
-        self.smtp_server.login(username, passowrd)
+        self.imap_server.login(username, password)
+        self.smtp_server.login(username, password)
 
-    def logout_imap(self):
-        self.mail.logout()
+    def logout(self):
+        self.imap_server.logout()
+        self.smtp_server.quit()
 
-    def logout_smtp(self):
-        pass
-
-    # add more features
     def read_email(self, time_from, time_to = datetime.datetime.now().strftime(datetime_format_str()), category = 'primary', box = 'anywhere'):
         mail_list = []
 
@@ -40,9 +36,9 @@ class Email:
         date_to = datetime.datetime.strptime(time_to, datetime_format_str()).strftime(date_format_str())
 
         try:
-            self.mail.select('inbox')
+            self.imap_server.select('inbox')
 
-            status, mail_ids = self.mail.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from} before:{date_to}"') # specify the primary category
+            status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from} before:{date_to}"') # specify the primary category
 
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
@@ -54,7 +50,7 @@ class Email:
 
             for i in range(latest_email_id, first_email_id - 1, -1):
                 # 'data' will be [(header, content), b')']
-                status, data = self.mail.fetch(str(i), '(RFC822)')
+                status, data = self.imap_server.fetch(str(i), '(RFC822)')
 
                 date = email.message_from_bytes(data[0][1])['date']
                 datetime_obj = repr(email.utils.parsedate_to_datetime(repr(date)))
@@ -68,17 +64,23 @@ class Email:
                 
                 subject = msg['subject']
                 content = msg['content']
+                # mail sender 
 
-                # decode subject
+                # Decode subject:
                 subject, encoding = email.header.decode_header(subject)[0]
                 if encoding:
                     subject = str(subject, encoding)
+                
+                # Check subject
+                # ...
+                
 
-                # decode content
+                # Decode content:
+                # On multipart, we have the text msg and another things like annex, and html version
+                # of the msg, in that case we loop through the email payload
                 if msg.is_multipart():
                     content = ''
-                    # on multipart we have the text msg and another things like annex, and html version
-                    # of the msg, in that case we loop through the email payload
+
                     for part in msg.get_payload():
                         # if the content type is text/plain, we extract it
                         if part.get_content_type() == 'text/plain':
@@ -109,11 +111,4 @@ class Email:
             return False
         return True
 
-    def build_email_content(mail_from, mail_to, header, body, format = 'html'):
-        email_message = email.message.EmailMessage()
-        email_message.add_header('To', ', '.join(mail_to))
-        email_message.add_header('From', mail_from)
-        email_message.add_header('Subject', header)
-        email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
-        email_message.set_content(body, format)
-        return email_message
+
