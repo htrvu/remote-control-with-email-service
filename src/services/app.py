@@ -1,17 +1,18 @@
 import os
+from .html_generator import html_table
 
-def get_apps():
+def __app_data():
     cmd = 'powershell "gps | where {$_.mainWindowTitle} | select Description, ID, @{Name=\'ThreadCount\';Expression ={$_.Threads.Count}}'
     ps_result = os.popen(cmd).read().split('\n')
     
     result = {
         'status': 'OK',
-        'column': ['Description', 'Id', 'ThreadCount'],
+        'columns': ['No.', 'Description', 'Id', 'ThreadCount'],
         'data': []
     }
 
     data = []
-
+    cnt = 0
     try:
         for line in ps_result[3:]:
             if line.isspace() or len(line) == 0:
@@ -36,10 +37,22 @@ def get_apps():
                     name = name + arr[i] + ' '
             name = name[:-1]
 
-            data.append([name, id, thread_count])
+            if len(name) == 0:
+                continue
+
+            cnt += 1
+            data.append([cnt, name, id, thread_count])
     except:
         result['status'] = 'ERROR'
 
     result['data'] = data
 
     return result
+
+
+def get_apps():
+    '''
+        Return the HTML table of running app list
+    '''
+    dataframe = __app_data()
+    return html_table(dataframe, format='center')
