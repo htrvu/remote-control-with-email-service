@@ -4,6 +4,11 @@ import email.message
 import datetime
 import GlobalVariables
 
+# For screenshot
+import os
+from PIL import ImageGrab
+import time
+
 def base64_decode(str):
     str = base64.b64decode(str)
     return str.decode('utf-8')
@@ -69,3 +74,12 @@ def time_in_range(start: datetime, end: datetime, x: datetime, time_format = dat
         return start <= x <= end
     else:
         return start <= x or x <= end
+
+def take_screenshot():
+    im = ImageGrab.grab()
+    try:
+        os.mkdir(GlobalVariables.path_to_shots)
+    except: pass
+    filename = f'{GlobalVariables.path_to_shots}/{int(time.time())}.png'
+    im.save(filename, 'PNG')
+    return filename

@@ -4,7 +4,7 @@
 '''
 
 from Email import Email
-from Controller import Controller
+# from Controller import Controller
 import threading
 import time
 import utils
@@ -36,36 +36,41 @@ def setup():
 
 
 def main():
-    CMD_ID = 'VDT'
-    # EMAIL = "bot.remote.1@gmail.com"
-    # PWD = "yiggxtcpnmegepuu"
-    # gmail = Email('imap.gmail.com', 993)
+    CMD_ID = '[G8RC]'
+    PORT = 933
+    EMAIL = "bot.remote.1@gmail.com"
+    PWD = "yiggxtcpnmegepuu"
+    gmail = Email('imap.gmail.com', PORT)
     # gmail.login(EMAIL, PWD)
-
-    controller = Controller()
-
-    # VDT help
-    # VDT list_apps
-    # VDT list_processes
-    # VDT shut_down
-    # subjects, contents = gmail.read_email()
-    subjects = ['VDT help', 'VDT list_apps']
-    for subject in subjects:
-        if not subject.startswith(CMD_ID):
-            continue
+    gmail.connect_to_smtp(EMAIL, PWD)
     
-        request = subject[len(CMD_ID):]
-        respond = controller.respond(request)
-        print(respond)
+    content = gmail.build_email_content(mail_from=EMAIL, mail_to=[EMAIL], header='[G8RC] blah blah bleh bleh', body='abc xyz')
+    gmail.send_mail(content)
 
-    _show_notification_thead = threading.Thread(target = show_notification_thead, args = ())
-    _check_email_thread = threading.Thread(target = check_email_thread, args = ())
+    # controller = Controller()
+
+    # # VDT help
+    # # VDT list_apps
+    # # VDT list_processes
+    # # VDT shut_down
+    # # subjects, contents = gmail.read_email()
+    # subjects = ['VDT help', 'VDT list_apps']
+    # for subject in subjects:
+    #     if not subject.startswith(CMD_ID):
+    #         continue
     
-    _check_email_thread.start()
-    _show_notification_thead.start()
+    #     request = subject[len(CMD_ID):]
+    #     respond = controller.respond(request)
+    #     print(respond)
 
-    _check_email_thread.join()
-    _show_notification_thead.join()
+    # _show_notification_thead = threading.Thread(target = show_notification_thead, args = ())
+    # _check_email_thread = threading.Thread(target = check_email_thread, args = ())
+    
+    # _check_email_thread.start()
+    # _show_notification_thead.start()
+
+    # _check_email_thread.join()
+    # _show_notification_thead.join()
 
 if __name__ == '__main__':
     main()

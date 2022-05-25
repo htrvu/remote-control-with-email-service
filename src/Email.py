@@ -9,7 +9,7 @@ from utils import *
 import email.message
 import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
-# from Controller import *
+from Controller import *
 
 class Email:
     def __init__(self, server, port):
@@ -23,8 +23,8 @@ class Email:
     def login(self, username, password):
         self.mail.login(username, password)
     
-    def connect_to_smtp(self, username, passowrd):
-        self.smtp_server.login(username, passowrd)
+    def connect_to_smtp(self, username, password):
+        self.smtp_server.login(username, password)
 
     def logout_imap(self):
         self.mail.logout()
@@ -109,7 +109,7 @@ class Email:
             return False
         return True
 
-    def build_email_content(mail_from, mail_to, header, body, format = 'html'):
+    def build_email_content(self, mail_from, mail_to, header, body, format = 'html'):
         email_message = email.message.EmailMessage()
         email_message.add_header('To', ', '.join(mail_to))
         email_message.add_header('From', mail_from)

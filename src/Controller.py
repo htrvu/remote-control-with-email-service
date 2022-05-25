@@ -2,6 +2,13 @@ import os, psutil, uuid
 from utils import *
 from getmac import get_mac_address as gma
 
+# For email attachments
+from email.mime.multipart import MIMEMultipart 
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.application import MIMEApplication
+
+
 class Controller:
     def __init__(self):
         self.cmd_dicts = {
@@ -80,8 +87,32 @@ class Controller:
         return data, column_names
 
     def __screen_shot(self):
-        # return base64 encoded image
-        pass
+        msg = MIMEMultipart()
+        msg['From'] = send_from
+        msg['To'] = send_to
+        msg['Subject'] = subject
+
+        text = "Send current screenshot."
+        msg.attach(MIMEText(text))
+
+        shot = take_screenshot()
+        img_data = open(shot, 'rb').read()
+        msg.attach(MIMEImage(img_data, name = os.path.basename(shot)))
+
+        # for f in files or []:
+        #     with open(f, "rb") as fil:
+        #         part = MIMEApplication(
+        #             fil.read(),
+        #             Name=basename(f)
+        #         )
+        #     # After the file is closed
+        #     part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
+        #     msg.attach(part)
+
+
+        smtp = smtplib.SMTP(server)
+        smtp.sendmail(send_from, send_to, msg.as_string())
+        smtp.close()
 
     def __process(self, cmd, id = None):
         if id is None:
