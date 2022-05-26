@@ -13,3 +13,6 @@ def build_email_content(mail_from, mail_to, header, body):
     email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
     email_message.set_content(body)
     return email_message
+
+def show_notify():
+    pass
