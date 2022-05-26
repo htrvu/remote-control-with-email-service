@@ -12,14 +12,14 @@ from smtplib import SMTP_SSL, SMTP_SSL_PORT
 
 from constants import *
 
-class Email:
+class MailService:
     def __init__(self):
         # self.SMTP_HOST = SMTP_HOST
         # self.SMTP_SERVER = server 
         # self.SMTP_PORT = port
         self.imap_server = imaplib.IMAP4_SSL(IMAP_HOST)
         self.smtp_server = SMTP_SSL(SMTP_HOST, port = SMTP_SSL_PORT)
-        self.smtp_server.set_debuglevel(1)
+        # self.smtp_server.set_debuglevel(1)
 
     def login(self, username, password):
         self.imap_server.login(username, password)
@@ -38,7 +38,9 @@ class Email:
         try:
             self.imap_server.select('inbox')
 
-            status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from} before:{date_to}"') # specify the primary category
+            # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from} before:{date_to}"')
+            # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
+            status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category}"')
 
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
@@ -51,20 +53,20 @@ class Email:
             for i in range(latest_email_id, first_email_id - 1, -1):
                 # 'data' will be [(header, content), b')']
                 status, data = self.imap_server.fetch(str(i), '(RFC822)')
+                
+                mail = email.message_from_bytes(data[0][1])
 
-                date = email.message_from_bytes(data[0][1])['date']
+                date = mail['date']
                 datetime_obj = repr(email.utils.parsedate_to_datetime(repr(date)))
 
-                if not time_in_range(datetime_obj, time_from, time_to):
-                    continue
+                # if not time_in_range(datetime_obj, time_from, time_to):
+                    # continue
 
-                print_color(f'DATE: {datetime_obj}', text_format.DEBUG)
-
-                msg = email.message_from_bytes(data[0][1])
+                # print_color(f'DATE: {datetime_obj}', text_format.DEBUG)
                 
-                subject = msg['subject']
-                content = msg['content']
-                # mail sender 
+                sender = email.utils.parseaddr(mail['from'])[1]
+                subject = mail['subject']
+                content = mail['content']
 
                 # Decode subject:
                 subject, encoding = email.header.decode_header(subject)[0]
@@ -74,38 +76,31 @@ class Email:
                 # Check subject
                 # ...
                 
-
                 # Decode content:
                 # On multipart, we have the text msg and another things like annex, and html version
-                # of the msg, in that case we loop through the email payload
-                if msg.is_multipart():
+                # of the msg, in that case we loop through the email payload and get only the plain text
+                if mail.is_multipart():
                     content = ''
 
-                    for part in msg.get_payload():
-                        # if the content type is text/plain, we extract it
+                    for part in mail.get_payload():
                         if part.get_content_type() == 'text/plain':
                             content += part.get_payload()
-                    try:
-                        content = base64_decode(content)
-                    except Exception as e:
-                        print_color('Error at ' + subject, text_format.FAIL)
 
                     try:
                         content = base64_decode(content)
                     except Exception as e:
-                        print_color(str(e), text_format.FAIL)
+                        print_color('Error at ' + subject + ':\n\t' + str(e), text_format.FAIL)
 
-                mail_list.append({'subject': subject, 'content': content})
-                
+                mail_list.append({'sender': sender, 'subject': subject, 'content': content})
+
         except Exception as e:
-            print_color('Something went wrong while checking the mail box', text_format.FAIL)
-            print(str(e))
+            print_color('Error while reading the mail inbox:', str(e), text_format.FAIL)
             
         return mail_list
 
-    def send_mail(self, _email):
+    def send_mail(self, mail):
         try:
-            self.smtp_server.sendmail(_email['From'], _email['To'], _email.as_bytes())
+            self.smtp_server.sendmail(mail['From'], mail['To'], mail.as_bytes())
         except Exception as e:
             print(e)
             return False
