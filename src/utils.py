@@ -4,16 +4,16 @@ import email.message
 import datetime
 import GlobalVariables
 
-# For screenshot
-import os
-from PIL import ImageGrab
-import time
 
 def base64_decode(str):
     str = base64.b64decode(str)
     return str.decode('utf-8')
 
 def build_email_content(mail_from, mail_to, subject, body, format = 'html', data = None):
+    '''
+    Param:
+        data: tuple (filename, data)
+    '''
     email_message = email.message.EmailMessage()
     email_message.add_header('To', ', '.join(mail_to))
     email_message.add_header('From', mail_from)
@@ -21,12 +21,12 @@ def build_email_content(mail_from, mail_to, subject, body, format = 'html', data
     email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
     email_message.set_content(body, format)
 
-    # if data is not None:
+    if data is not None:
         # attach image to this mail
-        # email_message.add_attachment(base64_data, maintype='image', subtype='png')
+        email_message.add_attachment(data[1], maintype='image', subtype='png', filename=data[0])
         # # or
         # attach video to this mail
-        # email_message.add_attachment(base64_data, maintype='video', subtype='mp4')
+        email_message.add_attachment(data[1], maintype='video', subtype='mp4', filename=data[0])
 
     return email_message
 
@@ -67,12 +67,3 @@ def time_in_range(start: datetime, end: datetime, x: datetime, time_format = dat
         return start <= x <= end
     else:
         return start <= x or x <= end
-
-def take_screenshot():
-    im = ImageGrab.grab()
-    try:
-        os.mkdir(GlobalVariables.path_to_shots)
-    except: pass
-    filename = f'{GlobalVariables.path_to_shots}/{int(time.time())}.png'
-    im.save(filename, 'PNG')
-    return filename

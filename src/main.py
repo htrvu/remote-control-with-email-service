@@ -11,6 +11,7 @@ from constants import *
 from services.help import *
 from services.app import *
 from services.process import *
+from services.explorer import *
 
 from services.html_generator import html_mail
 
@@ -70,6 +71,8 @@ def main():
 
         # html = get_apps()
         # request = 'APP get'
+        # html = show_tree('E:/hehe')
+        # request = 'TREE E:/hehe'
 
         # html = get_processes()
         # request = 'PROCESS get'
