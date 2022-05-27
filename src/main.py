@@ -3,6 +3,7 @@ from mail_service import MailService
 import threading
 import time
 import datetime
+from services.screen import screen_shot
 
 from utils import *
 from constants import *
@@ -15,6 +16,9 @@ from services.html_generator import html_mail
 
 # demo
 from services.help import *
+
+# test lib
+import imghdr
 
 def show_notification_thead(timeout = 60):
     pass
@@ -61,18 +65,22 @@ def main():
     print_color('Test send mail', text_format.OKGREEN)
 
     try:
-        # html = show_helps()
-        # request = 'HELP'
+        html = show_helps()
+        request = 'HELP'
 
         # html = get_apps()
         # request = 'APP get'
 
-        html = get_processes()
-        request = 'PROCESS get'
+        # html = get_processes()
+        # request = 'PROCESS get'
 
-        content = html_mail(request, html)
+        data, msg = screen_shot()
+        request = 'SCREEN get image'
 
-        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
+        content = html_mail(request, msg)
+        print(imghdr.what(None, data[1]))
+
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
         host_mail.send_mail(mail)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)
