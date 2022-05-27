@@ -56,8 +56,8 @@ class MailService:
                 
                 mail = email.message_from_bytes(data[0][1])
 
-                date = mail['date']
-                datetime_obj = repr(email.utils.parsedate_to_datetime(repr(date)))
+                # date = mail['date']
+                # datetime_obj = repr(email.utils.parsedate_to_datetime(repr(date)))
 
                 # if not time_in_range(datetime_obj, time_from, time_to):
                     # continue
