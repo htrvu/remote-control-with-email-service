@@ -2,13 +2,6 @@ import os, psutil, uuid
 from utils import *
 from getmac import get_mac_address as gma
 
-# # For email attachments
-# from email.mime.multipart import MIMEMultipart 
-# from email.mime.text import MIMEText
-# from email.mime.image import MIMEImage
-# from email.mime.application import MIMEApplication
-
-
 class Controller:
     def __init__(self):
         # self.cmd_dicts = {
