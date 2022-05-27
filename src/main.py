@@ -66,16 +66,35 @@ def main():
     print_color('Test send mail', text_format.OKGREEN)
 
     try:
-        html = show_helps()
-        request = 'HELP'
+        # html = show_helps()
+        # request = 'HELP'
 
         # html = get_apps()
         # request = 'APP get'
-        # html = show_tree('E:/hehe')
-        # request = 'TREE E:/hehe'
-
         # html = get_processes()
         # request = 'PROCESS get'
+
+        # id = '23788'
+        # html = close_app(id)
+        # request = f'APP close {id}'
+
+
+        # src = 'C:\\Users\\Admin\\Downloads\\demo2'
+        # dst = 'C:\\Users\\Admin\\Downloads\\hihi'
+        # html = copy(src, dst)
+        # request = f'COPY {src} {dst}'
+
+        # src = 'C:\\Users\\Admin\\Downloads\\demo1\demo1_1.txt'
+        # dst = 'C:\\Users\\Admin\\Downloads\\hehe\\whatup.txt'
+        # html = cut(src, dst)
+        # request = f'CUT {src} {dst}'
+
+        # path = 'C:\\Users\\Admin\\Downloads\\demo1\demo1_2.txt'
+        # html = delete(path)
+        # request = f'DELETE {path}'
+
+        # html = show_tree('C:\\Users\\Admin\\Downloads\demo1')
+        # request = 'TREE C:\\Users\\Admin\\Downloads\demo1'
 
         data, msg = screen_shot()
         request = 'SCREEN get image'
