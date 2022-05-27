@@ -4,7 +4,9 @@ import email.message
 import datetime
 import GlobalVariables
 
+
 def base64_decode(str):
+    str += "=" * ((4 - len(str) % 4) % 4)
     str = base64.b64decode(str)
     return str.decode('utf-8')
 
@@ -25,7 +27,6 @@ def build_email_content(mail_from, mail_to, subject, body, format = 'html', data
 
     return email_message
 
-
 def show_notify():
     pass
 
@@ -41,13 +42,32 @@ class text_format:
     UNDERLINE = ['\033[4m', '']
     NORMAL = ['','']
     DEBUG = ['\033[91m', '[DEBUG]: ']
+    YELLOW = ['\033[93m', '']
+    RED = ['\033[91m', '']
+    EXCEPTION = ['\033[91m', '[Exception]: ']
 
 def load_config(config_file = GlobalVariables.checkpoint_file_path):
     with open(config_file, 'r') as f:
         return yaml.safe_load(f)
 
+def update_config_value(key, value, filename = GlobalVariables.checkpoint_file_path):
+    yaml_dict = load_config(filename)
+    
+    yaml_dict[key] = value
+    
+    with open(filename, 'w') as f:
+        yaml.dump(yaml_dict, f)
+
 def print_color(message, option = text_format.NORMAL, end = '\n'):
     print(f'{option[0]}{option[1]}{message} {text_format.ENDC[0]}', end = end)
+
+def print_indent(messages, level = 1, option = text_format.NORMAL, end = '\n'):
+    if type(messages) == str:
+        messages = messages.split('\n')
+    
+    for message in messages:
+        print('\t' * level, end = '')
+        print_color(message, option, end = end)
     
 def date_format_str():
     return r"%Y-%m-%d"
@@ -61,8 +81,10 @@ def date_today():
 def datetime_now_str():
     return datetime.datetime.now().strftime(datetime_format_str())
 
-def time_in_range(start: datetime, end: datetime, x: datetime, time_format = datetime_format_str()):
-    if start <= end:
-        return start <= x <= end
-    else:
-        return start <= x or x <= end
+def time_in_range(start: datetime.datetime, end: datetime.datetime, x: datetime.datetime):
+    
+    start = start.timestamp()
+    end = end.timestamp()
+    x = x.timestamp()
+    
+    return start <= x <= end
