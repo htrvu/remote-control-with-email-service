@@ -1,27 +1,23 @@
-def __screen_shot(self):
-    msg = MIMEMultipart()
-    msg['From'] = send_from
-    msg['To'] = send_to
-    msg['Subject'] = subject
+# from email.mime.image import MIMEImage
+# from email.mime.multipart import MIMEMultipart
+from PIL import ImageGrab
+import time
+import os
+import sys
 
-    text = "Send current screenshot."
-    msg.attach(MIMEText(text))
+sys.path.append('..')
+import GlobalVariables
 
-    shot = take_screenshot()
-    img_data = open(shot, 'rb').read()
-    msg.attach(MIMEImage(img_data, name = os.path.basename(shot)))
+def screen_shot():
+    im = ImageGrab.grab()
+    try:
+        os.mkdir(GlobalVariables.path_to_shots)
+    except: pass
+    filename = f'{GlobalVariables.path_to_shots}/{int(time.time())}.png'
+    im.save(filename, 'PNG')
+    img_data = open(filename, 'rb').read()
+    msg = 'The screenshot is attached below.'
+    return (os.path.basename(filename), img_data), msg
 
-    # for f in files or []:
-    #     with open(f, "rb") as fil:
-    #         part = MIMEApplication(
-    #             fil.read(),
-    #             Name=basename(f)
-    #         )
-    #     # After the file is closed
-    #     part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
-    #     msg.attach(part)
-
-
-    smtp = smtplib.SMTP(server)
-    smtp.sendmail(send_from, send_to, msg.as_string())
-    smtp.close()
+def screen_record():
+    pass
