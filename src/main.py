@@ -3,6 +3,7 @@ from mail_service import MailService
 import threading
 import time
 import datetime
+from services.screen import screen_shot
 
 from utils import *
 from constants import *
@@ -16,6 +17,9 @@ from services.html_generator import html_mail
 
 # demo
 from services.help import *
+
+# test lib
+import imghdr
 
 def show_notification_thead(timeout = 60):
     pass
@@ -67,9 +71,6 @@ def main():
 
         # html = get_apps()
         # request = 'APP get'
-        # html = show_tree('E:/hehe')
-        # request = 'TREE E:/hehe'
-
         # html = get_processes()
         # request = 'PROCESS get'
 
@@ -78,10 +79,10 @@ def main():
         # request = f'APP close {id}'
 
 
-        src = 'C:\\Users\\Admin\\Downloads\\demo2'
-        dst = 'C:\\Users\\Admin\\Downloads\\hihi'
-        html = copy(src, dst)
-        request = f'COPY {src} {dst}'
+        # src = 'C:\\Users\\Admin\\Downloads\\demo2'
+        # dst = 'C:\\Users\\Admin\\Downloads\\hihi'
+        # html = copy(src, dst)
+        # request = f'COPY {src} {dst}'
 
         # src = 'C:\\Users\\Admin\\Downloads\\demo1\demo1_1.txt'
         # dst = 'C:\\Users\\Admin\\Downloads\\hehe\\whatup.txt'
@@ -95,9 +96,13 @@ def main():
         # html = show_tree('C:\\Users\\Admin\\Downloads\demo1')
         # request = 'TREE C:\\Users\\Admin\\Downloads\demo1'
 
-        content = html_mail(request, html)
+        data, msg = screen_shot()
+        request = 'SCREEN get image'
 
-        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
+        content = html_mail(request, msg)
+        print(imghdr.what(None, data[1]))
+
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
         host_mail.send_mail(mail)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)

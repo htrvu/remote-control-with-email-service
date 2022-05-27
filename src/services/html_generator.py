@@ -258,7 +258,7 @@ def html_mail(request, content):
         <div class='main'>
             <div class="container">
                 <p class="app__name">Remote Control with Email Service</p>
-                <p class="app__greeting">Greeting from <span style='font-weight: bold;'>Group 8</span> - Hornor Program 2020, University of Science, VNUHCM.</p>
+                <p class="app__greeting">Greeting from <span style='font-weight: bold;'>Group 8</span> - Honors Program 2020, University of Science, VNUHCM.</p>
                 <p class="app__desc">This is our final project for <span style='font-weight: bold;'>Computer Networking</span> course (CSC10008) and thank you for using our application!</p>
                 <div class='divider'></div>
             </div>
