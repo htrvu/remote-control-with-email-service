@@ -107,8 +107,11 @@ def main():
         # status, data, msg = webcam_record(10)
         # request = 'WEBCAM get video 10'
 
-        result = webcam_shot()
-        request = 'WEBCAM get image'
+        # result = webcam_shot()
+        # request = 'WEBCAM get image'
+
+        result = webcam_record(5)
+        request = 'WEBCAM get video 5'
 
         # print(imghdr.what(None, result['data'][1]))
 
@@ -116,7 +119,7 @@ def main():
             'html': html_mail(request, result['html']),
             'data': result['data']
         }
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo WEBCAM capture attachment', content)
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo WEBCAM video attachment', content)
         host_mail.send_mail(mail)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)
