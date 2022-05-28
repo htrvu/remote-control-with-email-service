@@ -9,11 +9,14 @@ def base64_decode(str):
     str = base64.b64decode(str)
     return str.decode('utf-8')
 
-def build_email_content(mail_from, mail_to, subject, body, format = 'html', data = None):
+def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
     '''
     Param:
         data: tuple (filename, data)
     '''
+    body = content['html']
+    data = content['data']
+    
     email_message = email.message.EmailMessage()
     email_message.add_header('To', ', '.join(mail_to))
     email_message.add_header('From', mail_from)
@@ -26,7 +29,7 @@ def build_email_content(mail_from, mail_to, subject, body, format = 'html', data
         email_message.add_attachment(data[1], maintype='image', subtype='png', filename=data[0])
         # # or
         # attach video to this mail
-        email_message.add_attachment(data[1], maintype='video', subtype='mp4', filename=data[0])
+        email_message.add_attachment(data[1], maintype='video', subtype='avi', filename=data[0])
 
     return email_message
 
