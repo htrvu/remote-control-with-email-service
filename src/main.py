@@ -12,6 +12,7 @@ from services.help import *
 from services.app import *
 from services.process import *
 from services.explorer import *
+from services.mac import *
 
 from services.html_generator import html_mail
 
@@ -66,18 +67,21 @@ def main():
     print_color('Test send mail', text_format.OKGREEN)
 
     try:
-        # html = show_helps()
+        # request = 'MAC get'
+        # result = get_mac()
+
         # request = 'HELP'
+        # result = show_helps()
 
-        # html = get_apps()
-        # request = 'APP get'
-        # html = get_processes()
+        request = 'APP get'
+        result = get_apps()
+
         # request = 'PROCESS get'
+        # result = get_processes()
 
-        # id = '23788'
-        # html = close_app(id)
+        # id = '6712'
         # request = f'APP close {id}'
-
+        # result = close_app(id)
 
         # src = 'C:\\Users\\Admin\\Downloads\\demo2'
         # dst = 'C:\\Users\\Admin\\Downloads\\hihi'
@@ -96,14 +100,23 @@ def main():
         # html = show_tree('C:\\Users\\Admin\\Downloads\demo1')
         # request = 'TREE C:\\Users\\Admin\\Downloads\demo1'
 
-        data, msg = screen_shot()
-        request = 'SCREEN get image'
+        # data, msg = screen_shot()
+        # request = 'SCREEN get image'
 
-        content = html_mail(request, msg)
-        print(imghdr.what(None, data[1]))
+        # content, data = html_mail(request, html)
+        # print(data)
+        # print(imghdr.what(None, data[1]))
 
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
+        content = {
+            'html': html_mail(request, result['html']),
+            'data': result['data']
+        }
+
+        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
         host_mail.send_mail(mail)
+
+        # mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
+        # host_mail.send_mail(mail)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)
     
