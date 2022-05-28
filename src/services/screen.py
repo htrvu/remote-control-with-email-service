@@ -20,7 +20,7 @@ def screen_shot():
     im = ImageGrab.grab()
     shots_path = GlobalVariables.screen_path + '/shots'
     try:
-        if os.path.exists(GlobalVariables.screen_path):
+        if not os.path.exists(GlobalVariables.screen_path):
             os.mkdir(GlobalVariables.screen_path)
         os.mkdir(shots_path)
     except: pass
@@ -28,10 +28,12 @@ def screen_shot():
     im.save(filename, 'PNG')
 
     msg = 'The screenshot is attached below.'
+    data = open(filename, 'rb').read()
     response = {
         'html': html_msg(msg, True),
-        'data': (os.path.basename(filename), open(filename, 'rb').read())
+        'data': (os.path.basename(filename), data)
     }
+    os.remove(filename)
     return response
 
 def screen_record(elapse_time=10):
@@ -41,7 +43,7 @@ def screen_record(elapse_time=10):
 
     records_path = GlobalVariables.screen_path + '/records'
     try:
-        if os.path.exists(GlobalVariables.screen_path):
+        if not os.path.exists(GlobalVariables.screen_path):
             os.mkdir(GlobalVariables.screen_path)
         os.mkdir(records_path)
     except: pass
@@ -55,8 +57,10 @@ def screen_record(elapse_time=10):
     out.release()
 
     msg = 'The screen record is attached below.'
+    data = open(filename, 'rb').read()
     response = {
         'html': html_msg(msg, True),
-        'data': (os.path.basename(filename), open(filename, 'rb').read())
+        'data': (os.path.basename(filename), data)
     }
+    os.remove(filename)
     return response
