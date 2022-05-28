@@ -11,7 +11,7 @@ import GlobalVariables
 def webcam_record(elapse_time=10):
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if cap is None or not cap.isOpened():
-        msg = 'Cannot capture from webcam. Make sure webcam is opened and try again later!'
+        msg = 'Cannot capture from webcam.'
         response = {
             'html': html_msg(msg, False),
             'data': None
@@ -57,7 +57,7 @@ def webcam_record(elapse_time=10):
 def webcam_shot():
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if cap is None or not cap.isOpened():
-        msg = 'Cannot capture from webcam. Make sure webcam is opened and try again later!'
+        msg = 'Cannot capture from webcam.'
         response = {
             'html': html_msg(msg, False),
             'data': None
