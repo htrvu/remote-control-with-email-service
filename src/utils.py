@@ -9,11 +9,14 @@ def base64_decode(str):
     str = base64.b64decode(str)
     return str.decode('utf-8')
 
-def build_email_content(mail_from, mail_to, subject, body, format = 'html', data = None):
+def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
     '''
-    Param:
-        data: tuple (filename, data)
+        Build an email message with `mail_from`, `mail_to`, `subject` and `content`, where content is a 
+        dictionary with keys `html` and `data`
     '''
+    body = content['html']
+    data = content['data']
+
     email_message = email.message.EmailMessage()
     email_message.add_header('To', ', '.join(mail_to))
     email_message.add_header('From', mail_from)
