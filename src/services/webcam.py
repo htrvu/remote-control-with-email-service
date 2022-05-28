@@ -26,10 +26,12 @@ def webcam_record(elapse_time=10):
             os.mkdir(GlobalVariables.webcam_path)
         os.mkdir(records_path)
     except: pass
-    filename = f'{records_path}/webcam_{int(time.time())}_{elapse_time}s.avi'
+    filename = f'{records_path}/webcam_{int(time.time())}_{elapse_time}s.mp4'
 
-    fourcc = cv2.VideoWriter_fourcc(*'XVID') # codec
-    out = cv2.VideoWriter(filename, fourcc, fps, (640, 480))
+    fourcc = cv2.VideoWriter_fourcc(*'MP4V') # codec
+
+    width, height = int(cap.get(3)), int(cap.get(4))
+    out = cv2.VideoWriter(filename, fourcc, fps, (width, height))
 
     for _ in range(elapse_time * fps):
         ret, frame = cap.read()

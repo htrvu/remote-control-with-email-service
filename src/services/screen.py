@@ -36,7 +36,7 @@ def screen_shot():
 
 def screen_record(elapse_time=10):
     SCREEN_SIZE = GetSystemMetrics(0), GetSystemMetrics(1) 
-    fourcc = cv2.VideoWriter_fourcc(*"XVID") # codec
+    fourcc = cv2.VideoWriter_fourcc(*"MP4V") # codec
     fps = 30
 
     records_path = GlobalVariables.screen_path + '/records'
@@ -45,7 +45,7 @@ def screen_record(elapse_time=10):
             os.mkdir(GlobalVariables.screen_path)
         os.mkdir(records_path)
     except: pass
-    filename = f'{records_path}/screen_{int(time.time())}_{elapse_time}s.avi'
+    filename = f'{records_path}/screen_{int(time.time())}_{elapse_time}s.mp4'
 
     out = cv2.VideoWriter(filename, fourcc, fps, SCREEN_SIZE)
     for _ in range(fps * elapse_time):
