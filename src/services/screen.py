@@ -20,7 +20,7 @@ def screen_shot():
     im = ImageGrab.grab()
     shots_path = GlobalVariables.screen_path + '/shots'
     try:
-        if os.path.exists(GlobalVariables.screen_path):
+        if not os.path.exists(GlobalVariables.screen_path):
             os.mkdir(GlobalVariables.screen_path)
         os.mkdir(shots_path)
     except: pass
@@ -43,7 +43,7 @@ def screen_record(elapse_time=10):
 
     records_path = GlobalVariables.screen_path + '/records'
     try:
-        if os.path.exists(GlobalVariables.screen_path):
+        if not os.path.exists(GlobalVariables.screen_path):
             os.mkdir(GlobalVariables.screen_path)
         os.mkdir(records_path)
     except: pass
