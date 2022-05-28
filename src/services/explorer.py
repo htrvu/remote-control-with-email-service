@@ -78,12 +78,18 @@ def __delete(path):
 
 def show_tree(path = None):
     '''
-        Return the HTML directory tree (1-level) of `path`
+        Return a dictionary with keys `html` and `data`, where `html` is the HTML directory tree (1-level) of `path`
     '''
     sub_dirs = __listdir(path)
     if sub_dirs is None:
-        return html_msg(f'The directory {path} is not exist on this device.', False)
-    return html_tree(path, sub_dirs)
+        html = html_msg(f'The directory {path} is not exist on this device.', False)
+    else:
+        html = html_tree(path, sub_dirs)
+
+    return {
+        'html': html,
+        'data': None
+    }
 
 def copy(src, dst):
     '''
@@ -91,7 +97,10 @@ def copy(src, dst):
         Return (status, msg), where `status` is a boolean and `msg` is a string
     '''
     status, msg = __copy(src, dst)
-    return html_msg(msg, status)
+    return {
+        'html': html_msg(msg, status),
+        'data': None
+    }
 
 def cut(src, dst):
     '''
@@ -99,7 +108,10 @@ def cut(src, dst):
         Return (status, msg), where `status` is a boolean and `msg` is a string
     '''
     status, msg = __cut(src, dst)
-    return html_msg(msg, status)
+    return {
+        'html': html_msg(msg, status),
+        'data': None
+    }
 
 def delete(path):
     '''
@@ -107,4 +119,7 @@ def delete(path):
         Return (status, msg), where `status` is a boolean and `msg` is a string
     '''
     status, msg = __delete(path)
-    return html_msg(msg, status)
+    return {
+        'html': html_msg(msg, status),
+        'data': None
+    }

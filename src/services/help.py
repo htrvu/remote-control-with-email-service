@@ -64,4 +64,7 @@ def show_helps():
         Return the HTML table of command list
     '''
     dataframe = __help_df()
-    return html_table(dataframe, note='The commands can be written in uppercase like the following table or in any type of cases. For example, APP, App or app are the same meaning.', format='left')
+    return {
+        'html': html_table(dataframe, note='The commands can be written in uppercase like the following table or in any type of cases. For example, APP, App or app are the same meaning.', format='left'),
+        'data': None
+    }

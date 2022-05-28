@@ -1,7 +1,7 @@
 import os
 from .html_generator import html_table, html_msg
 
-def __app_data():
+def __app_df():
     cmd = 'powershell "gps | where {$_.mainWindowTitle} | select Description, ID, @{Name=\'ThreadCount\';Expression ={$_.Threads.Count}}'
     ps_result = os.popen(cmd).read().split('\n')
     
@@ -53,10 +53,14 @@ def __app_data():
 
 def get_apps():
     '''
-        Return the HTML table of running app list
+        Return a dictionary with keys `html` and `data`, where `html` is the HTML table of running app list
     '''
-    dataframe = __app_data()
-    return html_table(dataframe, format='center')
+    dataframe = __app_df()
+    response = {
+        'html': html_table(dataframe, format='center'),
+        'data': None
+    }
+    return response
 
 def __closing(id):
     '''
@@ -64,7 +68,7 @@ def __closing(id):
         Return (status, msg), where `status` is a boolean and `msg` is a string
     ''' 
     # Get the id of running apps
-    data = __app_data()
+    data = __app_df()
     exist = False
     for row in data['data']:
         if row[2] == id:
@@ -84,8 +88,11 @@ def __closing(id):
 
 def close_app(id):
     '''
-        Close a running app with pID is `id`
-        Return status of closing process
+        Close a running app with pID is `id`. Return a dictionary with keys `html` and `data`, where `html` is the HTML of output message
     '''
     status, msg = __closing(id)
-    return html_msg(msg, status)
+    response = {
+        'html': html_msg(msg, status),
+        'data': None
+    }
+    return response

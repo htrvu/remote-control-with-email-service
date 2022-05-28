@@ -27,10 +27,14 @@ def __process_df():
 
 def get_processes():
     '''
-        Return the HTML table of running process list
+        Return a dictionary with keys `html` and `data`, where `html` is the HTML table of running process list
     '''
     dataframe = __process_df()
-    return html_table(dataframe, format='center')
+    response = {
+        'html': html_table(dataframe, format='center'),
+        'data': None
+    }
+    return response
 
 
 def __closing(id):
@@ -59,10 +63,11 @@ def __closing(id):
 
 def close_process(id):
     '''
-        Close a running process with pID is `id`
-        Return status of closing process
+        Close a running process with pID is `id`. Return a dictionary with keys `html` and `data`, where `html` is the HTML of output message
     '''
     status, msg = __closing(id)
-    if not status:
-        msg += ' Please try again later.'
-    return html_msg(msg)
+    response = {
+        'html': html_msg(msg, status),
+        'data': None
+    }
+    return response
