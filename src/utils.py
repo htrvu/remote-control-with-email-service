@@ -29,7 +29,7 @@ def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
         email_message.add_attachment(data[1], maintype='image', subtype='png', filename=data[0])
         # # or
         # attach video to this mail
-        email_message.add_attachment(data[1], maintype='video', subtype='mp4', filename=data[0])
+        email_message.add_attachment(data[1], maintype='video', subtype='avi', filename=data[0])
 
     return email_message
 
