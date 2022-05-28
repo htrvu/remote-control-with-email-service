@@ -32,9 +32,9 @@ def html_table(dataframe, note = '', format = 'center'):
         for i in range(n_row):
             html += '<tr class="'
             if i % 2 == 1:
-                html += 'odd-row'
+                html += 'odd-row '
             if i == n_row - 1:
-                html += 'last-row'
+                html += 'last-row '
             html += '">'
 
             for j in range(n_col):
@@ -52,9 +52,9 @@ def html_table(dataframe, note = '', format = 'center'):
             # first row (row span for no. and group name)
             html += '<tr class="'
             if i % 2 == 1:
-                html += 'odd-row'
+                html += 'odd-row '
             if i == n_group - 1 and 0 == n_row - 1:
-                html += 'last-row'
+                html += 'last-row '
             html += '">'
             # Type
             html += f'<td rowspan="{n_row}" style="font-weight: bold;">{group_name}</td>'
@@ -66,9 +66,9 @@ def html_table(dataframe, note = '', format = 'center'):
             for j in range(1, n_row):
                 html += '<tr class="'
                 if i % 2 == 1:
-                    html += 'odd-row'
+                    html += 'odd-row '
                 if i == n_group - 1 and j == n_row - 1:
-                    html += 'last-row'
+                    html += 'last-row '
                 html += '">'
 
                 for k in range(n_col - 1):
@@ -78,16 +78,19 @@ def html_table(dataframe, note = '', format = 'center'):
     return html
 
 
-def html_msg(msg, status):
+def html_msg(msg, status = None):
     '''
         Create a HTML message which is used to response the request
-        if `status` is False, the text will have red color, otherwise green
+        If `status` is None, the text color is black. If it's False, the text will have red color, otherwise green
     '''
     content = msg
-    if not status:
-        content += ' Please try again later.'
+    _class = ''
 
-    _class = 'ok' if status else 'error'
+    if status is not None:
+        if not status:
+            content += ' Please try again later.'
+
+        _class = 'ok' if status else 'error'
 
     html = f'<p lang="en" class="message {_class}">{content}</p>'
     return html
