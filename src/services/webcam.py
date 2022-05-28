@@ -28,7 +28,7 @@ def webcam_record(elapse_time=10):
     except: pass
     filename = f'{records_path}/webcam_{int(time.time())}_{elapse_time}s.mp4'
 
-    fourcc = cv2.VideoWriter_fourcc(*'MP4V') # codec
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v') # codec
 
     width, height = int(cap.get(3)), int(cap.get(4))
     out = cv2.VideoWriter(filename, fourcc, fps, (width, height))

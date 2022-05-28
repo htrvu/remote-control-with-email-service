@@ -36,7 +36,7 @@ def screen_shot():
 
 def screen_record(elapse_time=10):
     SCREEN_SIZE = GetSystemMetrics(0), GetSystemMetrics(1) 
-    fourcc = cv2.VideoWriter_fourcc(*"MP4V") # codec
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v") # codec
     fps = 30
 
     records_path = GlobalVariables.screen_path + '/records'
