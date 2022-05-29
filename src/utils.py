@@ -6,7 +6,6 @@ import GlobalVariables
 
 
 def base64_decode(str):
-    str += "=" * ((4 - len(str) % 4) % 4)
     str = base64.b64decode(str)
     return str.decode('utf-8')
 
