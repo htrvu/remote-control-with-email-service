@@ -72,11 +72,11 @@ def main():
         # request = 'MAC get'
         # result = get_mac()
 
-        # request = 'HELP'
-        # result = show_helps()
+        request = 'HELP'
+        result = show_helps()
 
-        request = 'APP get'
-        result = get_apps()
+        # request = 'APP get'
+        # result = get_apps()
 
         # request = 'PROCESS get'
         # result = get_processes()

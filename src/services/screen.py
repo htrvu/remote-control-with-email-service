@@ -4,14 +4,12 @@ import time
 import os
 import sys
 
-
 # For screenshot record
 from win32api import GetSystemMetrics
 import cv2
 import numpy as np
 
 from .html_generator import html_msg
-
 
 sys.path.append('..')
 import GlobalVariables

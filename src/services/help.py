@@ -64,7 +64,21 @@ def show_helps():
         Return the HTML table of command list
     '''
     dataframe = __help_df()
+    note = '''
+        <ul>
+            <li>
+            The commands can be written in uppercase like the following table or in any type of cases.
+            <br>
+            For example, APP, App or app are the same meaning.
+            </li>
+            <li>
+            <span style="font-weight: bold;">&lt;duration&gt;</span> must be a non-negative integer and <span style="font-weight: bold;">&lt;path&gt;</span> must be put between 2 single (or double) quotes if it contains spaces.
+            <br>
+            For example, &lt;path&gt; = \'C:/User/Some thing\' and &lt;path&gt; = "C:/User/Some thing" are valid.
+            </li>
+        </ul>
+    '''
     return {
-        'html': html_table(dataframe, note='The commands can be written in uppercase like the following table or in any type of cases. For example, APP, App or app are the same meaning.', format='left'),
+        'html': html_table(dataframe, note=note, format='left'),
         'data': None
     }

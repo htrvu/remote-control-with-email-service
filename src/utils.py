@@ -1,9 +1,10 @@
 import base64
 import yaml
+import re
 import email.message
 import datetime
-import GlobalVariables
 
+import GlobalVariables
 
 def base64_decode(str):
     str = base64.b64decode(str)
@@ -32,6 +33,12 @@ def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
         email_message.add_attachment(data[1], maintype='video', subtype='avi', filename=data[0])
 
     return email_message
+
+def mail_validate(mail):
+    s = '^[^\s@]+@[^\s@]+\.[^\s@]+$'
+    if re.match(s, mail):
+        return True
+    return False
 
 class text_format:
     HEADER = ['\033[95m', '']

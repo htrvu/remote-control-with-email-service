@@ -25,7 +25,9 @@ def webcam_record(elapse_time=10):
         if not os.path.exists(GlobalVariables.webcam_path):
             os.mkdir(GlobalVariables.webcam_path)
         os.mkdir(records_path)
-    except: pass
+    except:
+        pass
+    
     filename = f'{records_path}/webcam_{int(time.time())}_{elapse_time}s.mp4'
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') # codec
