@@ -72,11 +72,11 @@ def main():
         # request = 'MAC get'
         # result = get_mac()
 
-        # request = 'HELP'
-        # result = show_helps()
+        request = 'HELP'
+        result = show_helps()
 
-        request = 'APP get'
-        result = get_apps()
+        # request = 'APP get'
+        # result = get_apps()
 
         # request = 'PROCESS get'
         # result = get_processes()
@@ -108,8 +108,8 @@ def main():
         # result = webcam_shot()
         # request = 'WEBCAM get image'
 
-        result = webcam_record(5)
-        request = 'WEBCAM get video 5'
+        # result = webcam_record(5)
+        # request = 'WEBCAM get video 5'
 
         content = {
             'html': html_mail(request, result['html']),
