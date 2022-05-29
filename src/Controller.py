@@ -1,3 +1,5 @@
+from request_handle import parse_request
+
 class Controller:
     def __init__(self):
         # self.cmd_dicts = {
@@ -6,8 +8,6 @@ class Controller:
         #     'list_processes': self.__list_processes
         # }
         return
-
-    
 
     def __process(self, cmd, id = None):
         return
@@ -31,8 +31,18 @@ class Controller:
         # # other: help,...
         # return cmd_result
 
-    def respond(self, request):
-        return
+    def respond(self, mail):
+        func, param = parse_request(mail)
+        
+        # ehhe
+        
+        if not func:
+            response = {
+                
+            }
+        
+        response = func(*param)
+        # --> send response
         # words = request.split(' ')
 
         # if len(words) < 1 or len(words) > 2:
