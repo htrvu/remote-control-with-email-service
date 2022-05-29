@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>assets/icons/contact.png</normaloff>assets/icons/contact.png</iconset>
+    <normaloff>assets/icons/remote_logo.png</normaloff>assets/icons/remote_logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -61,7 +61,7 @@ background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #C9D6FF,  stop:1 #E2E2
 /* stop:0 #acb6e5,  stop:1 #86fde8 */</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="homePage">
      <property name="styleSheet">
@@ -237,7 +237,7 @@ QPushButton:hover {
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>remote_logo.png</pixmap>
+       <pixmap>assets/icons/remote_logo.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -254,19 +254,18 @@ QPushButton:hover {
       </property>
       <property name="font">
        <font>
-        <family>Quicksand</family>
+        <family>Roboto</family>
         <pointsize>-1</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">font-size: 18px;
-color: #2d1299;
-font-weight: bold;</string>
+color: #2d1299;</string>
       </property>
       <property name="text">
-       <string>Please read the Instruction carefully before running this app!</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Please read the &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Instruction&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; carefully before running this app!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -278,7 +277,7 @@ font-weight: bold;</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>30</y>
+        <y>38</y>
         <width>800</width>
         <height>51</height>
        </rect>
@@ -303,11 +302,11 @@ font-weight: bold;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QPushButton" name="insBack">
+     <widget class="QPushButton" name="insBackBtn">
       <property name="geometry">
        <rect>
         <x>300</x>
-        <y>535</y>
+        <y>529</y>
         <width>200</width>
         <height>28</height>
        </rect>
@@ -340,66 +339,93 @@ color: #8e2de2;
      <widget class="QWidget" name="insWidget" native="true">
       <property name="geometry">
        <rect>
-        <x>100</x>
-        <y>99</y>
-        <width>600</width>
+        <x>89</x>
+        <y>100</y>
+        <width>621</width>
         <height>421</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">QWidget#insWidget {
-	background-color: #fff;
 	border-radius: 15px;
 }
 
 QLabel {
 	font-size: 18px;
+}
+
+QWidget {
+	background-color: white;
 }</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0">
-       <property name="leftMargin">
-        <number>16</number>
+      <widget class="QScrollArea" name="insScrollArea">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>601</width>
+         <height>401</height>
+        </rect>
        </property>
-       <property name="topMargin">
-        <number>8</number>
+       <property name="styleSheet">
+        <string notr="true">QScrollArea {
+	border: none;
+	border-radius: 20px;
+}
+
+QScrollBar:vertical {  
+	border-radius: 5px;
+    background: transparent;
+    width: 18px;    
+    margin: 8px 0px 0px 8px;
+}
+
+QScrollBar::handle:vertical {
+	/*cff4ff*/
+    background: #2d1299;
+	border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical {
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    height: 0 px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}</string>
        </property>
-       <property name="rightMargin">
-        <number>16</number>
+       <property name="widgetResizable">
+        <bool>true</bool>
        </property>
-       <property name="bottomMargin">
-        <number>8</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-           <pointsize>-1</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Greeting from Group 8 - Hornors Program 2020, University of Science, VNUHCM. Thank you for using our application!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Since you press the &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Run&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; button below, your computer can be controlled by someone that is allowed by you!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;How can they do that? &lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;using email, format of header,...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;What things can they do with your device? &lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;summary of featues...&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;The controllers can see all of commands by sending an email with header &amp;quot;[R8GC] HELP&amp;quot; to the host mail set by you.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Notice:&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; Before running this app, please go to &lt;/span&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Configurations&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt; to set up everything needed.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;(double click vào đây để chỉnh sửa)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
+       <widget class="QWidget" name="insScrollContent">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>601</width>
+          <height>401</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="configPage">
      <property name="styleSheet">
       <string notr="true"/>
      </property>
-     <widget class="QPushButton" name="configBack">
+     <widget class="QPushButton" name="configBackBtn">
       <property name="geometry">
        <rect>
         <x>300</x>
-        <y>542</y>
+        <y>540</y>
         <width>200</width>
         <height>28</height>
        </rect>
@@ -433,7 +459,7 @@ color: #8e2de2;
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>30</y>
+        <y>24</y>
         <width>800</width>
         <height>51</height>
        </rect>
@@ -462,9 +488,9 @@ font-weight: bold;</string>
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>100</y>
+        <y>82</y>
         <width>600</width>
-        <height>431</height>
+        <height>451</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -473,40 +499,463 @@ font-weight: bold;</string>
 	border-radius: 15px;
 }
 
+QGroupBox {
+	font-size: 18px;
+}
+
 QLabel {
 	font-size: 18px;
 }</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0">
+      <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,0,0">
        <property name="leftMargin">
         <number>16</number>
        </property>
        <property name="topMargin">
-        <number>8</number>
+        <number>16</number>
        </property>
        <property name="rightMargin">
         <number>16</number>
        </property>
        <property name="bottomMargin">
-        <number>8</number>
+        <number>16</number>
        </property>
        <item>
-        <widget class="QLabel" name="label_13">
+        <widget class="QGroupBox" name="groupBox_4">
          <property name="font">
           <font>
            <family>Roboto</family>
            <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
           </font>
          </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;1. QLineEdit cho việc nhập host mail&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;2. White list (các mail được phép điều khiển)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;2.1. Basic white Litst (không được dùng explorer, pc, registry)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;2.2. Vip while list (full các lệnh)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Sử dụng QListWidget để hiển thị danh sách, thêm, xóa&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;3. QCheckbox, khởi động cùng Window&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;4. Button save&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #2d1299,  stop:1 #2980b9);
+	padding: 4px 12px;
+ 	font-size: 18px;
+	color: #fff;
+	border: none;
+	border-radius: 15px;
+}
+
+QPushButton:hover {
+	background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #8e2de2,  stop:1 #4a00e0);
+}</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <property name="title">
+          <string>White List</string>
          </property>
-         <property name="wordWrap">
+         <property name="flat">
           <bool>true</bool>
          </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="widget_4" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QLabel" name="label_10">
+               <property name="font">
+                <font>
+                 <family>Roboto</family>
+                 <pointsize>-1</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Basic controllers:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="basicList">
+               <property name="font">
+                <font>
+                 <family>Roboto</family>
+                 <pointsize>-1</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QListWidget {
+	font-size: 18px;
+	background-color: white;
+	padding-left: 6px;
+}
+
+
+QScrollBar:vertical {  
+	border-radius: 5px;
+    background: transparent;
+    width: 18px;    
+    margin: 8px 0px 0px 8px;
+}
+
+QScrollBar::handle:vertical {
+	/*cff4ff*/
+    background: #2d1299;
+	border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical {
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    height: 0 px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}</string>
+               </property>
+               <property name="spacing">
+                <number>0</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget_5" native="true">
+               <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1,1,0">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <spacer name="horizontalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="basicAddBtn">
+                  <property name="font">
+                   <font>
+                    <family>SVN-Cookies</family>
+                    <pointsize>-1</pointsize>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string>Add</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="basicRemoveBtn">
+                  <property name="font">
+                   <font>
+                    <family>SVN-Cookies</family>
+                    <pointsize>-1</pointsize>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string>Remove</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="widget_6" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_13">
+               <property name="font">
+                <font>
+                 <family>Roboto</family>
+                 <pointsize>-1</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>V.I.P Controllers:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="vipList">
+               <property name="font">
+                <font>
+                 <family>Roboto</family>
+                 <pointsize>-1</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QListWidget {
+	font-size: 18px;
+	background-color: white;
+	padding-left: 6px;
+}
+
+
+QScrollBar:vertical {  
+	border-radius: 5px;
+    background: transparent;
+    width: 18px;    
+    margin: 8px 0px 0px 8px;
+}
+
+QScrollBar::handle:vertical {
+	/*cff4ff*/
+    background: #2d1299;
+	border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical {
+    height: 0px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    height: 0 px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget_7" native="true">
+               <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,1,1,0">
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <spacer name="horizontalSpacer_7">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="vipAddBtn">
+                  <property name="font">
+                   <font>
+                    <family>SVN-Cookies</family>
+                    <pointsize>-1</pointsize>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string>Add</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="vipRemoveBtn">
+                  <property name="font">
+                   <font>
+                    <family>SVN-Cookies</family>
+                    <pointsize>-1</pointsize>
+                   </font>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string>Remove</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_8">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QGroupBox {
+	font-size: 18px;
+}
+
+QCheckBox {
+	font-size: 18px;
+}</string>
+         </property>
+         <property name="title">
+          <string>Other settings</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="leftMargin">
+           <number>13</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="autoRunBox">
+            <property name="font">
+             <font>
+              <family>Roboto</family>
+              <pointsize>-1</pointsize>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Auto-run this app at boot time</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="configSaveBtn">
+            <property name="font">
+             <font>
+              <family>SVN-Cookies</family>
+              <pointsize>-1</pointsize>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #2d1299,  stop:1 #2980b9);
+	padding: 4px 14px;
+ 	font-size: 18px;
+	color: #fff;
+	border: none;
+	border-radius: 15px;
+}
+
+QPushButton:hover {
+	background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #8e2de2,  stop:1 #4a00e0);
+}</string>
+            </property>
+            <property name="text">
+             <string>Save</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -517,7 +966,7 @@ QLabel {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>85</y>
+        <y>72</y>
         <width>800</width>
         <height>51</height>
        </rect>
@@ -546,9 +995,9 @@ font-weight: bold;</string>
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>153</y>
+        <y>131</y>
         <width>600</width>
-        <height>301</height>
+        <height>331</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -561,7 +1010,7 @@ QLabel {
 	font-size: 18px;
 }</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0">
+      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0,0">
        <property name="leftMargin">
         <number>16</number>
        </property>
@@ -598,6 +1047,69 @@ font-weight: bold;</string>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_3" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>8</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>assets/icons/remote_logo.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -909,7 +1421,7 @@ University of Science - VNUHCM</string>
       <property name="geometry">
        <rect>
         <x>300</x>
-        <y>465</y>
+        <y>470</y>
         <width>200</width>
         <height>28</height>
        </rect>
