@@ -153,7 +153,7 @@ def html_mail(request, content):
                 font-family: 'Roboto', sans-serif;
             }
 
-            p, td, th, span {
+            p, td, th, span, ul {
                 color: #333;
                 font-size: 16px;
             }
