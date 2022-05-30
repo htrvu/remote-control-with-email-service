@@ -1,4 +1,3 @@
-from urllib import response
 from mail_service import MailService
 
 import threading
@@ -13,33 +12,70 @@ from constants import *
 from services.help import *
 from services.app import *
 from services.process import *
-from services.explorer import *
-from services.mac import *
 
 from services.html_generator import html_mail
+import notification
+import signal
+from services.explorer import *
+from services.mac import *
 
 # demo
 from services.help import *
 
-# test lib
-import imghdr
-
 def show_notification_thead(timeout = 60):
-    pass
-    # while (True):
-    #     notification.notify (
-    #         title = "Remote control with email service",
-    #         message = "Remote control is running",
-    #         app_name = 'Remote control with email service',
-    #         timeout = timeout / 2
-    #     )
-
-    #     time.sleep(timeout)
-
-def check_email_thread(timeout = 10):
     while (True):
-        print('ahihi')
+        notification.notify (
+            title = "Remote control with email service",
+            message = "Remote control is running",
+            app_name = 'Remote control with email service',
+            timeout = 5
+        )
+
         time.sleep(timeout)
+
+host_mail = None
+
+try:
+    host_mail = MailService()
+    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
+except Exception as e:
+    print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)
+    print_color('Full detail below:', text_format.YELLOW)
+    
+    print_indent(str(e), level = 1, option = text_format.RED)
+    exit(1)
+
+def check_email_thread(timeout = 15):
+    check_email_thread.keep = True
+    
+    cfg = load_config()
+    try:
+        checkpoint = cfg['latest_checkpoint']
+        while check_email_thread.keep:
+            
+            print(f'Reading mail box from {checkpoint} to {datetime.datetime.now()}')
+            
+            tmp_checkpoint = datetime.datetime.now() - datetime.timedelta(seconds = 10)
+            mail_list = host_mail.read_email(time_from = checkpoint)
+            checkpoint = tmp_checkpoint
+            
+            for mail in mail_list:
+                print_color('Send from: ' + mail['sender'], text_format.YELLOW)
+                print_color('Subject: ' + mail['subject'], text_format.YELLOW)
+                print_color('Content: ' + mail['content'], text_format.YELLOW)
+                print_color('-------------------------------------------------------------------------', text_format.OKGREEN)
+            
+            time.sleep(timeout)
+    except KeyboardInterrupt:
+        print_color('Stop checking mail box', text_format.OKGREEN)
+    
+    print_color(f'Checkpoint saving at {checkpoint}', text_format.OKGREEN)
+    update_config_value('latest_checkpoint', checkpoint)
+
+def stop_reading_mail(signum, frame):
+    check_email_thread.keep = False
+
+signal.signal(signal.SIGTERM, stop_reading_mail)
 
 def check_missing_thread(timeout = 300):
     pass
@@ -47,10 +83,8 @@ def check_missing_thread(timeout = 300):
 def setup():
     pass
 
-
 def main():
-    host_mail = MailService()
-    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
+    threading.Thread(target = check_email_thread).start()
 
     ##############################################################
     # Test read mail
@@ -66,67 +100,27 @@ def main():
 
     ##############################################################
     # Test send mail
-    print_color('Test send mail', text_format.OKGREEN)
-
+    # print_color('Test send mail', text_format.OKGREEN)
+    '''
     try:
-        # request = 'MAC get'
-        # result = get_mac()
+        # html = show_helps()
+        # request = 'HELP'
 
-        request = 'HELP'
-        result = show_helps()
-
+        # html = get_apps()
         # request = 'APP get'
-        # result = get_apps()
 
-        # request = 'PROCESS get'
-        # result = get_processes()
+        html = get_processes()
+        request = 'PROCESS get'
 
-        # id = '6712'
-        # request = f'APP close {id}'
-        # result = close_app(id)
+        content = html_mail(request, html)
 
-        # src = 'C:\\Users\\Admin\\Downloads\\demo2'
-        # dst = 'C:\\Users\\Admin\\Downloads\\hihi'
-        # html = copy(src, dst)
-        # request = f'COPY {src} {dst}'
-
-        # src = 'C:\\Users\\Admin\\Downloads\\demo1\demo1_1.txt'
-        # dst = 'C:\\Users\\Admin\\Downloads\\hehe\\whatup.txt'
-        # html = cut(src, dst)
-        # request = f'CUT {src} {dst}'
-
-        # path = 'C:\\Users\\Admin\\Downloads\\demo1\demo1_2.txt'
-        # html = delete(path)
-        # request = f'DELETE {path}'
-
-        # html = show_tree('C:\\Users\\Admin\\Downloads\demo1')
-        # request = 'TREE C:\\Users\\Admin\\Downloads\demo1'
-
-        result = screen_shot()
-        request = 'SCREEN get image'
-
-        # result = webcam_shot()
-        # request = 'WEBCAM get image'
-
-        # result = webcam_record(5)
-        # request = 'WEBCAM get video 5'
-
-        content = {
-            'html': html_mail(request, result['html']),
-            'data': result['data']
-        }
-        
-        # mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo SCREEN image attachment', content)
+        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
         host_mail.send_mail(mail)
-
-        # mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo PNG attachment', content, data = data)
-        # host_mail.send_mail(mail)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)
     
     print_color('Mail sent', text_format.OKGREEN)
-
+    '''
     ##############################################################
     # Test thread
 
@@ -151,4 +145,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -1,3 +1,4 @@
+
 import os
 
 def html_table(dataframe, note = '', format = 'center'):
@@ -125,7 +126,6 @@ def html_tree(path, sub_dirs):
 
     return html
 
-
 def html_image():
     pass
 
@@ -152,7 +152,7 @@ def html_mail(request, content):
             html {
                 font-family: 'Roboto', sans-serif;
             }
-
+            
             p, td, th, span, ul {
                 color: #333;
                 font-size: 16px;
