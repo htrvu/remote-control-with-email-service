@@ -3,6 +3,8 @@ from mail_service import MailService
 import threading
 import time
 import datetime
+from services.screen import screen_record, screen_shot
+from services.webcam import webcam_record, webcam_shot
 
 from utils import *
 from constants import *
@@ -14,6 +16,8 @@ from services.process import *
 from services.html_generator import html_mail
 import notification
 import signal
+from services.explorer import *
+from services.mac import *
 
 # demo
 from services.help import *
@@ -139,8 +143,5 @@ def main():
     #         # new thread to process this request       
 
 
-print('[G8RC] blah blah bleh bleh'.find(APP_REQ) != -1)
-
 if __name__ == '__main__':
-    print(datetime.datetime.now())
     main()

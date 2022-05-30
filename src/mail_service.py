@@ -5,7 +5,7 @@
 # from curses.ascii import EM
 import imaplib
 import email
-from utils import time_in_range, base64_decode, print_color, print_indent, date_format_str, text_format, load_config
+from utils import *
 import email.message
 import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
@@ -56,6 +56,7 @@ class MailService:
             # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
             # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box}"')
 
+
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
@@ -80,7 +81,6 @@ class MailService:
                     or sender not in MailService.white_list:
                     continue
 
-                # print_color(f'DATE: {datetime_obj}', text_format.DEBUG)
                 # Decode subject:
                 subject, encoding = email.header.decode_header(subject)[0]
                 if encoding:
@@ -92,7 +92,6 @@ class MailService:
                 # Decode content:
                 # On multipart, we have the text msg and another things like annex, and html version
                 # of the msg, in that case we loop through the email payload and get only the plain text
-                
                 if mail.is_multipart():
                     content = ''
 

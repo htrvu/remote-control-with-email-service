@@ -1,4 +1,8 @@
+
 from request_handle import parse_request
+import os, psutil, uuid
+from utils import *
+from getmac import get_mac_address as gma
 
 class Controller:
     def __init__(self):
@@ -8,7 +12,6 @@ class Controller:
         #     'list_processes': self.__list_processes
         # }
         return
-
     def __process(self, cmd, id = None):
         return
         # if id is None:
@@ -42,7 +45,6 @@ class Controller:
             }
         
         response = func(*param)
-        # --> send response
         # words = request.split(' ')
 
         # if len(words) < 1 or len(words) > 2:
@@ -54,5 +56,3 @@ class Controller:
             
         # if cmd not in self.cmd_dicts:
         #     return 'Invalid request'
-        
-        # return self.__process(cmd, id)
