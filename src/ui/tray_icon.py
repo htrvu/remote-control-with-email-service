@@ -11,6 +11,12 @@ class TrayIcon(QtWidgets.QSystemTrayIcon):
         self.__set_menu()
         self.signals = MySignals()
 
+        self.activated.connect(self.__systemIcon)
+
+    def __systemIcon(self, reason):
+        if reason == QtWidgets.QSystemTrayIcon.DoubleClick:
+            self.show_config_window()
+
     def __set_menu(self):
         menu = QtWidgets.QMenu()
         self.setContextMenu(menu)
