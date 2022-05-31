@@ -4,10 +4,10 @@ import constants
 import utils
 
 from services import app, help, keylogger, mac, pc, process, registry, screen, webcam
-from GlobalVariables import white_list
+from GlobalVariables import configs
 
 request_tree = {
-    'basic_command' : {
+    'basic' : {
         'mac' : {
             'get': [0, mac.get_mac]
         },
@@ -36,7 +36,7 @@ request_tree = {
         },
         'help': 0
     },
-    'advance_command' : {
+    'advanced' : {
         'pc' : {
             'shutdown': [0, pc.shutdown],
             'restart': [0, pc.restart]
@@ -60,7 +60,7 @@ def parse_request(mail_content):
     sender, header = mail_content['sender'], mail_content['subject'] 
     tokens = shlex.split(header)
     
-    if sender not in white_list['basic'] and sender not in white_list['advanced']:
+    if sender not in configs['white_list']['basic'] and sender not in configs['white_list']['advanced']:
         return {
             'msg': 'Permission denied'
         }
@@ -79,53 +79,51 @@ def parse_request(mail_content):
     
     tree = None
     
-    if tokens[0].lower() in request_tree['basic_command']:
-        tree = request_tree['basic_command']
-    elif tokens[0].lower() in request_tree['advance_command']:
-        if sender not in white_list['advance_user']:
+    if tokens[0].lower() in request_tree['basic']:
+        tree = request_tree['basic']
+    elif tokens[0].lower() in request_tree['advanced']:
+        if sender not in configs['white_list']['advanced']:
             return {
                 'msg': 'Permision denied'
             }
-        tree = request_tree['advance_command']
+        tree = request_tree['advanced']
 
     if not tree:
         return {
             'msg': 'Command not found'
         }
     
-    token = token[1 : ]
+    func, param = None, []
+
+    tokens_count = len(tokens)
+    print(tokens_count)
     
-    len_expected = 0
-    func, param = None, None
+    print('[DEBUG]: ', type(tree['pc']['shutdown']) == dict)
     
-    for iter, node in enumerate(tokens, 0):
-        if not type(tree) == dict:
-            if iter + tree[0] >= len(tokens):
+    for i  in range(len(tokens)):
+        node = tokens[i]
+        
+        if node.lower() in tree.keys():
+            tree = tree[node.lower()]
+            print(type(tree) != dict)
+        else:
+            return {
+                'msg' : f'Command not found {" ".join(tokens[ : i])}'
+            }
+            
+        if type(tree) != dict:
+            if i + tree[0] >= tokens_count:
                 return {
-                    'msg': f'{" ".join(tokens[ : iter])} take at least {tree[0]} parameter(s). Found {len(tokens) - 1 - iter}'
+                    'msg': f'Function {" ".join(tokens)} takes at least {tree[0]} arguments. Given {len(tokens) - 1 - i}'
                 }
             
             func = tree[1]
-            
-            if tree[0] != 0:
-                param = token[iter: iter + tree[0]]
+            param = tokens[i : i + tree[0]]
             
             break
-        
-        if node.lower() in tree:
-            len_expected += 1
-            tree = tree[node.lower()]
-        else:
-            return {
-                'msg' : f'Command not found {" ".join(tokens[ : iter])}'
-            }
         
     return {
         'function': func,
         'params': param,
         'msg': 'Parse request successfully'
     }
-
-mail = {
-    'sender': 'dotrann.1412'
-}
