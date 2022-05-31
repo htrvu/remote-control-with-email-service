@@ -1,5 +1,5 @@
 import winreg, os, sys
-from html_generator import html_msg
+from .html_generator import html_table, html_msg
 
 def __parse_registry(full_path):
     full_path = full_path.replace('\\', '/')

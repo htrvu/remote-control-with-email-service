@@ -1,0 +1,16 @@
+white_list: {
+  basic: [
+    'dotrann.1412@gmail.com',
+    'hoangnhuquynh2015@gmail.com',
+    'huuthien013@gmail.com',
+    'bot.remote.2@gmail.com'
+  ],
+  advanced: [
+    'dotrann.1412@gmail.com',
+    'hoangnhuquynh2015@gmail.com',
+    'huuthien013@gmail.com',
+    'bot.remote.2@gmail.com'
+  ]
+}
+
+auto_run : False
