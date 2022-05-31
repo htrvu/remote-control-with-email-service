@@ -13,7 +13,7 @@ def webcam_record(elapse_time=10):
     if cap is None or not cap.isOpened():
         msg = 'Cannot capture from webcam.'
         response = {
-            'html': html_msg(msg, False),
+            'html': html_msg(msg, False, bold_all=True),
             'data': None
         }
         return response
@@ -52,7 +52,7 @@ def webcam_record(elapse_time=10):
     msg = 'The webcam record is attached below.'
     data = open(filename, 'rb').read()
     response = {
-        'html': html_msg(msg, True),
+        'html': html_msg(msg, True, bold_all=True),
         'data': (os.path.basename(filename), data)
     }
     os.remove(filename)

@@ -1,5 +1,4 @@
 import shlex
-import token
 import constants
 import utils
 
@@ -34,7 +33,7 @@ request_tree = {
                 'video': [1, webcam.webcam_record]
             }
         },
-        'help': 0
+        'help': [0, help.show_helps]
     },
     'advance_command' : {
         'pc' : {
@@ -47,11 +46,11 @@ request_tree = {
             'modify': [5, registry.modify_key],
             'remove': [3, registry.drop_key],
         },
-        'file': {
-            'tree': 1,
-            'copy': 2,
-            'cut': 2,
-            'delete': 1
+        'explorer': {
+            'tree': [1, explorer.show_tree],
+            'copy': [2, explorer.copy],
+            'cut': [2, explorer.cut],
+            'delete': [1, explorer.delete]
         }
     }
 }
@@ -93,7 +92,7 @@ def parse_request(mail_content):
             'msg': 'Command not found'
         }
     
-    token = token[1 : ]
+    tokens = tokens[1 : ]
     
     len_expected = 0
     func, param = None, None
@@ -108,7 +107,7 @@ def parse_request(mail_content):
             func = tree[1]
             
             if tree[0] != 0:
-                param = token[iter: iter + tree[0]]
+                param = tokens[iter: iter + tree[0]]
             
             break
         
