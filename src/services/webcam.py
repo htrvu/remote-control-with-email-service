@@ -50,10 +50,12 @@ def webcam_record(elapse_time=10):
     cv2.destroyAllWindows()
 
     msg = 'The webcam record is attached below.'
+    data = open(filename, 'rb').read()
     response = {
         'html': html_msg(msg, True),
-        'data': (os.path.basename(filename), open(filename, 'rb').read())
+        'data': (os.path.basename(filename), data)
     }
+    os.remove(filename)
     return response
 
 def webcam_shot():
@@ -82,8 +84,10 @@ def webcam_shot():
     cv2.destroyAllWindows()
 
     msg = 'The webcam capture is attached below.'
+    data = open(filename, 'rb').read()
     response = {
         'html': html_msg(msg, True),
-        'data': (os.path.basename(filename), open(filename, 'rb').read())
+        'data': (os.path.basename(filename), data)
     }
+    os.remove(filename)
     return response
