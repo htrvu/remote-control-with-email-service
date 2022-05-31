@@ -8,9 +8,9 @@ def __get(hive, key, subkey):
         value, _ = winreg.QueryValueEx(kp, subkey) # (value, value type)
         winreg.CloseKey(kp)
     except:
-        return False, f'Cannot get registry value of <span style="font-weight:bold">{hive} {key} {subkey}</span>'
+        return False, f'Cannot get the value of <span style="font-weight:bold">{hive} {key} {subkey}</span>'
     
-    return None, f'The registry value of {hive} {key} {subkey} is  <span style="font-weight:bold">{value}</span>'
+    return None, f'The value of {hive} {key} {subkey} is <span style="font-weight:bold">{value}</span>'
 
 def get(hive, key, subkey):
     status, msg = __get(hive, key, subkey)

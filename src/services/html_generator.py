@@ -92,7 +92,7 @@ def html_msg(msg, status = None, bold_all=False):
     if status is not None:
         if not status:
             content += ' Please try again later.'
-        _class = 'ok' if status else 'error'
+        _class += ('ok' if status else 'error')
 
     html = f'<p lang="en" class="message {_class}">{content}</p>'
     return html
