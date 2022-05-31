@@ -124,7 +124,3 @@ def parse_request(mail_content):
         'params': param,
         'msg': 'Parse request successfully'
     }
-
-mail = {
-    'sender': 'dotrann.1412'
-}
