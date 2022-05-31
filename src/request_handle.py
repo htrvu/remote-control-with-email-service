@@ -2,7 +2,7 @@ import shlex
 import constants
 import utils
 
-from services import app, help, keylogger, mac, pc, process, registry, screen, webcam
+from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
 from GlobalVariables import white_list
 
 request_tree = {
@@ -124,7 +124,3 @@ def parse_request(mail_content):
         'params': param,
         'msg': 'Parse request successfully'
     }
-
-mail = {
-    'sender': 'dotrann.1412'
-}
