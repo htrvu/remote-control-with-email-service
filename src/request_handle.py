@@ -34,7 +34,7 @@ request_tree = {
                 'video': [1, webcam.webcam_record]
             }
         },
-        'help': 0
+        'help': [0, help.show_helps]
     },
     'advance_command' : {
         'pc' : {
