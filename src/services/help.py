@@ -37,7 +37,12 @@ def __help_df():
             'PC shutdown': 'Shut down the device.',
             'PC restart': 'Restart the device.',
         },
-        # registry ...
+        'REGISTRY': {
+            'REGISTRY get <hive> <key> <subkey>': 'Get the value of the registry <hive>/<key>/<subkey>.',
+            'REGISTRY add <hive> <key> <subkey>': 'Create new <key>/<subkey> to the registry <hive>.',
+            'REGISTRY modify <hive> <key> <subkey> <value> <dtype>': 'Set the new value of registry <hive>/<key>/<subkey> as dtype. The value of dtype must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY remove <hive> <key> <subkey>': 'Delete the value of registry <hive>/<key>/<subkey>.' 
+        }
     }
 
     result = {
