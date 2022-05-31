@@ -13,7 +13,6 @@ from smtplib import SMTP_SSL, SMTP_SSL_PORT
 from constants import SMTP_HOST, IMAP_HOST, APP_REQ
 
 class MailService:
-    white_list = load_config('./configs/white_list.yaml')['allowed']
     def __init__(self):
         # self.SMTP_HOST = SMTP_HOST
         # self.SMTP_SERVER = server 
