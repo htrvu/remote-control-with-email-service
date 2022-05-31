@@ -4,7 +4,7 @@ import constants
 import utils
 
 from services import app, help, keylogger, mac, pc, process, registry, screen, webcam
-
+from GlobalVariables import white_list
 
 request_tree = {
     'basic_command' : {
@@ -56,12 +56,14 @@ request_tree = {
     }
 }
 
-# white list include basic user and advance user
-__white_list = utils.load_config('./configs/white_list.yaml')['allowed']
-
 def parse_request(mail_content):
     sender, header = mail_content['sender'], mail_content['subject'] 
     tokens = shlex.split(header)
+    
+    if sender not in white_list['basic'] and sender not in white_list['advanced']:
+        return {
+            'msg': 'Permission denied'
+        }
     
     if (tokens[0] != constants.APP_REQ):
         return {
@@ -80,7 +82,7 @@ def parse_request(mail_content):
     if tokens[0].lower() in request_tree['basic_command']:
         tree = request_tree['basic_command']
     elif tokens[0].lower() in request_tree['advance_command']:
-        if sender not in __white_list['advance_user']:
+        if sender not in white_list['advance_user']:
             return {
                 'msg': 'Permision denied'
             }
@@ -123,3 +125,7 @@ def parse_request(mail_content):
         'params': param,
         'msg': 'Parse request successfully'
     }
+
+mail = {
+    'sender': 'dotrann.1412'
+}
