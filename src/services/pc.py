@@ -1,19 +1,37 @@
 import os
-import subprocess
+from html_generator import html_msg
 
 def shutdown():
+    msg = ''
     try:
         os.system(f'shutdown -s')
+        msg = 'This device has been shutdown.'
+        status = True
     except Exception as e:
-        return False
+        msg = 'There is an error when shutting down this device.'
+        status = False
 
-    return True
+    result = {
+        'html': html_msg(msg, status, bold_all=True),
+        'data': None
+    }
+
+    return result
 
 
 def restart():
+    msg = ''
     try:
         os.system(f'shutdown -r')
+        msg = 'This device has been shutdown.'
+        status = True
     except Exception as e:
-        return False
+        msg = 'There is an error when shutting down this device.'
+        status = False
 
-    return True
+    result = {
+        'html': html_msg(msg, status, bold_all=True),
+        'data': None
+    }
+
+    return result

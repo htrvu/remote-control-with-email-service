@@ -28,7 +28,7 @@ def screen_shot():
     msg = 'The screenshot is attached below.'
     data = open(filename, 'rb').read()
     response = {
-        'html': html_msg(msg, True),
+        'html': html_msg(msg, status=True, bold_all=True),
         'data': (os.path.basename(filename), data)
     }
     os.remove(filename)
@@ -57,7 +57,7 @@ def screen_record(elapse_time=10):
     msg = 'The screen record is attached below.'
     data = open(filename, 'rb').read()
     response = {
-        'html': html_msg(msg, True),
+        'html': html_msg(msg, status=True, bold_all=True),
         'data': (os.path.basename(filename), data)
     }
     os.remove(filename)

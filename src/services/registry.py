@@ -1,5 +1,5 @@
 import winreg, os, sys
-# from html_generator import html_table, html_msg
+from html_generator import html_msg
 
 def __get(hive, key, subkey):
     value, _ = None, None
@@ -8,15 +8,19 @@ def __get(hive, key, subkey):
         value, _ = winreg.QueryValueEx(kp, subkey) # (value, value type)
         winreg.CloseKey(kp)
     except:
-        return False, f'Cannot get value of {hive} {key} {subkey}'
+        return False, f'Cannot get registry value of <span style="font-weight:bold">{hive} {key} {subkey}</span>'
     
-    return True, f"Extract value of {hive} {key} {subkey} successfully!", value
+    return None, f'The registry value of {hive} {key} {subkey} is  <span style="font-weight:bold">{value}</span>'
 
 def get(hive, key, subkey):
-    status, msg, value = __get(hive, key, subkey)
+    status, msg = __get(hive, key, subkey)
+    if status is None:
+        bold_all = False
+    else:
+        bold_all = True
     response = {
-        'html': None, #html_msg(msg, status),
-        'data': value
+        'html': html_msg(msg, status, bold_all),
+        'data': None
     }
     return response
 
