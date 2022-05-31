@@ -2,7 +2,7 @@ import shlex
 import constants
 import utils
 
-from services import app, help, keylogger, mac, pc, process, registry, screen, webcam
+from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
 from GlobalVariables import white_list
 
 request_tree = {
@@ -41,10 +41,10 @@ request_tree = {
             'restart': [0, pc.restart]
         },
         'registry': {
-            'get': [3, registry.get],
+            'get': [1, registry.get],
             'add': [3, registry.new_key],
-            'modify': [5, registry.modify_key],
-            'remove': [3, registry.drop_key],
+            'modify': [3, registry.modify_key],
+            'remove': [1, registry.drop_key],
         },
         'explorer': {
             'tree': [1, explorer.show_tree],
