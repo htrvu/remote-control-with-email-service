@@ -28,8 +28,8 @@ def __new_key(hive, key, subkey):
     try:
         winreg.CreateKey(getattr(winreg, hive), key + r"\\" + subkey)
     except:
-        return False, f'Cannot create {hive} {key}'
-    return True, f'{hive} {key} created'
+        return False, f'Cannot create {hive}/{key}/{subkey}.'
+    return True, f'{hive}/{key} created'
 
 def new_key(hive, key, subkey):
     status, msg = __new_key(hive, key, subkey)
