@@ -24,19 +24,19 @@ request_tree = {
         },
         'screen': {
             'get' : {
-                'image': 0,
-                'video': 1
+                'image': [0, screen.screen_shot],
+                'video': [1, screen.screen_record]
             },
         }, 
         'webcam': {
             'get' : {
-                'image': 0,
-                'video': 1
+                'image': [0, webcam.webcam_shot],
+                'video': [1, webcam.webcam_record]
             }
         },
         'help': 0
     },
-    'addvance_command' : {
+    'advance_command' : {
         'pc' : {
             'shutdown': [0, pc.shutdown],
             'restart': [0, pc.restart]
