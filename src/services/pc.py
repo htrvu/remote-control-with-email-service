@@ -4,7 +4,7 @@ from html_generator import html_msg
 def shutdown():
     msg = ''
     try:
-        os.system(f'shutdown -s')
+        os.system(f'shutdown -s -t 5')
         msg = 'This device has been shutdown.'
         status = True
     except Exception as e:
@@ -22,7 +22,7 @@ def shutdown():
 def restart():
     msg = ''
     try:
-        os.system(f'shutdown -r')
+        os.system(f'shutdown -r -t 5')
         msg = 'This device has been shutdown.'
         status = True
     except Exception as e:
