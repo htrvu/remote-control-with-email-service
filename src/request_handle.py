@@ -44,7 +44,8 @@ request_tree = {
             'get': [1, registry.get],
             'add': [3, registry.new_key],
             'modify': [3, registry.modify_key],
-            'remove': [1, registry.drop_key],
+            'delete': [1, registry.delete_key],
+            'clear': [1, registry.clear_value]
         },
         'explorer': {
             'tree': [1, explorer.show_tree],
