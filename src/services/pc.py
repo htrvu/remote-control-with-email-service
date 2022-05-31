@@ -23,10 +23,10 @@ def restart():
     msg = ''
     try:
         os.system(f'shutdown -r -t 5')
-        msg = 'This device has been shutdown.'
+        msg = 'This device has been restart.'
         status = True
     except Exception as e:
-        msg = 'There is an error when shutting down this device.'
+        msg = 'There is an error when restarting this device.'
         status = False
 
     result = {
