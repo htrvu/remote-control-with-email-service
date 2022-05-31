@@ -61,7 +61,7 @@ background: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #C9D6FF,  stop:1 #E2E2
 /* stop:0 #acb6e5,  stop:1 #86fde8 */</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="homePage">
      <property name="styleSheet">
@@ -406,8 +406,8 @@ QScrollBar::sub-line:vertical {
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>601</width>
-          <height>401</height>
+          <width>599</width>
+          <height>399</height>
          </rect>
         </property>
         <property name="styleSheet">
