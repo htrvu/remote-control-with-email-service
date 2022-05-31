@@ -67,7 +67,7 @@ def close_process(id):
     '''
     status, msg = __closing(id)
     response = {
-        'html': html_msg(msg, status),
+        'html': html_msg(msg, status, bold_all=True),
         'data': None
     }
     return response

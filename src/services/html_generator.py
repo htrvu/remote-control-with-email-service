@@ -79,7 +79,7 @@ def html_table(dataframe, note = '', format = 'center'):
     return html
 
 
-def html_msg(msg, status = None):
+def html_msg(msg, status = None, bold_all=False):
     '''
         Create a HTML message which is used to response the request
         If `status` is None, the text color is black. If it's False, the text will have red color, otherwise green
@@ -87,11 +87,12 @@ def html_msg(msg, status = None):
     content = msg
     _class = ''
 
+    if bold_all:
+        _class += 'bold '
     if status is not None:
         if not status:
             content += ' Please try again later.'
-
-        _class = 'ok' if status else 'error'
+        _class += ('ok' if status else 'error')
 
     html = f'<p lang="en" class="message {_class}">{content}</p>'
     return html
@@ -125,13 +126,6 @@ def html_tree(path, sub_dirs):
     html += f'<p class="ascii">{ascii_tree}</p>'
 
     return html
-
-def html_image():
-    pass
-
-def html_video():
-    pass
-
 
 def html_mail(request, content):
     '''
@@ -236,6 +230,9 @@ def html_mail(request, content):
             /* CSS for message */
             .message {
                 margin: 0;
+            }
+
+            .message.bold {
                 font-weight: bold;
             }
 

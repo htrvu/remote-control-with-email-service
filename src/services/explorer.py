@@ -98,7 +98,7 @@ def copy(src, dst):
     '''
     status, msg = __copy(src, dst)
     return {
-        'html': html_msg(msg, status),
+        'html': html_msg(msg, status, bold_all=True),
         'data': None
     }
 
@@ -109,7 +109,7 @@ def cut(src, dst):
     '''
     status, msg = __cut(src, dst)
     return {
-        'html': html_msg(msg, status),
+        'html': html_msg(msg, status, bold_all=True),
         'data': None
     }
 
@@ -120,6 +120,6 @@ def delete(path):
     '''
     status, msg = __delete(path)
     return {
-        'html': html_msg(msg, status),
+        'html': html_msg(msg, status, bold_all=True),
         'data': None
     }

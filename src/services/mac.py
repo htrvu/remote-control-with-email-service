@@ -4,9 +4,9 @@ def get_mac():
     '''
         Return a dictionary with keys `html` and `data`, where `html` is the HTML output message
     '''
-    mac = 'The MAC address of this device is ' + gma()
+    mac = 'The MAC address of this device is ' + f'<span style="font-weight: bold;">{gma()}</span>'
     response = {
-        'html': html_msg(mac),
+        'html': html_msg(mac, status=None, bold_all=False),
         'data': None
     }
     return response

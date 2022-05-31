@@ -107,7 +107,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         if is_basic:
             role = 'Basic Controller'
         else:
-            role = 'V.I.P Controller'
+            role = 'Advanced Controller'
         self.__dialog = WhiteListDialog(role, self)
         self.__dialog.signals.added.connect(lambda mail: self.__add_controller(mail, is_basic))
 
