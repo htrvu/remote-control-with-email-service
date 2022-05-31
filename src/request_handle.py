@@ -46,7 +46,7 @@ request_tree = {
             'modify': [5, registry.modify_key],
             'remove': [3, registry.drop_key],
         },
-        'file': {
+        'explorer': {
             'tree': [1, explorer.show_tree],
             'copy': [2, explorer.copy],
             'cut': [2, explorer.cut],
