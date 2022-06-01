@@ -2,12 +2,12 @@ import winreg, os, sys
 from .html_generator import html_table, html_msg
 
 def __parse_registry(full_path):
-    full_path = full_path.replace('\\', '/')
-    full_path = full_path.split('/')
+    full_path = full_path.replace('/', '\\')
+    full_path = full_path.split('\\')
     
     hive = full_path[0]
     subkey = full_path[-1]
-    key = '/'.join(full_path[1:-1])
+    key = '\\'.join(full_path[1:-1])
 
     if len(hive) <= 4:
         if hive == 'HKLM':
@@ -56,9 +56,12 @@ def get(full_path):
 
 def __add_subkey(hive, key, subkey, value, dtype):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key + r"\\" + subkey)
+        winreg.CreateKey(getattr(winreg, hive), key + '\\' + subkey)
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
         
+        # k = winreg.OpenKeyEx(getattr(winreg, hive), key)
+        # kp = winreg.CreateKey(k, value)
+
         if 'REG_BINARY' in dtype:
             if len(value) % 2 == 1:
                 value = '0' + value # add padding
@@ -72,8 +75,9 @@ def __add_subkey(hive, key, subkey, value, dtype):
                 value = value[:16]
             value = int(value, 16)
             
-        winreg.SetValueEx(kp, subkey[2], 0, getattr(winreg, dtype), value)
-        winreg.CloseKey(kp)
+        winreg.SetValueEx(kp, subkey, 0, getattr(winreg, dtype), value)
+        if kp:
+            winreg.CloseKey(kp)
     except:
         return False, f'Cannot create the registry subkey.'
     return True, f'The registry has been created.'
@@ -85,6 +89,30 @@ def add_subkey(fullpath, value, dtype):
         status = False
     else:    
         status, msg = __add_subkey(hive, key, subkey, value, dtype)
+    
+    response = {
+        'html': html_msg(msg, status, True),
+        'data': None
+    }
+
+    return response
+
+def __add_key(hive, key, subkey):
+    try:
+        # _key = winreg.OpenKeyEx(getattr(winreg, hive), key)
+        # winreg.CreateKey(_key, subkey)
+        winreg.CreateKey(getattr(winreg, hive), key + '\\' + subkey)
+    except:
+        return False, 'Cannot create the registry key.'
+    return True, 'The registry has been created.'
+    
+def add_key(fullpath):
+    hive, key, subkey = __parse_registry(fullpath)
+    if not hive or not key or not subkey:
+        msg = 'Invalid registry path.'
+        status = False
+    else:   
+        status, msg = __add_key(hive, key, subkey)
     
     response = {
         'html': html_msg(msg, status, True),
@@ -111,7 +139,7 @@ def __modify_key(hive, key, subkey, value, dtype):
                 value = value[:16]
             value = int(value, 16)
             
-        winreg.SetValueEx(kp, subkey[2], 0, getattr(winreg, dtype), value)
+        winreg.SetValueEx(kp, subkey, 0, getattr(winreg, dtype), value)
         winreg.CloseKey(kp)
     except:
         return False, f"Cannot modify the value of registry."
@@ -147,10 +175,10 @@ def clear_value(fullpath):
         msg = 'Invalid registry path.'
         status = False
     else:
-        status, message = __clear_value(hive, key, subkey)
+        status, msg = __clear_value(hive, key, subkey)
     
     response  = {
-        'html': html_msg(message, status, True),
+        'html': html_msg(msg, status, True),
         'data': None
     }
     return response
@@ -171,6 +199,29 @@ def delete_key(fullpath):
         status = False
     else:
         status, msg = __delete_key(hive, key, subkey)
+
+    response = {
+        'html': html_msg(msg, status, True),
+        'data': None
+    }
+    return response
+
+def __delete_subkey(hive, key, subkey):
+    try:
+        opened_key = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_WRITE)
+        winreg.DeleteValue(opened_key, subkey)
+        winreg.CloseKey(opened_key)
+    except:
+        return False, 'Failed to delete the registry.'
+    return True, 'The registry was deleted.'
+
+def delete_subkey(fullpath):
+    hive, key, subkey = __parse_registry(fullpath)
+    if not hive or not key or not subkey:
+        msg = 'Invalid registry path.'
+        status = False
+    else:
+        status, msg = __delete_subkey(hive, key, subkey)
 
     response = {
         'html': html_msg(msg, status, True),

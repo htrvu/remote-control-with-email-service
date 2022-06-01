@@ -1,3 +1,7 @@
 src/htmls
 src/__pycache__
 src/services/__pycache__
+screen/
+webcam/
+src/ui/__pycache__
+src/ui/components/__pycache__

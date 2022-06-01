@@ -1,14 +1,14 @@
 import os
-from html_generator import html_msg
+from .html_generator import html_msg
 
 def shutdown():
     msg = ''
     try:
         os.system(f'shutdown -s -t 5')
-        msg = 'This device has been shutdown.'
+        msg = 'This device has been shutting down.'
         status = True
     except Exception as e:
-        msg = 'There is an error when shutting down this device.'
+        msg = 'There is an error when trying to shut down this device.'
         status = False
 
     result = {
@@ -23,10 +23,10 @@ def restart():
     msg = ''
     try:
         os.system(f'shutdown -r -t 5')
-        msg = 'This device has been restart.'
+        msg = 'This device has been restarting.'
         status = True
     except Exception as e:
-        msg = 'There is an error when restarting this device.'
+        msg = 'There is an error when trying to restart this device.'
         status = False
 
     result = {
