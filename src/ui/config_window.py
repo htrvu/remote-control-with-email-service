@@ -17,7 +17,7 @@ class MySignals(QObject):
     exit = pyqtSignal()
 
 class ConfigWindow(QtWidgets.QMainWindow):
-    def __init__(self, load_config = False):
+    def __init__(self):
         super(ConfigWindow, self).__init__()
         self.ui = Ui_ConfigWindow()
         self.ui.setupUi(self)
@@ -29,7 +29,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         # Multiple selection for QListWidget
         self.ui.basicList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.ui.vipList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.ui.advancedList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
         self.__set_btn_slots()
         self.__load_instructions()
@@ -68,12 +68,12 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
     def __render_config(self):
         self.ui.basicList.clear()
-        self.ui.vipList.clear()
+        self.ui.advancedList.clear()
 
         for mail in self.config['basic']:
             self.ui.basicList.addItem(mail)
         for mail in self.config['vip']:
-            self.ui.vipList.addItem(mail)
+            self.ui.advancedList.addItem(mail)
         self.ui.autoRunBox.setChecked(self.config['autorun'])
 
     def __stacked_index_slots(self, index):
@@ -92,7 +92,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.basicAddBtn.clicked.connect(lambda: self.__add_controller_dialog(is_basic=True))
         self.ui.vipAddBtn.clicked.connect(lambda: self.__add_controller_dialog(is_basic=False))
         self.ui.basicRemoveBtn.clicked.connect(lambda: self.__remove_controller(self.ui.basicList))
-        self.ui.vipRemoveBtn.clicked.connect(lambda: self.__remove_controller(self.ui.vipList))
+        self.ui.vipRemoveBtn.clicked.connect(lambda: self.__remove_controller(self.ui.advancedList))
 
         # Back home buttons
         self.ui.insBackBtn.clicked.connect(self.__stacked_index_slots(0))
@@ -117,7 +117,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
             ui_list = self.ui.basicList
         else:
             c_list = self.config['vip']
-            ui_list = self.ui.vipList
+            ui_list = self.ui.advancedList
         
         if mail in c_list:
             msg = MyMessageBox(title='Error', msg='This controller is already in the list!', parent=self)
@@ -137,13 +137,19 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
     def __save_config(self):
         # Get the configurations from UI
-        self.config['basic'] = []
-        self.config['vip'] = []
+        new_configs = {
+            'white_list': {},
+            'autorun': False
+        }
+        basic, advanced = [], []
+
         for i in range(self.ui.basicList.count()):
-            self.config['basic'].append(self.ui.basicList.item(i).text())
-        for i in range(self.ui.vipList.count()):
-            self.config['vip'].append(self.ui.vipList.item(i).text())
-        self.config['autorun'] = self.ui.autoRunBox.isChecked()
+            basic.append(self.ui.basicList.item(i).text())
+        for i in range(self.ui.advancedList.count()):
+            advanced.append(self.ui.advancedList.item(i).text())
+        new_configs['white_list']['basic'] = basic
+        new_configs['white_list']['advanced'] = advanced
+        new_configs['autorun'] = self.ui.autoRunBox.isChecked()
 
         # Save to the config file
         # if autorun == True:

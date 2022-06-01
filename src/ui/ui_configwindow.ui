@@ -718,7 +718,7 @@ QScrollBar::sub-line:vertical {
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="vipList">
+              <widget class="QListWidget" name="advancedList">
                <property name="font">
                 <font>
                  <family>Roboto</family>
