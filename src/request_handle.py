@@ -42,10 +42,12 @@ request_tree = {
         },
         'registry': {
             'get': [1, registry.get],
+            'add_key': [1, registry.add_key],
             'add_subkey': [3, registry.add_subkey],
             'modify': [3, registry.modify_key],
+            'clear': [1, registry.clear_value],
             'delete': [1, registry.delete_key],
-            'clear': [1, registry.clear_value]
+            'delete_subkey': [1, registry.delete_subkey]
         },
         'explorer': {
             'tree': [1, explorer.show_tree],
