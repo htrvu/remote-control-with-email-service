@@ -38,12 +38,12 @@ def __help_df():
             'PC restart': 'Restart the device.',
         },
         'REGISTRY': {
-            'REGISTRY get <hive>/<key>/<value name>': 'Get data and type of the registry value with name <value name> in <key> of root <hive>.',
-            'REGISTRY add_key <hive>/<key>': 'Create new registry key <key> in root <hive>.',
-            'REGISTRY add_value <hive>/<key>/<value name> <data> <type>': 'Create new registry value with name is <value name>, data is <data> and type is <type>, in <key> of root <hive>. The value of <type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY modify <hive>/<key>/<value name> <data> <type>': 'Set the new data and type to registry value with name <value name> on <key> of root <hive>. The value of <type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY delete_value <hive>/<key>/<value name>': 'Delete the registry value <value name> in <key> of root <hive>.',
-            'REGISTRY delete_key <hive>/<key>': 'Delete the registry key <key> in root <hive>'
+            'REGISTRY get <hive>\<key>\<value name>': 'Get data and type of the registry value with name <value name> in <key> of root <hive>.',
+            'REGISTRY add_key <hive>\<key>': 'Create new registry key <key> in root <hive>.',
+            'REGISTRY add_value <hive>\<key>\<value name> <data> <type>': 'Create new registry value with name is <value name>, data is <data> and type is <type>, in <key> of root <hive>. The value of <type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY modify <hive>\<key>\<value name> <data> <type>': 'Set the new data and type to registry value with name <value name> on <key> of root <hive>. The value of <type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY delete_value <hive>\<key>\<value name>': 'Delete the registry value <value name> in <key> of root <hive>.',
+            'REGISTRY delete_key <hive>\<key>': 'Delete the registry key <key> in root <hive>'
         }
     }
 
