@@ -24,16 +24,16 @@ def __parse_registry(full_path):
 
     return hive, key, subkey
 
-def __get_value(hive, key, subkey):
+def __get_value(hive, key, name):
     value, _ = None, None
     try:
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_READ)
-        value, _ = winreg.QueryValueEx(kp, subkey) # (value, value type)
+        value, _ = winreg.QueryValueEx(kp, name) # (value, value type)
         winreg.CloseKey(kp)
     except:
-        return False, f'Cannot get the value of registry.'
+        return False, f'Cannot get the data and type of registry value.'
     
-    return None, f'The value of registry is <span style="font-weight:bold">{value}</span>'
+    return None, f'The data and type of registry value is <span style="font-weight:bold">{value}</span>.'
 
 def get_value(full_path):
     hive, key, subkey = __parse_registry(full_path)
@@ -86,9 +86,6 @@ def __add_value(hive, key, name, value, dtype):
         winreg.CreateKey(getattr(winreg, hive), key + '\\' + name)
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
         
-        # k = winreg.OpenKeyEx(getattr(winreg, hive), key)
-        # kp = winreg.CreateKey(k, value)
-
         if 'REG_BINARY' in dtype:
             if len(value) % 2 == 1:
                 value = '0' + value # add padding
@@ -149,7 +146,7 @@ def __modify_value(hive, key, name, data, dtype):
         winreg.SetValueEx(kp, name, 0, getattr(winreg, dtype), data)
         winreg.CloseKey(kp)
     except:
-        return False, f"Cannot modify the value of registry."
+        return False, f"Cannot modify the value of registry (maybe your value type or data is not compatible)."
     return True, f"The value of registry has been modified."
 
 def modify_value(fullpath, data, dtype):
@@ -206,7 +203,6 @@ def __delete_key(hive, key):
     
     return True, f"The registry key was deleted."
         
-
 def delete_key(fullpath):
     hive, key, name = __parse_registry(fullpath)
     key = key + '\\' + name
