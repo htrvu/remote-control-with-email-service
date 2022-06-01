@@ -44,8 +44,7 @@ class MailService:
 
             status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from_str} before:{date_to_str}"')
             # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
-            # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box}"')
-
+            
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
