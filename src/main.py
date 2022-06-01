@@ -9,44 +9,34 @@ from services.webcam import webcam_record, webcam_shot
 from utils import *
 from constants import *
 
+import notification
+import signal
+
+# demo
+
 from services.help import *
 from services.app import *
 from services.process import *
 from services.keylogger import *
 from services.pc import *
 from services.registry import *
-
-from services.html_generator import html_mail
-import notification
-import signal
 from services.explorer import *
 from services.mac import *
+from services.html_generator import html_mail
 
-# demo
 from services.help import *
 
 def show_notification_thead(timeout = 60):
     while (True):
         notification.notify (
-            title = "Remote control with email service",
-            message = "Remote control is running",
-            app_name = 'Remote control with email service',
+            title = "Remote Control with Email Service",
+            message = "Remote Control is running",
+            app_name = 'Remote Control with Email Service',
             timeout = 5
         )
 
         time.sleep(timeout)
 
-host_mail = None
-
-try:
-    host_mail = MailService()
-    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
-except Exception as e:
-    print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)
-    print_color('Full detail below:', text_format.YELLOW)
-    
-    print_indent(str(e), level = 1, option = text_format.RED)
-    exit(1)
 
 def check_email_thread(timeout = 15):
     check_email_thread.keep = True
@@ -77,6 +67,18 @@ def check_email_thread(timeout = 15):
 
 def stop_reading_mail(signum, frame):
     check_email_thread.keep = False
+
+host_mail = None
+
+try:
+    host_mail = MailService()
+    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
+except Exception as e:
+    print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)
+    print_color('Full detail below:', text_format.YELLOW)
+    
+    print_indent(str(e), level = 1, option = text_format.RED)
+    exit(1)
 
 signal.signal(signal.SIGTERM, stop_reading_mail)
 
@@ -130,6 +132,7 @@ def main():
         registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
         # request = 'REGISTRY add_subkey ' + registry_path
         # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
+        
         request = 'REGISTSRY add_key ' + registry_path
         result = add_key(registry_path)
 
