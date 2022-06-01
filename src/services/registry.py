@@ -54,7 +54,7 @@ def get(full_path):
     }
     return response
 
-def __new_key(hive, key, subkey, value, dtype):
+def __add_subkey(hive, key, subkey, value, dtype):
     try:
         winreg.CreateKey(getattr(winreg, hive), key + r"\\" + subkey)
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
@@ -78,13 +78,13 @@ def __new_key(hive, key, subkey, value, dtype):
         return False, f'Cannot create the registry subkey.'
     return True, f'The registry has been created.'
 
-def new_key(fullpath, value, dtype):
+def add_subkey(fullpath, value, dtype):
     hive, key, subkey = __parse_registry(fullpath)
     if not hive or not key or not subkey:
         msg = 'Invalid registry path.'
         status = False
     else:    
-        status, msg = __new_key(hive, key, subkey, value, dtype)
+        status, msg = __add_subkey(hive, key, subkey, value, dtype)
     
     response = {
         'html': html_msg(msg, status, True),
