@@ -38,13 +38,12 @@ def __help_df():
             'PC restart': 'Restart the device.',
         },
         'REGISTRY': {
-            'REGISTRY get <hive>/<key>/<value_name>': 'Get the value of the <value_name> on <key> of registry <hive>.',
-            'REGISTRY add_key <hive>/<key>': 'Create new <key> to the registry <hive>.',
-            'REGISTRY add_value_name <hive>/<key>/<value_name> <value_data> <value_type>': 'Create new <value_name> on <key> of registry <hive>. The <value_type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY modify <hive>/<key>/<value_name> <value_data> <value_type>': 'Set the new value of <value_name> on <key> of registry <hive> as dtype. The <value_type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY clear <hive>/<key>/<value_name>': 'Clear the value of <value_name> on <key> of registry <hive>.',
-            'REGISTRY delete_key <hive>/<key>': 'Delete the <key> of registry <hive>',
-            'REGISTRY delete_value_name <hive>/<key>/<value_name>': 'Delete the <value_name> on <key> of registry <hive>.' 
+            'REGISTRY get <hive>/<key>/<value name>': 'Get data and type of the registry value with name <value name> in <key> of root <hive>.',
+            'REGISTRY add_key <hive>/<key>': 'Create new registry key <key> in root <hive>.',
+            'REGISTRY add_value <hive>/<key>/<value name> <data> <type>': 'Create new registry value with name is <value name>, data is <data> and type is <type>, in <key> of root <hive>. The value of <type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY modify <hive>/<key>/<value name> <data> <type>': 'Set the new data and type to registry value with name <value name> on <key> of root <hive>. The value of <type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY delete_value <hive>/<key>/<value name>': 'Delete the registry value <value name> in <key> of root <hive>.',
+            'REGISTRY delete_key <hive>/<key>': 'Delete the registry key <key> in root <hive>'
         }
     }
 
