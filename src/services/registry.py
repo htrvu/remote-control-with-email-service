@@ -1,28 +1,51 @@
 import winreg, os, sys
+import re
 from .html_generator import html_table, html_msg
 
 def __parse_registry(full_path):
-    full_path = full_path.replace('/', '\\')
-    full_path = full_path.split('\\')
-    
-    hive = full_path[0]
-    subkey = full_path[-1]
-    key = '\\'.join(full_path[1:-1])
-
-    if len(hive) <= 4:
-        if hive == 'HKLM':
-            hive = 'HKEY_LOCAL_MACHINE'
-        elif hive == 'HKCU':
-            hive = 'HKEY_CURRENT_USER'
-        elif hive == 'HKCR':
-            hive = 'HKEY_CLASSES_ROOT'
-        elif hive == 'HKU':
-            hive = 'HKEY_USERS'
-
-    if not hive or not key or not subkey:
+    try:
+        full_path = re.sub(r'/', r'\\', full_path)
+        hive = re.sub(r'\\.*$', '', full_path)
+        if not hive:
+            raise ValueError('Invalid \'full_path\' param.')
+        if len(hive) <= 4:
+            if hive == 'HKLM':
+                hive = 'HKEY_LOCAL_MACHINE'
+            elif hive == 'HKCU':
+                hive = 'HKEY_CURRENT_USER'
+            elif hive == 'HKCR':
+                hive = 'HKEY_CLASSES_ROOT'
+            elif hive == 'HKU':
+                hive = 'HKEY_USERS'
+        reg_key = re.sub(r'^[A-Z_]*\\', '', full_path)
+        reg_key = re.sub(r'\\[^\\]+$', '', reg_key)
+        reg_value = re.sub(r'^.*\\', '', full_path)
+        return hive, reg_key, reg_value
+    except:
         return None, None, None
 
-    return hive, key, subkey
+# def __parse_registry(full_path):
+#     full_path = full_path.replace('/', '\\')
+#     full_path = full_path.split('\\')
+    
+#     hive = full_path[0]
+#     subkey = full_path[-1]
+#     key = '\\'.join(full_path[1:-1])
+
+#     if len(hive) <= 4:
+#         if hive == 'HKLM':
+#             hive = 'HKEY_LOCAL_MACHINE'
+#         elif hive == 'HKCU':
+#             hive = 'HKEY_CURRENT_USER'
+#         elif hive == 'HKCR':
+#             hive = 'HKEY_CLASSES_ROOT'
+#         elif hive == 'HKU':
+#             hive = 'HKEY_USERS'
+
+#     if not hive or not key or not subkey:
+#         return None, None, None
+
+#     return hive, key, subkey
 
 def __get(hive, key, subkey):
     value, _ = None, None
@@ -99,8 +122,8 @@ def add_subkey(fullpath, value, dtype):
 
 def __add_key(hive, key, subkey):
     try:
-        # _key = winreg.OpenKeyEx(getattr(winreg, hive), key)
-        # winreg.CreateKey(_key, subkey)
+        # winreg.CreateKey(getattr(winreg, hive), key)
+        print(key + '\\' + subkey)
         winreg.CreateKey(getattr(winreg, hive), key + '\\' + subkey)
     except:
         return False, 'Cannot create the registry key.'
@@ -112,6 +135,7 @@ def add_key(fullpath):
         msg = 'Invalid registry path.'
         status = False
     else:   
+        print(hive, key, subkey, sep='\n')
         status, msg = __add_key(hive, key, subkey)
     
     response = {

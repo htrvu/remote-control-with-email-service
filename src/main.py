@@ -127,7 +127,11 @@ def main():
         # result = get(registry_path)
 
         # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewSubkey'
-        registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
+        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
+        # registry_path = 'HKEY_CLASSES_ROOT\\Word.Picture\\AddNewKey'
+        # registry_path = 'HKEY_USERS\\.DEFAULT\\Software\\AddNewKey'
+        registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
+        # registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
         # request = 'REGISTRY add_subkey ' + registry_path
         # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
         request = 'REGISTSRY add_key ' + registry_path
@@ -140,7 +144,7 @@ def main():
 
         # content = html_mail(request, html)
 
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo registry', content)
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo add_key registry', content)
         host_mail.send_mail(mail)
         print_color('Mail sent', text_format.OKGREEN)
     except Exception as e:

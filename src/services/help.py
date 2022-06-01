@@ -38,13 +38,13 @@ def __help_df():
             'PC restart': 'Restart the device.',
         },
         'REGISTRY': {
-            'REGISTRY get <hive>/<key>/<subkey>': 'Get the value of the <subkey> on <key> of registry <hive>.',
+            'REGISTRY get <hive>/<key>/<value_name>': 'Get the value of the <value_name> on <key> of registry <hive>.',
             'REGISTRY add_key <hive>/<key>': 'Create new <key> to the registry <hive>.',
-            'REGISTRY add_subkey <hive>/<key>/<subkey> <value> <dtype>': 'Create new <subkey> on <key> of registry <hive>. The value of <dtype> must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY modify <hive>/<key>/<subkey> <value> <dtype>': 'Set the new value of <subkey> on <key> of registry <hive> as dtype. The value of <dtype> must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY clear <hive>/<key>/<subkey>': 'Clear the value of <subkey> on <key> of registry <hive>.',
+            'REGISTRY add_value_name <hive>/<key>/<value_name> <value_data> <value_type>': 'Create new <value_name> on <key> of registry <hive>. The <value_type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY modify <hive>/<key>/<value_name> <value_data> <value_type>': 'Set the new value of <value_name> on <key> of registry <hive> as dtype. The <value_type> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY clear <hive>/<key>/<value_name>': 'Clear the value of <value_name> on <key> of registry <hive>.',
             'REGISTRY delete_key <hive>/<key>': 'Delete the <key> of registry <hive>',
-            'REGISTRY delete_subkey <hive>/<key>/<subkey>': 'Delete the <subkey> on <key> of registry <hive>.' 
+            'REGISTRY delete_value_name <hive>/<key>/<value_name>': 'Delete the <value_name> on <key> of registry <hive>.' 
         }
     }
 
