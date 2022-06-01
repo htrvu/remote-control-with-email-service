@@ -10,7 +10,7 @@ class RemoteControl():
         QApplication.setQuitOnLastWindowClosed(False)
 
         self.config_window = ConfigWindow()
-        self.tray_icon = TrayIcon('ui/assets/icons/remote_logo.png', parent=app)
+        self.tray_icon = TrayIcon('ui/assets/icons/remote_tray.png', parent=app)
 
         # Signals from ConfigWindow
         self.config_window.signals.run.connect(self.__run)
@@ -30,17 +30,16 @@ class RemoteControl():
     def __run(self, config):
         '''
             `config` is a dictionary with these information:
-                - Basic controllers: List of string
-                - Vip controllers: List of string
-                - Auto-run: boolean
+                - white_list: list of basic and advanced controllers
+                - autorun: boolean
         '''
         # run app
         # ...
 
         # just print for demo
         print('Configurations:')
-        print('Basic controllers:', config['basic'])
-        print('Vip controllers:', config['vip'])
+        print('Basic controllers:', config['white_list']['basic'])
+        print('Advanced controllers:', config['white_list']['advanced'])
         print('Auto-run:', config['autorun'])
         print('----------------------------------------------')
         print('Starting application...')
