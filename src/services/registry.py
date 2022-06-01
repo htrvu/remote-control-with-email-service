@@ -24,7 +24,7 @@ def __parse_registry(full_path):
 
     return hive, reg_key, reg_name
 
-def __get_value(hive, key, subkey):
+def __get_value(hive, key, name):
     try:
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_READ)
         value, _ = winreg.QueryValueEx(kp, name) # (value, value type)
