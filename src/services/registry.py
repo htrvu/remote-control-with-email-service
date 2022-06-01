@@ -1,5 +1,5 @@
-import winreg, os, sys
-from .html_generator import html_table, html_msg
+import winreg
+from .html_generator import html_msg
 
 def __parse_registry(full_path):
     full_path = full_path.replace('/', '\\')
@@ -69,10 +69,10 @@ def add_key(fullpath):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:   
-        status, msg = __add_key(hive, key, subkey)
+        status, msg = __add_key(hive, key)
     
     response = {
         'html': html_msg(msg, status, True),
@@ -83,9 +83,11 @@ def add_key(fullpath):
 
 def __add_value(hive, key, name, value, dtype):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key + '\\' + name)
+        try:
+            winreg.CreateKey(getattr(winreg, hive), key)
+        except: pass
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
-        
+
         if 'REG_BINARY' in dtype:
             if len(value) % 2 == 1:
                 value = '0' + value # add padding
@@ -103,7 +105,7 @@ def __add_value(hive, key, name, value, dtype):
         if kp:
             winreg.CloseKey(kp)
     except:
-        return False, f'Cannot create the registry value.'
+        return False, f'Cannot create the registry value (maybe your data or value type is not compatible).'
     return True, f'The registry value has been created.'
 
 def add_value(fullpath, data, dtype):
@@ -113,9 +115,9 @@ def add_value(fullpath, data, dtype):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False  
-    else:    
+    else:
         status, msg = __add_value(hive, key, name, data, dtype)
     
     response = {
@@ -127,8 +129,11 @@ def add_value(fullpath, data, dtype):
 
 def __modify_value(hive, key, name, data, dtype):
     try:
-        kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
-        
+        try:
+            kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_ALL_ACCESS)
+        except:
+            kp = winreg.CreateKey(getattr(winreg, hive), key)
+
         if 'REG_BINARY' in dtype:
             if len(data) % 2 == 1:
                 data = '0' + data # add padding
@@ -155,7 +160,7 @@ def modify_value(fullpath, data, dtype):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:
         status, msg = __modify_value(hive, key, name, data, dtype)
@@ -183,7 +188,7 @@ def delete_value(fullpath):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:
         status, msg = __delete_value(hive, key, name)
@@ -210,7 +215,7 @@ def delete_key(fullpath):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:
         status, msg = __delete_key(hive, key)
