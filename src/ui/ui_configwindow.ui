@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>assets/icons/remote_logo.png</normaloff>assets/icons/remote_logo.png</iconset>
+    <normaloff>assets/icons/remote_tray.png</normaloff>assets/icons/remote_tray.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -713,7 +713,7 @@ QScrollBar::sub-line:vertical {
                 </font>
                </property>
                <property name="text">
-                <string>V.I.P Controllers:</string>
+                <string>Advanced Controllers:</string>
                </property>
               </widget>
              </item>
