@@ -2,7 +2,6 @@ import datetime
 import keyboard
 from keyboard import KeyboardEvent
 import time
-import threading
 
 from .html_generator import html_msg
 
@@ -11,7 +10,8 @@ spec_key = {
     for key in [
         'ctrl', 'shift', 'tab',
         'esc', 'left windows', 'print screen',
-        'end', 'delete', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12',
+        'end', 'delete', 'f1', 'f2', 'f3', 'f4', 
+        'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12',
         'insert', 'down', 'page down',
         'right', 'clear', 'left',
         'home', 'up', 'num lock',
@@ -22,7 +22,7 @@ spec_key = {
 }
 
 spec_key['space'] = ' '
-1213
+
 def parse_key_event(event: KeyboardEvent):
     if event.event_type == keyboard.KEY_UP:
         return ""

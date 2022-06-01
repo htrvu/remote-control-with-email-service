@@ -38,10 +38,13 @@ def __help_df():
             'PC restart': 'Restart the device.',
         },
         'REGISTRY': {
-            'REGISTRY get <hive> <key> <subkey>': 'Get the value of the registry <hive>/<key>/<subkey>.',
-            'REGISTRY add <hive> <key> <subkey>': 'Create new <key>/<subkey> to the registry <hive>.',
-            'REGISTRY modify <hive> <key> <subkey> <value> <dtype>': 'Set the new value of registry <hive>/<key>/<subkey> as dtype. The value of dtype must be REG_BINARY, REG_DWORD or REG_QWORD.',
-            'REGISTRY remove <hive> <key> <subkey>': 'Delete the value of registry <hive>/<key>/<subkey>.' 
+            'REGISTRY get <hive>/<key>/<subkey>': 'Get the value of the <subkey> on <key> of registry <hive>.',
+            'REGISTRY add_key <hive>/<key>': 'Create new <key> to the registry <hive>.',
+            'REGISTRY add_subkey <hive>/<key>/<subkey> <value> <dtype>': 'Create new <subkey> on <key> of registry <hive>. The value of <dtype> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY modify <hive>/<key>/<subkey> <value> <dtype>': 'Set the new value of <subkey> on <key> of registry <hive> as dtype. The value of <dtype> must be REG_BINARY, REG_DWORD or REG_QWORD.',
+            'REGISTRY clear <hive>/<key>/<subkey>': 'Clear the value of <subkey> on <key> of registry <hive>.',
+            'REGISTRY delete_key <hive>/<key>': 'Delete the <key> of registry <hive>',
+            'REGISTRY delete_subkey <hive>/<key>/<subkey>': 'Delete the <subkey> on <key> of registry <hive>.' 
         }
     }
 
