@@ -19,7 +19,7 @@ def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
     data = content['data']
 
     email_message = email.message.EmailMessage()
-    email_message.add_header('To', ', '.join(mail_to))
+    email_message.add_header('To', ','.join(mail_to))
     email_message.add_header('From', mail_from)
     email_message.add_header('Subject', subject)
     email_message.add_header('X-Priority', '1')  # Urgency, 1 highest, 5 lowest
@@ -36,9 +36,7 @@ def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
 
 def mail_validate(mail):
     s = '^[^\s@]+@[^\s@]+\.[^\s@]+$'
-    if re.match(s, mail):
-        return True
-    return False
+    return re.match(s, mail)
 
 class text_format:
     HEADER = ['\033[95m', '']

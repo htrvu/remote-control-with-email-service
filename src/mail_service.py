@@ -7,6 +7,8 @@ from smtplib import SMTP_SSL, SMTP_SSL_PORT
 
 from constants import SMTP_HOST, IMAP_HOST, APP_REQ
 
+from GlobalVariables import configs
+
 class MailService:
     def __init__(self):
         self.imap_server = imaplib.IMAP4_SSL(IMAP_HOST)
@@ -36,7 +38,7 @@ class MailService:
     ):  
         mail_list = []
         
-        date_from_str = (time_from).strftime(date_format_str())
+        date_from_str = time_from.strftime(date_format_str())
         date_to_str = time_to.strftime(date_format_str())
         
         try:
@@ -70,7 +72,8 @@ class MailService:
 
                 if not time_in_range(time_from, time_to, date) \
                     or not subject.startswith(APP_REQ) \
-                    or sender not in MailService.white_list:
+                    or (sender not in configs['white_list']['basic']
+                    and sender not in configs['white_list']['advanced']):
                     continue
 
                 mail_list.append({
@@ -86,7 +89,7 @@ class MailService:
 
     def send_mail(self, mail):
         try:
-            self.smtp_server.sendmail(mail['From'], mail['To'], mail.as_bytes())
+            self.smtp_server.sendmail(mail['From'], mail['To'], str(mail).encode())
         except Exception as e:
             print(e)
             return False

@@ -1,19 +1,28 @@
 from request_handle import parse_request
 from utils import *
-from services.html_generator import html_msg
+from services.html_generator import html_msg, html_mail
+from mail_service import MailService
+from constants import REMOTE_MAIL
 
-class Controller:
-    def __init__(self):
-        pass
-
-    def respond(self, mail):
-        func, param = parse_request(mail)
+def respond(host_mail: MailService, mail):
+    parse_result = parse_request(mail)
+    
+    response = None
+    
+    if not parse_result or 'function' not in parse_result:
+        response = {
+            'html': html_msg(parse_result['msg'], False),
+            'data': None 
+        }
+    else:
+        func = parse_result['function']
+        params = parse_result['params']
+        response = func(*params)
         
-        if not func:
-            response = {
-                
-            }
-        
-        response = func(*param)
+    content = {
+        'html': html_mail(parse_result['command'], response['html']),
+        'data': response['data']
+    }
 
-        return response
+    mail_content = build_email_content(REMOTE_MAIL, [mail['sender']], f'Reply for request: {parse_result["command"]}', content = content)
+    host_mail.send_mail(mail_content)
