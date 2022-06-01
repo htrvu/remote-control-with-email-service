@@ -6,8 +6,8 @@ def __parse_registry(full_path):
     full_path = full_path.split('\\')
     
     hive = full_path[0]
-    subkey = full_path[-1]
-    key = '\\'.join(full_path[1:-1])
+    reg_name = full_path[-1]
+    reg_key = '\\'.join(full_path[1:-1])
 
     if len(hive) <= 4:
         if hive == 'HKLM':
@@ -19,13 +19,12 @@ def __parse_registry(full_path):
         elif hive == 'HKU':
             hive = 'HKEY_USERS'
 
-    if not hive or not key or not subkey:
+    if not hive or not reg_key or not reg_name:
         return None, None, None
 
-    return hive, key, subkey
+    return hive, reg_key, reg_name
 
 def __get_value(hive, key, name):
-    value, _ = None, None
     try:
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_READ)
         value, _ = winreg.QueryValueEx(kp, name) # (value, value type)

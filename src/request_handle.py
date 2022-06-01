@@ -60,21 +60,25 @@ def parse_request(mail_content):
     sender, header = mail_content['sender'], mail_content['subject'] 
     tokens = shlex.split(header)
     
+    raw_command = ' '.join(tokens[1:])
     if sender not in configs['white_list']['basic'] and sender not in configs['white_list']['advanced']:
         return {
-            'msg': 'Permission denied'
+            'msg': 'Permission denied',
+            'command': raw_command
         }
     
     if (tokens[0] != constants.APP_REQ):
         return {
-            'msg': 'Wrong request format'
+            'msg': 'Wrong request format',
+            'command': raw_command
         }
     
     tokens = tokens[1: ]
     
     if len(tokens) == 0:
         return {
-            'msg': 'Command not found'
+            'msg': 'Command not found',
+            'command': raw_command
         }
     
     tree = None
@@ -84,13 +88,15 @@ def parse_request(mail_content):
     elif tokens[0].lower() in request_tree['advanced']:
         if sender not in configs['white_list']['advanced']:
             return {
-                'msg': 'Permision denied'
+                'msg': 'Permision denied',
+                'command': raw_command
             }
         tree = request_tree['advanced']
 
     if not tree:
         return {
-            'msg': 'Command not found'
+            'msg': 'Command not found',
+            'command': raw_command
         }
     
     func, param = None, []
@@ -105,13 +111,15 @@ def parse_request(mail_content):
             print(type(tree) != dict)
         else:
             return {
-                'msg' : f'Command not found {" ".join(tokens[ : i])}'
+                'msg' : f'Command not found {" ".join(tokens[ : i])}',
+                'command': raw_command
             }
             
         if type(tree) != dict:
             if i + tree[0] >= tokens_count:
                 return {
-                    'msg': f'Function {" ".join(tokens)} takes at least {tree[0]} arguments. Given {len(tokens) - 1 - i}'
+                    'msg': f'Function {" ".join(tokens)} takes at least {tree[0]} arguments. Given {len(tokens) - 1 - i}',
+                    'command': raw_command
                 }
             
             func = tree[1]
@@ -122,5 +130,6 @@ def parse_request(mail_content):
     return {
         'function': func,
         'params': param,
-        'msg': 'Parse request successfully'
+        'msg': 'Parse request successfully',
+        'command': raw_command
     }
