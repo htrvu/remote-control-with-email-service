@@ -1,31 +1,30 @@
-import winreg, os, sys
-import re
-from .html_generator import html_table, html_msg
+import winreg
+from .html_generator import html_msg
 
 def __parse_registry(full_path):
-    try:
-        full_path = re.sub(r'/', r'\\', full_path)
-        hive = re.sub(r'\\.*$', '', full_path)
-        if not hive:
-            raise ValueError('Invalid \'full_path\' param.')
-        if len(hive) <= 4:
-            if hive == 'HKLM':
-                hive = 'HKEY_LOCAL_MACHINE'
-            elif hive == 'HKCU':
-                hive = 'HKEY_CURRENT_USER'
-            elif hive == 'HKCR':
-                hive = 'HKEY_CLASSES_ROOT'
-            elif hive == 'HKU':
-                hive = 'HKEY_USERS'
-        reg_key = re.sub(r'^[A-Z_]*\\', '', full_path)
-        reg_key = re.sub(r'\\[^\\]+$', '', reg_key)
-        reg_value = re.sub(r'^.*\\', '', full_path)
-        return hive, reg_key, reg_value
-    except:
+    full_path = full_path.replace('/', '\\')
+    full_path = full_path.split('\\')
+    
+    hive = full_path[0]
+    reg_name = full_path[-1]
+    reg_key = '\\'.join(full_path[1:-1])
+
+    if len(hive) <= 4:
+        if hive == 'HKLM':
+            hive = 'HKEY_LOCAL_MACHINE'
+        elif hive == 'HKCU':
+            hive = 'HKEY_CURRENT_USER'
+        elif hive == 'HKCR':
+            hive = 'HKEY_CLASSES_ROOT'
+        elif hive == 'HKU':
+            hive = 'HKEY_USERS'
+
+    if not hive or not reg_key or not reg_name:
         return None, None, None
 
+    return hive, reg_key, reg_name
+
 def __get_value(hive, key, subkey):
-    value, _ = None, None
     try:
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_READ)
         value, _ = winreg.QueryValueEx(kp, subkey) # (value, value type)

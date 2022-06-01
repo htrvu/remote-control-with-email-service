@@ -131,8 +131,7 @@ def main():
         # registry_path = 'HKEY_CLASSES_ROOT\\Word.Picture\\AddNewKey'
         # registry_path = 'HKEY_USERS\\.DEFAULT\\Software\\AddNewKey'
         # registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
-        registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
-        # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
+        registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey\\Testing'
 
         # request = 'REGISTRY add_key ' + registry_path
         # result = add_key(registry_path)
@@ -143,14 +142,14 @@ def main():
         # request = 'REGISTRY modify ' + registry_path
         # result = modify_value(registry_path, 'Being modified', 'REG_SZ')
 
-        # request = 'REGISTRY add_value ' + registry_path
-        # result = add_value(registry_path, '19835135', 'REG_DWORD')
+        request = 'REGISTRY add_value ' + registry_path
+        result = add_value(registry_path, '19835135', 'REG_DWORD')
 
         # request = 'REGISTRY delete_value ' + registry_path
         # result = delete_value(registry_path)
 
-        request = 'REGISTRY delete_key ' + registry_path
-        result = delete_key(registry_path)
+        # request = 'REGISTRY delete_key ' + registry_path
+        # result = delete_key(registry_path)
 
         content = {
             'html': html_mail(request, result['html']),
