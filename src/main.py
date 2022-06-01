@@ -113,8 +113,8 @@ def main():
         # html = show_helps()
         # request = 'HELP'
 
-        # html = get_apps()
-        # request = 'APP get'
+        response = get_mac()
+        request = 'APP get'
 
         # html = get_processes()
         # request = 'PROCESS get'
@@ -133,13 +133,8 @@ def main():
         # registry_path = 'HKEY_CLASSES_ROOT\\Word.Picture\\AddNewKey'
         # registry_path = 'HKEY_USERS\\.DEFAULT\\Software\\AddNewKey'
         # registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
-        registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
+        # registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
         # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
-<<<<<<< HEAD
-        
-        request = 'REGISTSRY add_key ' + registry_path
-        result = add_key(registry_path)
-=======
 
         # request = 'REGISTRY add_key ' + registry_path
         # result = add_key(registry_path)
@@ -156,18 +151,17 @@ def main():
         # request = 'REGISTRY delete_value ' + registry_path
         # result = delete_value(registry_path)
 
-        request = 'REGISTRY delete_key ' + registry_path
-        result = delete_key(registry_path)
->>>>>>> 5d26f45cba8ded4b0d89e0af7fa241a7cc67770b
+        # request = 'REGISTRY delete_key ' + registry_path
+        # result = delete_key(registry_path)
 
         content = {
-            'html': html_mail(request, result['html']),
-            'data': result['data']
+            'html': html_mail(request, response['html']),
+            'data': response['data']
         }
 
         # content = html_mail(request, html)
 
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo add_value REG_DWORD registry', content)
+        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo HELP', content)
         host_mail.send_mail(mail)
         print_color('Mail sent', text_format.OKGREEN)
     except Exception as e:
