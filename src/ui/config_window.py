@@ -142,7 +142,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
             'autorun': False
         }
         basic, advanced = [], []
-
+    
         for i in range(self.ui.basicList.count()):
             basic.append(self.ui.basicList.item(i).text())
         for i in range(self.ui.advancedList.count()):
@@ -154,7 +154,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         # Save `new_configs` to the global config
 
         # Save the config file
-        
+
         # if autorun == True:
         #     create bash file for start up
         # else:
