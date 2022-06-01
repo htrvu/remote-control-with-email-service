@@ -7,13 +7,15 @@ sys.path.append('..')
 
 from ui.ui_configwindow import Ui_ConfigWindow
 from ui.whitelist_dialog import WhiteListDialog
-
+from GlobalVariables import app_configs
 from ui.components.my_messagebox import MyMessageBox
+
+import yaml
 
 class MySignals(QObject):
     open = pyqtSignal()
-    run = pyqtSignal(dict)
-    save_config = pyqtSignal()
+    run = pyqtSignal()
+    save = pyqtSignal()
     exit = pyqtSignal()
 
 class ConfigWindow(QtWidgets.QMainWindow):
@@ -33,7 +35,9 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         self.__set_btn_slots()
         self.__load_instructions()
-        self.__load_config()
+
+        # running status
+        self.is_running = False
 
     def __load_instructions(self):
         with open('ui/assets/docs/instructions.html') as f:
@@ -56,25 +60,15 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         self.ui.insScrollArea.setWidget(container)
 
-    def __load_config(self):
-        self.config = {
-            'basic': [],
-            'vip': [],
-            'autorun': False
-        }
-
-        # Doc config tu file (neu co)
-        # ...
-
     def __render_config(self):
         self.ui.basicList.clear()
         self.ui.advancedList.clear()
 
-        for mail in self.config['basic']:
+        for mail in app_configs['white_list']['basic']:
             self.ui.basicList.addItem(mail)
-        for mail in self.config['vip']:
+        for mail in app_configs['white_list']['advanced']:
             self.ui.advancedList.addItem(mail)
-        self.ui.autoRunBox.setChecked(self.config['autorun'])
+        self.ui.autoRunBox.setChecked(app_configs['autorun'])
 
     def __stacked_index_slots(self, index):
         return lambda : self.ui.stackedWidget.setCurrentIndex(index)
@@ -152,28 +146,44 @@ class ConfigWindow(QtWidgets.QMainWindow):
             basic.append(self.ui.basicList.item(i).text())
         for i in range(self.ui.advancedList.count()):
             advanced.append(self.ui.advancedList.item(i).text())
+
         new_configs['white_list']['basic'] = basic
         new_configs['white_list']['advanced'] = advanced
         new_configs['autorun'] = self.ui.autoRunBox.isChecked()
 
-        # Save `new_configs` to the global config
-
         # Save the config file
+        with open('configs/app_configs.yaml', 'w') as f:
+            yaml.dump(new_configs, f)
 
-        # if autorun == True:
-        #     create bash file for start up
-        # else:
-        #     remove bash file
+        if new_configs['autorun']:
+            # create bash file for start up
+            pass
+        else:
+            # remove bash file for start up (if exists)
+            pass
 
         # Notify user
-        msg = MyMessageBox(msg='Configurations saved successfully!', parent=self)
-        msg.exec_()
+        msg = 'Configurations saved'
+        if not self.is_running:
+            msg += '! Let\'s RUN!'
+        else:
+            msg += ' and applied!'
+        msg_box = MyMessageBox(msg=msg, parent=self)
+        msg_box.exec_()
 
         self.ui.stackedWidget.setCurrentIndex(0)
 
+        if self.is_running:
+            self.signals.save.emit()
+
     def __run(self):
-        self.close()
-        self.signals.run.emit()
+        if not self.is_running:
+            self.close()
+            self.signals.run.emit()
+            self.ui.runBtn.setText("Close")
+            self.is_running = True
+        else:
+            self.close()
 
     def __exit(self):
         self.close()
