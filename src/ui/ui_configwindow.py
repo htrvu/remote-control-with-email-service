@@ -767,7 +767,7 @@ class Ui_ConfigWindow(object):
 
     def retranslateUi(self, ConfigWindow):
         _translate = QtCore.QCoreApplication.translate
-        ConfigWindow.setWindowTitle(_translate("ConfigWindow", "Digital Contact List"))
+        ConfigWindow.setWindowTitle(_translate("ConfigWindow", "Remote Control with Email Service"))
         self.label.setText(_translate("ConfigWindow", "Remote Control with Email Service"))
         self.insBtn.setText(_translate("ConfigWindow", "Instructions"))
         self.configBtn.setText(_translate("ConfigWindow", "Configurations"))
