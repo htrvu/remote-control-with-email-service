@@ -91,3 +91,4 @@ class MailService:
             print(e)
             return False
         return True
+    
