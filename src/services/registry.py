@@ -2,12 +2,12 @@ import winreg, os, sys
 from .html_generator import html_table, html_msg
 
 def __parse_registry(full_path):
-    full_path = full_path.replace('\\', '/')
-    full_path = full_path.split('/')
+    full_path = full_path.replace('/', '\\')
+    full_path = full_path.split('\\')
     
     hive = full_path[0]
     subkey = full_path[-1]
-    key = '/'.join(full_path[1:-1])
+    key = '\\'.join(full_path[1:-1])
 
     if len(hive) <= 4:
         if hive == 'HKLM':
@@ -56,9 +56,12 @@ def get(full_path):
 
 def __add_subkey(hive, key, subkey, value, dtype):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key + r"\\" + subkey)
+        winreg.CreateKey(getattr(winreg, hive), key + '\\' + subkey)
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
         
+        # k = winreg.OpenKeyEx(getattr(winreg, hive), key)
+        # kp = winreg.CreateKey(k, value)
+
         if 'REG_BINARY' in dtype:
             if len(value) % 2 == 1:
                 value = '0' + value # add padding
@@ -73,7 +76,8 @@ def __add_subkey(hive, key, subkey, value, dtype):
             value = int(value, 16)
             
         winreg.SetValueEx(kp, subkey, 0, getattr(winreg, dtype), value)
-        winreg.CloseKey(kp)
+        if kp:
+            winreg.CloseKey(kp)
     except:
         return False, f'Cannot create the registry subkey.'
     return True, f'The registry has been created.'
@@ -93,12 +97,11 @@ def add_subkey(fullpath, value, dtype):
 
     return response
 
-def __add_key(hive, key):
+def __add_key(hive, key, subkey):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key)
-        kp = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_WRITE)
-        winreg.SetValueEx(kp, '(Default)', 0, winreg.REG_SZ, 0)
-        winreg.CloseKey(kp)
+        # _key = winreg.OpenKeyEx(getattr(winreg, hive), key)
+        # winreg.CreateKey(_key, subkey)
+        winreg.CreateKey(getattr(winreg, hive), key + '\\' + subkey)
     except:
         return False, 'Cannot create the registry key.'
     return True, 'The registry has been created.'
@@ -109,8 +112,7 @@ def add_key(fullpath):
         msg = 'Invalid registry path.'
         status = False
     else:   
-        key = key + '//' + subkey 
-        status, msg = __add_key(hive, key)
+        status, msg = __add_key(hive, key, subkey)
     
     response = {
         'html': html_msg(msg, status, True),
