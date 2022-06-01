@@ -1,91 +1,14 @@
-from mail_service import MailService
-
-import threading
-import time
-import datetime
-from services.screen import screen_record, screen_shot
-from services.webcam import webcam_record, webcam_shot
+import signal
 
 from utils import *
 from constants import *
+from thread_targets import *
 
-from services.help import *
-from services.app import *
-from GlobalVariables import configs
-from services.process import *
+from mail_service import MailService
+from remote_control import RemoteControl
 
-from services.html_generator import html_mail
-from plyer import notification
-import signal
-from services.explorer import *
-from services.mac import *
-
-# demo
-from services.help import *
-
-from Controller import respond
-
-def show_notification_thead(timeout = 60):
-    while (True):
-        notification.notify (
-            title = "Remote control with email service",
-            message = "Remote control is running",
-            app_name = 'Remote control with email service',
-            timeout = 5
-        )
-
-        time.sleep(timeout)
-
-
-
-def check_email_thread(host_mail, timeout = 15):
-    check_email_thread.keep = True
-    
-    cfg = load_config()
-    try:
-        checkpoint = cfg['latest_checkpoint']
-        while check_email_thread.keep:
-            
-            print(f'Reading mail box from {checkpoint} to {datetime.datetime.now()}')
-            
-            tmp_checkpoint = datetime.datetime.now() - datetime.timedelta(seconds = 8)
-            mail_list = host_mail.read_email(time_from = checkpoint)
-            checkpoint = tmp_checkpoint
-            
-            update_config_value('latest_checkpoint', checkpoint)
-            
-            for mail in mail_list:
-                print_color('Send from: ' + mail['sender'], text_format.YELLOW)
-                print_color('Subject: ' + mail['subject'], text_format.YELLOW)
-                print_color('-------------------------------------------------------------------------', text_format.OKGREEN)
-                threading.Thread(target = respond, args = (host_mail, mail, )).start()
-            
-            time.sleep(timeout)
-    except KeyboardInterrupt:
-        print_color('Stop checking mail box', text_format.OKGREEN)
-    
-
-def stop_reading_mail(signum, frame):
-    check_email_thread.keep = False
-
-signal.signal(signal.SIGTERM, stop_reading_mail)
-
-def check_missing_thread(timeout = 300):
-    pass
-
-from request_handle import parse_request
-
-def setup():
-    cfg = load_config('./configs/app_configs.yaml')
-    
-    global configs, host_mail
-    
-    configs['white_list'] = cfg['white_list']
-    configs['autorun'] = cfg['auto_run']
 
 def main():
-    setup()
-    
     host_mail = None
     try:
         host_mail = MailService()
@@ -97,110 +20,17 @@ def main():
         print_indent(str(e), level = 1, option = text_format.RED)
         exit(1)
     
-    checking_thread = threading.Thread(target = check_email_thread, args = (host_mail, ))
-    checking_thread.start()
-    threading.Thread(target = show_notification_thead, args = ()).start()
+    signal.signal(signal.SIGTERM, stop_reading_mail)
+
+    RemoteControl(host_mail).start()
+
+    # checking_thread = threading.Thread(target = check_email_thread, args = (host_mail, ))
+    # checking_thread.start()
+    # threading.Thread(target = show_notification_thead, args = ()).start()
     
-    
-    checking_thread.join()
-    if host_mail:
-        host_mail.logout()
-    ##############################################################
-    # Test read mail
-    # mails = host_mail.read_email(time_from='2022-04-20 00:00:00')
-    
-    # print_color('Test read inbox', text_format.OKGREEN)
-    # for mail in mails:
-    #     print('From:', mail['sender'])
-    #     print('Subject:', mail['subject'])
-    #     print('Content:', mail['content'])
-    #     print('---------------------------------')
-    #     break
-
-    ##############################################################
-    # Test send mail
-    # print_color('Test send mail', text_format.OKGREEN)
-    '''
-    try:
-        # html = show_helps()
-        # request = 'HELP'
-
-        response = get_mac()
-        request = 'APP get'
-
-        html = get_processes()
-        request = 'PROCESS get'
-
-        content = html_mail(request, html)
-
-<<<<<<< HEAD
-        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\Description'
-        # request = 'REGISTRY get ' + registry_path
-        # result = get_value(registry_path)
-
-        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
-        # registry_path = 'HKEY_CLASSES_ROOT\\Word.Picture\\AddNewKey'
-        # registry_path = 'HKEY_USERS\\.DEFAULT\\Software\\AddNewKey'
-        # registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
-        # registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
-        # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
-
-        # request = 'REGISTRY add_key ' + registry_path
-        # result = add_key(registry_path)
-
-        # request = 'REGISTRY add_value ' + registry_path
-        # result = add_value(registry_path, 'TestAddValue nek', 'REG_SZ')
-
-        # request = 'REGISTRY modify ' + registry_path
-        # result = modify_value(registry_path, 'Being modified', 'REG_SZ')
-
-        # request = 'REGISTRY add_value ' + registry_path
-        # result = add_value(registry_path, '19835135', 'REG_DWORD')
-
-        # request = 'REGISTRY delete_value ' + registry_path
-        # result = delete_value(registry_path)
-
-        # request = 'REGISTRY delete_key ' + registry_path
-        # result = delete_key(registry_path)
-
-        content = {
-            'html': html_mail(request, response['html']),
-            'data': response['data']
-        }
-
-        # content = html_mail(request, html)
-
-        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo HELP', content)
-=======
-        mail = build_email_content(REMOTE_MAIL, ['hoangnhuquynh2015@gmail.com'], 'Demo send mail', content)
->>>>>>> 3360aca1a08307185f90ee933af496ff6f830fde
-        host_mail.send_mail(mail)
-    except Exception as e:
-        print_color('Error while sending mail: ' + str(e), text_format.FAIL)
-    
-    print_color('Mail sent', text_format.OKGREEN)
-    '''
-    ##############################################################
-    # Test thread
-
-    # _show_notification_thead = threading.Thread(target = show_notification_thead, args = ())
-    # _check_email_thread = threading.Thread(target = check_email_thread, args = ())
-    
-    # _check_email_thread.start()
-    # _show_notification_thead.start()
-
-    # _check_email_thread.join()
-    # _show_notification_thead.join()
-
-    # email = Email()
-
-    ##############################################################
-    # Pipeline
-    # while True:
-    #     mails = email.read_email()
-    #     for mail in mails:
-    #         # new thread to process this request       
-
+    # checking_thread.join()
+    # if host_mail:
+        # host_mail.logout()
 
 if __name__ == '__main__':
     main()
