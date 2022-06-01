@@ -1,8 +1,3 @@
-
-# https://codehandbook.org/how-to-read-email-from-gmail-using-python/
-
-# import smtplib
-# from curses.ascii import EM
 import imaplib
 import email
 from utils import *
@@ -14,12 +9,8 @@ from constants import SMTP_HOST, IMAP_HOST, APP_REQ
 
 class MailService:
     def __init__(self):
-        # self.SMTP_HOST = SMTP_HOST
-        # self.SMTP_SERVER = server 
-        # self.SMTP_PORT = port
         self.imap_server = imaplib.IMAP4_SSL(IMAP_HOST)
         self.smtp_server = SMTP_SSL(SMTP_HOST, port = SMTP_SSL_PORT)
-        # self.smtp_server.set_debuglevel(1)
 
     def login(self, username, password):
         print_color('Login to mail server...', text_format.OKGREEN)
@@ -37,7 +28,7 @@ class MailService:
         self.smtp_server.quit()
 
     def read_email (
-        self, 
+        self,
         time_from: datetime.datetime, 
         time_to = datetime.datetime.now() + datetime.timedelta(days = 1), 
         category = 'primary', 
@@ -53,9 +44,7 @@ class MailService:
 
             status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from_str} before:{date_to_str}"')
             # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
-            # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box}"')
-
-
+            
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
@@ -73,42 +62,20 @@ class MailService:
                 
                 sender = email.utils.parseaddr(mail['from'])[1]
                 subject = mail['subject']
-                content = mail['content']
                 
-                if not time_in_range(time_from, time_to, date) \
-                    or APP_REQ not in subject \
-                    or sender not in MailService.white_list:
-                    continue
-
                 # Decode subject:
                 subject, encoding = email.header.decode_header(subject)[0]
                 if encoding:
                     subject = str(subject, encoding)
-                
-                # Check subject
-                # ...
-                
-                # Decode content:
-                # On multipart, we have the text msg and another things like annex, and html version
-                # of the msg, in that case we loop through the email payload and get only the plain text
-                if mail.is_multipart():
-                    content = ''
 
-                    for part in mail.get_payload():
-                        if part.get_content_type() == 'text/plain':
-                            content += part.get_payload()
-                            
-                    try:
-                        # if content in base 64 format --> decode it
-                        # else --> pass
-                        content = base64_decode(content)
-                    except Exception as e:
-                        pass
-                    
+                if not time_in_range(time_from, time_to, date) \
+                    or not subject.startswith(APP_REQ) \
+                    or sender not in MailService.white_list:
+                    continue
+
                 mail_list.append({
                     'sender': sender, 
-                    'subject': subject, 
-                    'content': content.strip().replace('\r', '\n')
+                    'subject': subject,
                 })
 
         except Exception as e:

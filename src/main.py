@@ -10,44 +10,34 @@ from services.webcam import webcam_record, webcam_shot
 from utils import *
 from constants import *
 
+import notification
+import signal
+
+# demo
+
 from services.help import *
 from services.app import *
 from services.process import *
 from services.keylogger import *
 from services.pc import *
 from services.registry import *
-
-from services.html_generator import html_mail
-import notification
-import signal
 from services.explorer import *
 from services.mac import *
+from services.html_generator import html_mail
 
-# demo
 from services.help import *
 
 def show_notification_thead(timeout = 60):
     while (True):
         notification.notify (
-            title = "Remote control with email service",
-            message = "Remote control is running",
-            app_name = 'Remote control with email service',
+            title = "Remote Control with Email Service",
+            message = "Remote Control is running",
+            app_name = 'Remote Control with Email Service',
             timeout = 5
         )
 
         time.sleep(timeout)
 
-host_mail = None
-
-try:
-    host_mail = MailService()
-    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
-except Exception as e:
-    print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)
-    print_color('Full detail below:', text_format.YELLOW)
-    
-    print_indent(str(e), level = 1, option = text_format.RED)
-    exit(1)
 
 def check_email_thread(timeout = 15):
     check_email_thread.keep = True
@@ -78,6 +68,18 @@ def check_email_thread(timeout = 15):
 
 def stop_reading_mail(signum, frame):
     check_email_thread.keep = False
+
+host_mail = None
+
+try:
+    host_mail = MailService()
+    host_mail.login(REMOTE_MAIL, REMOTE_PWD)
+except Exception as e:
+    print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)
+    print_color('Full detail below:', text_format.YELLOW)
+    
+    print_indent(str(e), level = 1, option = text_format.RED)
+    exit(1)
 
 signal.signal(signal.SIGTERM, stop_reading_mail)
 
@@ -123,33 +125,10 @@ def main():
         # request = 'PC restart'
         # result = restart()
 
-        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\Description'
-        # request = 'REGISTRY get ' + registry_path
-        # result = get_value(registry_path)
+        registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\Description'
+        request = 'REGISTRY get ' + registry_path
+        result = get_value(registry_path)
 
-        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
-        # registry_path = 'HKEY_CLASSES_ROOT\\Word.Picture\\AddNewKey'
-        # registry_path = 'HKEY_USERS\\.DEFAULT\\Software\\AddNewKey'
-        # registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
-        registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey\\Testing'
-
-        # request = 'REGISTRY add_key ' + registry_path
-        # result = add_key(registry_path)
-
-        # request = 'REGISTRY add_value ' + registry_path
-        # result = add_value(registry_path, 'TestAddValue nek', 'REG_SZ')
-
-        # request = 'REGISTRY modify ' + registry_path
-        # result = modify_value(registry_path, 'Being modified', 'REG_SZ')
-
-        request = 'REGISTRY add_value ' + registry_path
-        result = add_value(registry_path, '19835135', 'REG_DWORD')
-
-        # request = 'REGISTRY delete_value ' + registry_path
-        # result = delete_value(registry_path)
-
-        # request = 'REGISTRY delete_key ' + registry_path
-        # result = delete_key(registry_path)
 
         content = {
             'html': html_mail(request, result['html']),

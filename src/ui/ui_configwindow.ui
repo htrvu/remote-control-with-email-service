@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Digital Contact List</string>
+   <string>Remote Control with Email Service</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -718,7 +718,7 @@ QScrollBar::sub-line:vertical {
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="vipList">
+              <widget class="QListWidget" name="advancedList">
                <property name="font">
                 <font>
                  <family>Roboto</family>

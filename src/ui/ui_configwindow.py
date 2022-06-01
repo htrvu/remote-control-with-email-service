@@ -411,12 +411,12 @@ class Ui_ConfigWindow(object):
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
         self.verticalLayout_6.addWidget(self.label_13)
-        self.vipList = QtWidgets.QListWidget(self.widget_6)
+        self.advancedList = QtWidgets.QListWidget(self.widget_6)
         font = QtGui.QFont()
         font = QtGui.QFont(FONTS_DICT['Roboto'])
         
-        self.vipList.setFont(font)
-        self.vipList.setStyleSheet("QListWidget {\n"
+        self.advancedList.setFont(font)
+        self.advancedList.setStyleSheet("QListWidget {\n"
 "    font-size: 18px;\n"
 "    background-color: white;\n"
 "    padding-left: 6px;\n"
@@ -447,8 +447,8 @@ class Ui_ConfigWindow(object):
 "    subcontrol-position: top;\n"
 "    subcontrol-origin: margin;\n"
 "}")
-        self.vipList.setObjectName("vipList")
-        self.verticalLayout_6.addWidget(self.vipList)
+        self.advancedList.setObjectName("advancedList")
+        self.verticalLayout_6.addWidget(self.advancedList)
         self.widget_7 = QtWidgets.QWidget(self.widget_6)
         self.widget_7.setObjectName("widget_7")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.widget_7)
@@ -767,7 +767,7 @@ class Ui_ConfigWindow(object):
 
     def retranslateUi(self, ConfigWindow):
         _translate = QtCore.QCoreApplication.translate
-        ConfigWindow.setWindowTitle(_translate("ConfigWindow", "Digital Contact List"))
+        ConfigWindow.setWindowTitle(_translate("ConfigWindow", "Remote Control with Email Service"))
         self.label.setText(_translate("ConfigWindow", "Remote Control with Email Service"))
         self.insBtn.setText(_translate("ConfigWindow", "Instructions"))
         self.configBtn.setText(_translate("ConfigWindow", "Configurations"))

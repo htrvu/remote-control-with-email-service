@@ -27,12 +27,12 @@ def __parse_registry(full_path):
 def __get_value(hive, key, subkey):
     try:
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0, winreg.KEY_READ)
-        value, _ = winreg.QueryValueEx(kp, subkey) # (value, value type)
+        value, _ = winreg.QueryValueEx(kp, name) # (value, value type)
         winreg.CloseKey(kp)
     except:
-        return False, f'Cannot get the value of registry.'
+        return False, f'Cannot get the data and type of registry value.'
     
-    return None, f'The value of registry is <span style="font-weight:bold">{value}</span>'
+    return None, f'The data and type of registry value is <span style="font-weight:bold">{value}</span>.'
 
 def get_value(full_path):
     hive, key, subkey = __parse_registry(full_path)
@@ -68,7 +68,7 @@ def add_key(fullpath):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:   
         status, msg = __add_key(hive, key)
@@ -114,9 +114,9 @@ def add_value(fullpath, data, dtype):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False  
-    else:    
+    else:
         status, msg = __add_value(hive, key, name, data, dtype)
     
     response = {
@@ -149,7 +149,7 @@ def __modify_value(hive, key, name, data, dtype):
         winreg.SetValueEx(kp, name, 0, getattr(winreg, dtype), data)
         winreg.CloseKey(kp)
     except:
-        return False, f"Cannot modify the value of registry."
+        return False, f"Cannot modify the value of registry (maybe your value type or data is not compatible)."
     return True, f"The value of registry has been modified."
 
 def modify_value(fullpath, data, dtype):
@@ -159,7 +159,7 @@ def modify_value(fullpath, data, dtype):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:
         status, msg = __modify_value(hive, key, name, data, dtype)
@@ -187,7 +187,7 @@ def delete_value(fullpath):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:
         status, msg = __delete_value(hive, key, name)
@@ -206,7 +206,6 @@ def __delete_key(hive, key):
     
     return True, f"The registry key was deleted."
         
-
 def delete_key(fullpath):
     hive, key, name = __parse_registry(fullpath)
     key = key + '\\' + name
@@ -215,7 +214,7 @@ def delete_key(fullpath):
         msg = 'Invalid registry path.'
         status = False
     elif hive != 'HKEY_CURRENT_USER':
-        msg = 'Permission denied.'
+        msg = 'Registry permission denied.'
         status = False
     else:
         status, msg = __delete_key(hive, key)
