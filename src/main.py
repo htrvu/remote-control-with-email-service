@@ -97,8 +97,14 @@ def main():
         print_indent(str(e), level = 1, option = text_format.RED)
         exit(1)
     
-    threading.Thread(target = check_email_thread, args = (host_mail, )).start()
+    checking_thread = threading.Thread(target = check_email_thread, args = (host_mail, ))
+    checking_thread.start()
     threading.Thread(target = show_notification_thead, args = ()).start()
+    
+    
+    checking_thread.join()
+    if host_mail:
+        host_mail.logout()
     ##############################################################
     # Test read mail
     # mails = host_mail.read_email(time_from='2022-04-20 00:00:00')
