@@ -151,14 +151,14 @@ class ConfigWindow(QtWidgets.QMainWindow):
         new_configs['white_list']['advanced'] = advanced
         new_configs['autorun'] = self.ui.autoRunBox.isChecked()
 
-        # Save to the config file
+        # Save `new_configs` to the global config
+
+        # Save the config file
+        
         # if autorun == True:
         #     create bash file for start up
         # else:
         #     remove bash file
-
-        # Emit signal to application
-        self.signals.save_config.emit()
 
         # Notify user
         msg = MyMessageBox(msg='Configurations saved successfully!', parent=self)
@@ -168,7 +168,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
     def __run(self):
         self.close()
-        self.signals.run.emit(self.config)
+        self.signals.run.emit()
 
     def __exit(self):
         self.close()
