@@ -111,20 +111,25 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.__dialog = WhiteListDialog(role, self)
         self.__dialog.signals.added.connect(lambda mail: self.__add_controller(mail, is_basic))
 
-    def __add_controller(self, mail, is_basic = True):
-        if is_basic:
-            c_list = self.config['basic']
-            ui_list = self.ui.basicList
-        else:
-            c_list = self.config['vip']
-            ui_list = self.ui.advancedList
-        
-        if mail in c_list:
-            msg = MyMessageBox(title='Error', msg='This controller is already in the list!', parent=self)
+    def __add_controller(self, mail, is_basic=True):
+        basic, advanced = [], []
+
+        for i in range(self.ui.basicList.count()):
+            basic.append(self.ui.basicList.item(i).text())
+        for i in range(self.ui.advancedList.count()):
+            advanced.append(self.ui.advancedList.item(i).text())
+            
+        if mail in basic: 
+            msg = MyMessageBox(title='Error', msg='This controller is already in the basic list!', parent=self)
+            msg.exec_()
+        elif mail in advanced:
+            msg = MyMessageBox(title='Error', msg='This controller is already in the advanced list!', parent=self)
             msg.exec_()
         else:
-            c_list.append(mail)
-            ui_list.addItem(mail)
+            if is_basic:
+                self.ui.basicList.addItem(mail)
+            else:
+                self.ui.advancedList.addItem(mail)
             self.__dialog.close()
 
     def __remove_controller(self, controller_list : QtWidgets.QListWidget):
