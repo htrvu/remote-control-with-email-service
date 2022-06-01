@@ -2,7 +2,7 @@ import shlex
 import constants
 
 from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
-from GlobalVariables import configs
+from GlobalVariables import app_configs
 
 request_tree = {
     'basic' : {
@@ -61,7 +61,7 @@ def parse_request(mail_content):
     tokens = shlex.split(header)
     
     raw_command = ' '.join(tokens[1:])
-    if sender not in configs['white_list']['basic'] and sender not in configs['white_list']['advanced']:
+    if sender not in app_configs['white_list']['basic'] and sender not in app_configs['white_list']['advanced']:
         return {
             'msg': 'Permission denied',
             'command': raw_command
@@ -86,7 +86,7 @@ def parse_request(mail_content):
     if tokens[0].lower() in request_tree['basic']:
         tree = request_tree['basic']
     elif tokens[0].lower() in request_tree['advanced']:
-        if sender not in configs['white_list']['advanced']:
+        if sender not in app_configs['white_list']['advanced']:
             return {
                 'msg': 'Permision denied',
                 'command': raw_command
