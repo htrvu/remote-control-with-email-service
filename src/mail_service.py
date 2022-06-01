@@ -1,8 +1,3 @@
-
-# https://codehandbook.org/how-to-read-email-from-gmail-using-python/
-
-# import smtplib
-# from curses.ascii import EM
 import imaplib
 import email
 from utils import *
@@ -51,7 +46,6 @@ class MailService:
             # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
             # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box}"')
 
-
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
                 print_color('All mails are read', text_format.OKGREEN)
@@ -76,7 +70,7 @@ class MailService:
                     subject = str(subject, encoding)
 
                 if not time_in_range(time_from, time_to, date) \
-                    or APP_REQ not in subject \
+                    or not subject.startswith(APP_REQ) \
                     or sender not in MailService.white_list:
                     continue
 
