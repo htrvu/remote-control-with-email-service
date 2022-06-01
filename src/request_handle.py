@@ -41,13 +41,12 @@ request_tree = {
             'restart': [0, pc.restart]
         },
         'registry': {
-            'get': [1, registry.get],
+            'get': [1, registry.get_value],
             'add_key': [1, registry.add_key],
-            'add_subkey': [3, registry.add_subkey],
-            'modify': [3, registry.modify_key],
-            'clear': [1, registry.clear_value],
+            'add_value': [3, registry.add_value],
+            'modify': [3, registry.modify_value],
             'delete': [1, registry.delete_key],
-            'delete_subkey': [1, registry.delete_subkey]
+            'delete_value': [1, registry.delete_value]
         },
         'explorer': {
             'tree': [1, explorer.show_tree],

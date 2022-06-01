@@ -1,3 +1,4 @@
+from requests import request
 from mail_service import MailService
 
 import threading
@@ -124,18 +125,32 @@ def main():
 
         # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\Description'
         # request = 'REGISTRY get ' + registry_path
-        # result = get(registry_path)
+        # result = get_value(registry_path)
 
-        # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewSubkey'
         # registry_path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Mozilla\\Mozilla Firefox\\100.0.2 (x64 vi)\\Uninstall\\AddNewKey'
         # registry_path = 'HKEY_CLASSES_ROOT\\Word.Picture\\AddNewKey'
         # registry_path = 'HKEY_USERS\\.DEFAULT\\Software\\AddNewKey'
-        registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
-        # registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
-        # request = 'REGISTRY add_subkey ' + registry_path
+        # registry_path = 'HKEY_CURRENT_CONFIG\\Software\\Fonts\\AddNewKey'
+        registry_path = 'HKEY_CURRENT_USER\\SOFTWARE\\Wireshark\\WinSparkle Settings\\AddNewKey'
         # result = add_subkey(registry_path, 'Test value', 'REG_SZ')
-        request = 'REGISTSRY add_key ' + registry_path
-        result = add_key(registry_path)
+
+        # request = 'REGISTRY add_key ' + registry_path
+        # result = add_key(registry_path)
+
+        # request = 'REGISTRY add_value ' + registry_path
+        # result = add_value(registry_path, 'TestAddValue nek', 'REG_SZ')
+
+        # request = 'REGISTRY modify ' + registry_path
+        # result = modify_value(registry_path, 'Being modified', 'REG_SZ')
+
+        # request = 'REGISTRY add_value ' + registry_path
+        # result = add_value(registry_path, '19835135', 'REG_DWORD')
+
+        # request = 'REGISTRY delete_value ' + registry_path
+        # result = delete_value(registry_path)
+
+        request = 'REGISTRY delete_key ' + registry_path
+        result = delete_key(registry_path)
 
         content = {
             'html': html_mail(request, result['html']),
@@ -144,7 +159,7 @@ def main():
 
         # content = html_mail(request, html)
 
-        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo add_key registry', content)
+        mail = build_email_content(REMOTE_MAIL, ['bot.remote.2@gmail.com'], 'Demo add_value REG_DWORD registry', content)
         host_mail.send_mail(mail)
         print_color('Mail sent', text_format.OKGREEN)
     except Exception as e:

@@ -24,29 +24,6 @@ def __parse_registry(full_path):
     except:
         return None, None, None
 
-# def __parse_registry(full_path):
-#     full_path = full_path.replace('/', '\\')
-#     full_path = full_path.split('\\')
-    
-#     hive = full_path[0]
-#     subkey = full_path[-1]
-#     key = '\\'.join(full_path[1:-1])
-
-#     if len(hive) <= 4:
-#         if hive == 'HKLM':
-#             hive = 'HKEY_LOCAL_MACHINE'
-#         elif hive == 'HKCU':
-#             hive = 'HKEY_CURRENT_USER'
-#         elif hive == 'HKCR':
-#             hive = 'HKEY_CLASSES_ROOT'
-#         elif hive == 'HKU':
-#             hive = 'HKEY_USERS'
-
-#     if not hive or not key or not subkey:
-#         return None, None, None
-
-#     return hive, key, subkey
-
 def __get_value(hive, key, subkey):
     value, _ = None, None
     try:
@@ -95,7 +72,7 @@ def add_key(fullpath):
         msg = 'Permission denied.'
         status = False
     else:   
-        status, msg = __add_key(hive, key, subkey)
+        status, msg = __add_key(hive, key)
     
     response = {
         'html': html_msg(msg, status, True),
@@ -106,11 +83,10 @@ def add_key(fullpath):
 
 def __add_value(hive, key, name, value, dtype):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key + '\\' + name)
+        try:
+            winreg.CreateKey(getattr(winreg, hive), key)
+        except: pass
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
-        
-        # k = winreg.OpenKeyEx(getattr(winreg, hive), key)
-        # kp = winreg.CreateKey(k, value)
 
         if 'REG_BINARY' in dtype:
             if len(value) % 2 == 1:
@@ -129,7 +105,7 @@ def __add_value(hive, key, name, value, dtype):
         if kp:
             winreg.CloseKey(kp)
     except:
-        return False, f'Cannot create the registry value.'
+        return False, f'Cannot create the registry value (maybe your data or value type is not compatible).'
     return True, f'The registry value has been created.'
 
 def add_value(fullpath, data, dtype):
@@ -153,9 +129,11 @@ def add_value(fullpath, data, dtype):
 
 def __modify_value(hive, key, name, data, dtype):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key)
-        kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
-        
+        try:
+            kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_ALL_ACCESS)
+        except:
+            kp = winreg.CreateKey(getattr(winreg, hive), key)
+
         if 'REG_BINARY' in dtype:
             if len(data) % 2 == 1:
                 data = '0' + data # add padding
