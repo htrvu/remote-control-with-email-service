@@ -127,7 +127,6 @@ def add_value(fullpath, data, dtype):
 
 def __modify_value(hive, key, name, data, dtype):
     try:
-        winreg.CreateKey(getattr(winreg, hive), key)
         kp = winreg.OpenKey(getattr(winreg, hive), key, 0 , winreg.KEY_WRITE)
         
         if 'REG_BINARY' in dtype:
