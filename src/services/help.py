@@ -6,10 +6,10 @@ def __help_df():
             'HELP': 'Show the command list of this application.',
         },
         'EXPLORER': {
-            'TREE <path>': 'Show the directory tree (1-level) of the <path>. If <path> is not given, the list of disks will be shown.',
-            'COPY <source> <dest>': 'Copy the file or directory <source> to <dest>.',
-            'MOVE <source> <dest>': 'Move the file or directory <source> to <dest>.',
-            'DELETE <path>': 'Delete the file or directory <path>.',
+            'EXPLORER TREE <path>': 'Show the directory tree (1-level) of the <path>. If <path> is not given, the list of disks will be shown.',
+            'EXPLORER COPY <source> <dest>': 'Copy the file or directory <source> to <dest>.',
+            'EXPLORER MOVE <source> <dest>': 'Move the file or directory <source> to <dest>.',
+            'EXPLORER DELETE <path>': 'Delete the file or directory <path>.',
         },
         'MAC': {
             'MAC get': 'Get the MAC address of the device.',
