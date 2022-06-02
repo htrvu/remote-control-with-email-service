@@ -8,8 +8,8 @@ from plyer import notification
 from responder import respond
 import threading
 
-def show_notification_thead(timeout = 60):
-    while (True):
+def show_notification_thead(timeout = 300):
+    while True:
         notification.notify (
             title = "Remote control with email service",
             message = "Remote control is running",
@@ -19,13 +19,11 @@ def show_notification_thead(timeout = 60):
 
         time.sleep(timeout)
 
-def check_email_thread(host_mail, timeout = 15):
-    check_email_thread.keep = True
-    
+def check_email_thread(host_mail, timeout = 15):    
     cfg = load_config()
     try:
         checkpoint = cfg['latest_checkpoint']
-        while check_email_thread.keep:
+        while True:
             
             print(f'Reading mail box from {checkpoint} to {datetime.datetime.now()}')
             
@@ -44,7 +42,3 @@ def check_email_thread(host_mail, timeout = 15):
             time.sleep(timeout)
     except KeyboardInterrupt:
         print_color('Stop checking mail box', text_format.OKGREEN)
-    
-
-def stop_reading_mail(signum, frame):
-    check_email_thread.keep = False
