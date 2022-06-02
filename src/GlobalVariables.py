@@ -7,7 +7,7 @@ checkpoint_file_path = os.path.join(app_location, 'configs', checkpoint_file_nam
 screen_path = '../screen'
 webcam_path = '../webcam'
 
-configs = {
+app_configs = {
     'white_list': {},
     'autorun': False
 }

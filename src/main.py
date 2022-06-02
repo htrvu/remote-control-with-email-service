@@ -11,7 +11,6 @@ from constants import *
 
 from services.help import *
 from services.app import *
-from GlobalVariables import configs
 from services.process import *
 
 from services.html_generator import html_mail
@@ -46,7 +45,7 @@ def check_email_thread(host_mail, timeout = 15):
         checkpoint = cfg['latest_checkpoint']
         while check_email_thread.keep:
             
-            print(f'Reading mail box from {checkpoint} to {datetime.datetime.now()}')
+            print_color(f'Reading mail box from {checkpoint} to {datetime.datetime.now()}', text_format.BOLD)
             
             tmp_checkpoint = datetime.datetime.now() - datetime.timedelta(seconds = 8)
             mail_list = host_mail.read_email(time_from = checkpoint)
@@ -57,7 +56,7 @@ def check_email_thread(host_mail, timeout = 15):
             for mail in mail_list:
                 print_color('Send from: ' + mail['sender'], text_format.YELLOW)
                 print_color('Subject: ' + mail['subject'], text_format.YELLOW)
-                print_color('-------------------------------------------------------------------------', text_format.OKGREEN)
+                print_color('--------------------------------------------------', text_format.OKGREEN)
                 threading.Thread(target = respond, args = (host_mail, mail, )).start()
             
             time.sleep(timeout)
@@ -78,10 +77,8 @@ from request_handle import parse_request
 def setup():
     cfg = load_config('./configs/app_configs.yaml')
     
-    global configs, host_mail
-    
-    configs['white_list'] = cfg['white_list']
-    configs['autorun'] = cfg['auto_run']
+    GlobalVariables.app_configs['white_list'] = cfg['white_list']
+    GlobalVariables.app_configs['autorun'] = cfg['auto_run']
 
 def main():
     setup()
