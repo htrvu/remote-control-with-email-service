@@ -7,7 +7,6 @@ from thread_targets import *
 from mail_service import MailService
 from remote_control import RemoteControl
 
-
 def main():
     host_mail = None
     try:
