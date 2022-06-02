@@ -1,3 +1,4 @@
+from ast import Global
 import sys
 from PyQt5.QtWidgets import QApplication
 
@@ -5,19 +6,8 @@ from ui.config_window import ConfigWindow
 from ui.tray_icon import TrayIcon
 from mail_service import MailService
 
-from GlobalVariables import app_configs
-
 from utils import *
 from thread_targets import *
-
-def setup():
-    cfg = load_config('./configs/app_configs.yaml')
-    
-    global app_configs
-    
-    app_configs['white_list'] = cfg['white_list']
-    app_configs['autorun'] = cfg['auto_run']
-
 
 class RemoteControl():
     def __init__(self, host_mail: MailService):
@@ -46,33 +36,37 @@ class RemoteControl():
         '''
             Re-setup the configuration, open new thread for the app
         '''
-        setup()
         # destroy thread self.checking_thread and start a new one
-        self.checking_thread.join()
-        self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
-        self.checking_thread.start()
+        # self.checking_thread.join()
+        # self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
+        # self.checking_thread.start()
+        pass
 
     def __run(self):
         '''
             Run the app (first save time of configurations)
         '''
-        setup()
-
-        # Start checking mail box
+        # Start checking mail box and show notifications
         self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
+        self.checking_thread.daemon = True
         self.checking_thread.start()
-        threading.Thread(target = show_notification_thead, args = ()).start()
-        self.checking_thread.join()
+        self.noti_thread = threading.Thread(target = show_notification_thead, args = ())
+        self.noti_thread.daemon = True
+        self.noti_thread.start()
 
         # just print for demo
-        # print('Configurations:')
-        # print('Basic controllers:', app_configs['white_list']['basic'])
-        # print('Advanced controllers:', app_configs['white_list']['advanced'])
-        # print('Auto-run:', app_configs['autorun'])
-        # print('----------------------------------------------')
-        # print('Starting application...')
+        print('Configurations:')
+        print('Basic controllers:', GlobalVariables.app_configs['white_list']['basic'])
+        print('Advanced controllers:', GlobalVariables.app_configs['white_list']['advanced'])
+        print('Auto-run:', GlobalVariables.app_configs['auto_run'])
+        print('----------------------------------------------')
+        print('Starting application...')
 
     def exit(self):
         if self.host_mail:
-            self.host_mail.logout()
+            try:
+                self.host_mail.logout()
+            except:
+                pass
+
         sys.exit()
