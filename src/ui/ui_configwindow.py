@@ -20,7 +20,7 @@ class Ui_ConfigWindow(object):
         ConfigWindow.setMinimumSize(QtCore.QSize(800, 600))
         ConfigWindow.setMaximumSize(QtCore.QSize(800, 600))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("ui/assets/icons/remote_logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("ui/assets/icons/remote_tray.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         ConfigWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(ConfigWindow)
         self.centralwidget.setStyleSheet("QPushButton {\n"
@@ -783,7 +783,7 @@ class Ui_ConfigWindow(object):
         self.label_10.setText(_translate("ConfigWindow", "Basic controllers:"))
         self.basicAddBtn.setText(_translate("ConfigWindow", "Add"))
         self.basicRemoveBtn.setText(_translate("ConfigWindow", "Remove"))
-        self.label_13.setText(_translate("ConfigWindow", "V.I.P Controllers:"))
+        self.label_13.setText(_translate("ConfigWindow", "Advanced Controllers:"))
         self.vipAddBtn.setText(_translate("ConfigWindow", "Add"))
         self.vipRemoveBtn.setText(_translate("ConfigWindow", "Remove"))
         self.groupBox_5.setTitle(_translate("ConfigWindow", "Other settings"))
