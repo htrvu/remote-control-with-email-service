@@ -6,8 +6,7 @@ import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
 
 from constants import SMTP_HOST, IMAP_HOST, APP_REQ
-
-from GlobalVariables import app_configs
+import GlobalVariables
 
 class MailService:
     def __init__(self):
@@ -72,8 +71,8 @@ class MailService:
 
                 if not time_in_range(time_from, time_to, date) \
                     or not subject.startswith(APP_REQ) \
-                    or (sender not in app_configs['white_list']['basic']
-                    and sender not in app_configs['white_list']['advanced']):
+                    or (sender not in GlobalVariables.app_configs['white_list']['basic']
+                    and sender not in GlobalVariables.app_configs['white_list']['advanced']):
                     continue
 
                 mail_list.append({
