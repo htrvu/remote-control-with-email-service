@@ -2,20 +2,20 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QWidget
 import sys
+import os
 
 sys.path.append('..')
 
 from ui.ui_configwindow import Ui_ConfigWindow
 from ui.whitelist_dialog import WhiteListDialog
-from GlobalVariables import app_configs
+import global_variables
 from ui.components.my_messagebox import MyMessageBox
 
-import yaml
+from utils import *
 
 class MySignals(QObject):
     open = pyqtSignal()
     run = pyqtSignal()
-    save = pyqtSignal()
     exit = pyqtSignal()
 
 class ConfigWindow(QtWidgets.QMainWindow):
@@ -36,8 +36,12 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.__set_btn_slots()
         self.__load_instructions()
 
+    def auto_run_setup(self):
         # running status
         self.is_running = False
+
+        if global_variables.app_configs['auto_run']:
+            self.__run(close = False)
 
     def __load_instructions(self):
         with open('ui/assets/docs/instructions.html') as f:
@@ -64,11 +68,11 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.basicList.clear()
         self.ui.advancedList.clear()
 
-        for mail in app_configs['white_list']['basic']:
+        for mail in global_variables.app_configs['white_list']['basic']:
             self.ui.basicList.addItem(mail)
-        for mail in app_configs['white_list']['advanced']:
+        for mail in global_variables.app_configs['white_list']['advanced']:
             self.ui.advancedList.addItem(mail)
-        self.ui.autoRunBox.setChecked(app_configs['autorun'])
+        self.ui.autoRunBox.setChecked(global_variables.app_configs['auto_run'])
 
     def __stacked_index_slots(self, index):
         return lambda : self.ui.stackedWidget.setCurrentIndex(index)
@@ -78,15 +82,15 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.insBtn.clicked.connect(self.__stacked_index_slots(1))
         self.ui.configBtn.clicked.connect(self.__open_config_page)  # the data represented in this page is just a 'copy' of self.config
         self.ui.aboutBtn.clicked.connect(self.__stacked_index_slots(3))
-        self.ui.runBtn.clicked.connect(self.__run)
+        self.ui.runBtn.clicked.connect(lambda: self.__run(close = True))
         self.ui.exitBtn.clicked.connect(self.__exit)
 
         # Configurations buttons
         self.ui.configSaveBtn.clicked.connect(self.__save_config)
         self.ui.basicAddBtn.clicked.connect(lambda: self.__add_controller_dialog(is_basic=True))
-        self.ui.vipAddBtn.clicked.connect(lambda: self.__add_controller_dialog(is_basic=False))
+        self.ui.advancedAddBtn.clicked.connect(lambda: self.__add_controller_dialog(is_basic=False))
         self.ui.basicRemoveBtn.clicked.connect(lambda: self.__remove_controller(self.ui.basicList))
-        self.ui.vipRemoveBtn.clicked.connect(lambda: self.__remove_controller(self.ui.advancedList))
+        self.ui.advancedRemoveBtn.clicked.connect(lambda: self.__remove_controller(self.ui.advancedList))
 
         # Back home buttons
         self.ui.insBackBtn.clicked.connect(self.__stacked_index_slots(0))
@@ -138,7 +142,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         # Get the configurations from UI
         new_configs = {
             'white_list': {},
-            'autorun': False
+            'auto_run': False
         }
         basic, advanced = [], []
     
@@ -149,18 +153,24 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         new_configs['white_list']['basic'] = basic
         new_configs['white_list']['advanced'] = advanced
-        new_configs['autorun'] = self.ui.autoRunBox.isChecked()
+        new_configs['auto_run'] = self.ui.autoRunBox.isChecked()
+
+        # Set new_configs to global config
+        global_variables.app_configs = new_configs
 
         # Save the config file
-        with open('configs/app_configs.yaml', 'w') as f:
-            yaml.dump(new_configs, f)
+        save_config(new_configs, global_variables.configs_file_path)
 
-        if new_configs['autorun']:
-            # create bash file for start up
-            pass
+        if new_configs['auto_run']:
+            path = get_startup_path() + '\\' + 'RemoteControl.lnk'
+            target = global_variables.app_location + '\\' + sys.argv[0]
+            w_dir = global_variables.app_location
+            icon = global_variables.app_location + '\\ui\\assets\\icons\\remote_logo.ico'
+            create_shortcut(path, target, w_dir, icon)
         else:
-            # remove bash file for start up (if exists)
-            pass
+            path = get_startup_path() + '\\' + 'RemoteControl.lnk'
+            if os.path.exists(path):
+                os.remove(path)
 
         # Notify user
         msg = 'Configurations saved'
@@ -173,16 +183,13 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         self.ui.stackedWidget.setCurrentIndex(0)
 
-        if self.is_running:
-            self.signals.save.emit()
-
-    def __run(self):
+    def __run(self, close = True):
         if not self.is_running:
-            self.close()
             self.signals.run.emit()
-            self.ui.runBtn.setText("Close")
+            self.ui.runBtn.setText("Hide")
             self.is_running = True
-        else:
+
+        if close:
             self.close()
 
     def __exit(self):

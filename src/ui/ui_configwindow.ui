@@ -783,7 +783,7 @@ QScrollBar::sub-line:vertical {
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="vipAddBtn">
+                 <widget class="QPushButton" name="advancedAddBtn">
                   <property name="font">
                    <font>
                     <family>SVN-Cookies</family>
@@ -799,7 +799,7 @@ QScrollBar::sub-line:vertical {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="vipRemoveBtn">
+                 <widget class="QPushButton" name="advancedRemoveBtn">
                   <property name="font">
                    <font>
                     <family>SVN-Cookies</family>

@@ -37,7 +37,10 @@ def parse_key_event(event: KeyboardEvent):
     return res
 
 def get_key_log(duration = 5):
+    print('Duration of keylogger:', duration)
+    
     logger = []
+    duration = int(duration)
     
     _time = datetime.datetime.now()
     

@@ -2,7 +2,7 @@ import shlex
 import constants
 
 from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
-import GlobalVariables
+import global_variables
 
 request_tree = {
     'basic' : {
@@ -11,11 +11,11 @@ request_tree = {
         },
         'app' : {
             'get': [0, app.get_apps], 
-            'close': [1, None]
+            'close': [1, app.close_app]
         },
         'process': {
             'get': [0, process.get_processes],
-            'close': [1, None]
+            'close': [1, process.close_process]
         }, 
         'keylogger': {
             'get': [1, keylogger.get_key_log]
@@ -42,7 +42,7 @@ request_tree = {
         'registry': {
             'get': [1, registry.get_value],
             'add_key': [1, registry.add_key],
-            'add_subkey': [3, registry.add_value],
+            'add_value': [3, registry.add_value],
             'modify': [3, registry.modify_value],
             'delete_value': [1, registry.delete_value],
             'delete_key': [1, registry.delete_key],
@@ -57,19 +57,19 @@ request_tree = {
 }
 
 def parse_request(mail_content):
-    sender, header = mail_content['sender'], mail_content['subject'] 
+    sender, header = mail_content['sender'], mail_content['subject']
     tokens = shlex.split(header)
     
     raw_command = ' '.join(tokens[1:])
-    if sender not in app_configs['white_list']['basic'] and sender not in app_configs['white_list']['advanced']:
+    if sender not in global_variables.app_configs['white_list']['basic'] and sender not in global_variables.app_configs['white_list']['advanced']:
         return {
-            'msg': 'Permission denied',
+            'msg': 'Permission denied.',
             'command': raw_command
         }
     
-    if (tokens[0] != constants.APP_REQ):
+    if (tokens[0].upper() != constants.APP_REQ):
         return {
-            'msg': 'Wrong request format',
+            'msg': 'Wrong request format.',
             'command': raw_command
         }
     
@@ -77,7 +77,7 @@ def parse_request(mail_content):
     
     if len(tokens) == 0:
         return {
-            'msg': 'Command not found',
+            'msg': 'Command not found.',
             'command': raw_command
         }
     
@@ -86,50 +86,49 @@ def parse_request(mail_content):
     if tokens[0].lower() in request_tree['basic']:
         tree = request_tree['basic']
     elif tokens[0].lower() in request_tree['advanced']:
-        if sender not in app_configs['white_list']['advanced']:
+        if sender not in global_variables.app_configs['white_list']['advanced']:
             return {
-                'msg': 'Permision denied',
+                'msg': 'This command can only be used by advanced controllers.',
                 'command': raw_command
             }
         tree = request_tree['advanced']
 
     if not tree:
         return {
-            'msg': 'Command not found',
+            'msg': 'Command not found.',
             'command': raw_command
         }
     
     func, param = None, []
-
+    # tokens: APP get
     tokens_count = len(tokens)
     
-    for i  in range(len(tokens)):
+    for i in range(len(tokens)):
         node = tokens[i]
         
         if node.lower() in tree.keys():
             tree = tree[node.lower()]
-            print(type(tree) != dict)
         else:
             return {
-                'msg' : f'Command not found {" ".join(tokens[ : i])}',
+                'msg' : f'Command not found {" ".join(tokens[ : i])}.',
                 'command': raw_command
             }
             
         if type(tree) != dict:
-            if i + tree[0] >= tokens_count:
+            if i + tree[0] >= tokens_count :
                 return {
-                    'msg': f'Function {" ".join(tokens)} takes at least {tree[0]} arguments. Given {len(tokens) - 1 - i}',
+                    'msg': f'Function {" ".join(tokens)} takes at least {tree[0]} arguments. Given {len(tokens) - 1 - i}.',
                     'command': raw_command
                 }
             
             func = tree[1]
-            param = tokens[i : i + tree[0]]
+            param = tokens[i + 1 : i + 1 + tree[0]]
             
             break
         
     return {
         'function': func,
         'params': param,
-        'msg': 'Parse request successfully',
+        'msg': 'Parse request successfully.',
         'command': raw_command
     }

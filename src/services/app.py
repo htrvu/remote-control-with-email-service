@@ -90,6 +90,8 @@ def close_app(id):
     '''
         Close a running app with pID is `id`. Return a dictionary with keys `html` and `data`, where `html` is the HTML of output message
     '''
+    print('App to be closed:', id)
+    
     status, msg = __closing(id)
     response = {
         'html': html_msg(msg, status, bold_all=True),

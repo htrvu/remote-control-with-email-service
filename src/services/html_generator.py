@@ -190,6 +190,10 @@ def html_mail(request, content):
                 overflow: hidden;
             }
 
+            table td, table th {
+                font-size: 14px;
+            }
+
             table.left {
                 text-align: left;
             }

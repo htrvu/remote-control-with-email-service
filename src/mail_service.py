@@ -2,20 +2,16 @@ import imaplib
 import email
 from utils import *
 import email.message
-import datetime
 from smtplib import SMTP_SSL, SMTP_SSL_PORT
 
 from constants import SMTP_HOST, IMAP_HOST, APP_REQ
-import GlobalVariables
 
 class MailService:
     def __init__(self):
         self.imap_server = imaplib.IMAP4_SSL(IMAP_HOST)
         self.smtp_server = SMTP_SSL(SMTP_HOST, port = SMTP_SSL_PORT)
 
-    def login(self, username, password):
-        print_color('Login to mail server...', text_format.OKGREEN)
-        
+    def login(self, username, password):        
         try:
             self.imap_server.login(username, password)
             self.smtp_server.login(username, password)
@@ -28,23 +24,13 @@ class MailService:
         self.imap_server.logout()
         self.smtp_server.quit()
 
-    def read_email (
-        self,
-        time_from: datetime.datetime, 
-        time_to = datetime.datetime.now() + datetime.timedelta(days = 1), 
-        category = 'primary', 
-        box = 'inbox'
-    ):  
+    def read_email (self, category = 'primary', box = 'inbox'):  
         mail_list = []
         
-        date_from_str = time_from.strftime(date_format_str())
-        date_to_str = time_to.strftime(date_format_str())
-        
         try:
-            self.imap_server.select('inbox')
+            self.imap_server.select(box)
 
-            status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:{box} after:{date_from_str} before:{date_to_str}"')
-            # status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
+            status, mail_ids = self.imap_server.search(None, f'X-GM-RAW "category:{category} in:unread"')
             
             id_list = mail_ids[0].split()
             if len(id_list) == 0:
@@ -69,10 +55,7 @@ class MailService:
                 if encoding:
                     subject = str(subject, encoding)
 
-                if not time_in_range(time_from, time_to, date) \
-                    or not subject.startswith(APP_REQ) \
-                    or (sender not in GlobalVariables.app_configs['white_list']['basic']
-                    and sender not in GlobalVariables.app_configs['white_list']['advanced']):
+                if not subject.upper().startswith(APP_REQ):
                     continue
 
                 mail_list.append({
