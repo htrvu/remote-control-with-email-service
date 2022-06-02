@@ -12,14 +12,14 @@ import numpy as np
 from .html_generator import html_msg
 
 sys.path.append('..')
-import GlobalVariables
+import global_variables
 
 def screen_shot():
     im = ImageGrab.grab()
-    shots_path = GlobalVariables.screen_path + '/shots'
+    shots_path = global_variables.screen_path + '/shots'
     try:
-        if not os.path.exists(GlobalVariables.screen_path):
-            os.mkdir(GlobalVariables.screen_path)
+        if not os.path.exists(global_variables.screen_path):
+            os.mkdir(global_variables.screen_path)
         os.mkdir(shots_path)
     except: pass
     filename = f'{shots_path}/screen_{int(time.time())}.png'
@@ -35,14 +35,16 @@ def screen_shot():
     return response
 
 def screen_record(elapse_time=10):
+    elapse_time = int(elapse_time)
+    
     SCREEN_SIZE = GetSystemMetrics(0), GetSystemMetrics(1) 
     fourcc = cv2.VideoWriter_fourcc(*"mp4v") # codec
     fps = 30
 
-    records_path = GlobalVariables.screen_path + '/records'
+    records_path = global_variables.screen_path + '/records'
     try:
-        if not os.path.exists(GlobalVariables.screen_path):
-            os.mkdir(GlobalVariables.screen_path)
+        if not os.path.exists(global_variables.screen_path):
+            os.mkdir(global_variables.screen_path)
         os.mkdir(records_path)
     except: pass
     filename = f'{records_path}/screen_{int(time.time())}_{elapse_time}s.mp4'

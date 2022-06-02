@@ -6,9 +6,11 @@ import os
 from .html_generator import html_msg
 
 sys.path.append('..')
-import GlobalVariables
+import global_variables
 
 def webcam_record(elapse_time=10):
+    elapse_time = int(elapse_time)
+    
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if cap is None or not cap.isOpened():
         msg = 'Cannot capture from webcam.'
@@ -20,10 +22,10 @@ def webcam_record(elapse_time=10):
 
     fps = 30
 
-    records_path = GlobalVariables.webcam_path + '/records'
+    records_path = global_variables.webcam_path + '/records'
     try:
-        if not os.path.exists(GlobalVariables.webcam_path):
-            os.mkdir(GlobalVariables.webcam_path)
+        if not os.path.exists(global_variables.webcam_path):
+            os.mkdir(global_variables.webcam_path)
         os.mkdir(records_path)
     except:
         pass
@@ -63,17 +65,17 @@ def webcam_shot():
     if cap is None or not cap.isOpened():
         msg = 'Cannot capture from webcam.'
         response = {
-            'html': html_msg(msg, False),
+            'html': html_msg(msg, False, bold_all=True),
             'data': None
         }
         return response
 
     _, frame = cap.read()
 
-    shots_path = GlobalVariables.webcam_path + '/shots'
+    shots_path = global_variables.webcam_path + '/shots'
     try:
-        if not os.path.exists(GlobalVariables.webcam_path):
-            os.mkdir(GlobalVariables.webcam_path)
+        if not os.path.exists(global_variables.webcam_path):
+            os.mkdir(global_variables.webcam_path)
         os.mkdir(shots_path)
     except: pass
     filename = f'{shots_path}/webcam_{int(time.time())}.png'
@@ -86,7 +88,7 @@ def webcam_shot():
     msg = 'The webcam capture is attached below.'
     data = open(filename, 'rb').read()
     response = {
-        'html': html_msg(msg, True),
+        'html': html_msg(msg, True, bold_all=True),
         'data': (os.path.basename(filename), data)
     }
     os.remove(filename)
