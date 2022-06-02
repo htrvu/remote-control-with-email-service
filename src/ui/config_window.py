@@ -7,7 +7,7 @@ sys.path.append('..')
 
 from ui.ui_configwindow import Ui_ConfigWindow
 from ui.whitelist_dialog import WhiteListDialog
-from GlobalVariables import app_configs
+import GlobalVariables
 from ui.components.my_messagebox import MyMessageBox
 
 import yaml
@@ -64,11 +64,11 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.basicList.clear()
         self.ui.advancedList.clear()
 
-        for mail in app_configs['white_list']['basic']:
+        for mail in GlobalVariables.app_configs['white_list']['basic']:
             self.ui.basicList.addItem(mail)
-        for mail in app_configs['white_list']['advanced']:
+        for mail in GlobalVariables.app_configs['white_list']['advanced']:
             self.ui.advancedList.addItem(mail)
-        self.ui.autoRunBox.setChecked(app_configs['autorun'])
+        self.ui.autoRunBox.setChecked(GlobalVariables.app_configs['autorun'])
 
     def __stacked_index_slots(self, index):
         return lambda : self.ui.stackedWidget.setCurrentIndex(index)
@@ -138,7 +138,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         # Get the configurations from UI
         new_configs = {
             'white_list': {},
-            'autorun': False
+            'auto_run': False
         }
         basic, advanced = [], []
     
@@ -149,13 +149,16 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         new_configs['white_list']['basic'] = basic
         new_configs['white_list']['advanced'] = advanced
-        new_configs['autorun'] = self.ui.autoRunBox.isChecked()
+        new_configs['auto_run'] = self.ui.autoRunBox.isChecked()
+
+        # Set new_configs to global config
+        GlobalVariables.app_configs = new_configs
 
         # Save the config file
         with open('configs/app_configs.yaml', 'w') as f:
             yaml.dump(new_configs, f)
 
-        if new_configs['autorun']:
+        if new_configs['auto_run']:
             # create bash file for start up
             pass
         else:
@@ -180,7 +183,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         if not self.is_running:
             self.close()
             self.signals.run.emit()
-            self.ui.runBtn.setText("Close")
+            self.ui.runBtn.setText("Hide")
             self.is_running = True
         else:
             self.close()
