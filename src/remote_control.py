@@ -5,18 +5,16 @@ from ui.config_window import ConfigWindow
 from ui.tray_icon import TrayIcon
 from mail_service import MailService
 
-from GlobalVariables import app_configs
+import GlobalVariables
 
 from utils import *
 from thread_targets import *
 
 def setup():
-    cfg = load_config('./configs/app_configs.yaml')
+    cfg = load_config(GlobalVariables.configs_file_path)
     
-    global app_configs
-    
-    app_configs['white_list'] = cfg['white_list']
-    app_configs['autorun'] = cfg['auto_run']
+    GlobalVariables.app_configs['white_list'] = cfg['white_list']
+    GlobalVariables.app_configs['auto_run'] = cfg['auto_run']
 
 
 class RemoteControl():
