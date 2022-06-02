@@ -28,14 +28,6 @@ def main():
         exit(1)
     
     RemoteControl(host_mail).start()
-
-    # checking_thread = threading.Thread(target = check_email_thread, args = (host_mail, ))
-    # checking_thread.start()
-    # threading.Thread(target = show_notification_thead, args = ()).start()
     
-    # checking_thread.join()
-    # if host_mail:
-        # host_mail.logout()
-
 if __name__ == '__main__':
     main()  

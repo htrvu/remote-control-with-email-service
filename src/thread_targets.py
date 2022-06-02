@@ -19,8 +19,8 @@ def show_notification_thead(timeout = 300):
 
         time.sleep(timeout)
 
-def check_email_thread(host_mail, timeout = 15):    
-    cfg = load_config()
+def check_email_thread(host_mail, timeout = 15):   
+    cfg = load_config(GlobalVariables.checkpoint_file_path)
     try:
         checkpoint = cfg['latest_checkpoint']
         while True:
@@ -31,7 +31,7 @@ def check_email_thread(host_mail, timeout = 15):
             mail_list = host_mail.read_email(time_from = checkpoint)
             checkpoint = tmp_checkpoint
             
-            update_config_value('latest_checkpoint', checkpoint)
+            update_config_value('latest_checkpoint', checkpoint, GlobalVariables.checkpoint_file_path)
             
             for mail in mail_list:
                 print_color('Send from: ' + mail['sender'], text_format.YELLOW)

@@ -2,7 +2,7 @@ import shlex
 import constants
 
 from services import app, help, keylogger, mac, pc, process, registry, screen, webcam, explorer
-from GlobalVariables import app_configs
+import GlobalVariables
 
 request_tree = {
     'basic' : {

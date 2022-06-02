@@ -57,6 +57,10 @@ class text_format:
 def load_config(config_file = GlobalVariables.checkpoint_file_path):
     with open(config_file, 'r') as f:
         return yaml.safe_load(f)
+    
+def save_config(config, file_Path):
+    with open(file_Path, 'r') as fp:
+        return yaml.safe_load(config, fp)
 
 def update_config_value(key, value, filename = GlobalVariables.checkpoint_file_path):
     yaml_dict = load_config(filename)
