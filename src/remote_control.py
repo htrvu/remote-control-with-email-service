@@ -1,4 +1,3 @@
-from ast import Global
 import sys
 from PyQt5.QtWidgets import QApplication
 
@@ -20,7 +19,6 @@ class RemoteControl():
 
         # Signals from ConfigWindow
         self.config_window.signals.run.connect(self.__run)
-        self.config_window.signals.save.connect(self.__save)
         self.config_window.signals.exit.connect(self.exit)
         
         # Signals from TrayIcon
@@ -30,17 +28,8 @@ class RemoteControl():
     def start(self):
         self.tray_icon.show()
         self.config_window.show()
+        self.config_window.auto_run_setup()
         sys.exit(self.app.exec_())
-
-    def __save(self):
-        '''
-            Re-setup the configuration, open new thread for the app
-        '''
-        # destroy thread self.checking_thread and start a new one
-        # self.checking_thread.join()
-        # self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
-        # self.checking_thread.start()
-        pass
 
     def __run(self):
         '''
@@ -50,17 +39,17 @@ class RemoteControl():
         self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
         self.checking_thread.daemon = True
         self.checking_thread.start()
-        self.noti_thread = threading.Thread(target = show_notification_thead, args = ())
+        self.noti_thread = threading.Thread(target = show_notification_thread, args = ())
         self.noti_thread.daemon = True
         self.noti_thread.start()
 
         # just print for demo
-        print('Configurations:')
-        print('Basic controllers:', GlobalVariables.app_configs['white_list']['basic'])
-        print('Advanced controllers:', GlobalVariables.app_configs['white_list']['advanced'])
-        print('Auto-run:', GlobalVariables.app_configs['auto_run'])
-        print('----------------------------------------------')
-        print('Starting application...')
+        # print('Configurations:')
+        # print('Basic controllers:', global_variables.app_configs['white_list']['basic'])
+        # print('Advanced controllers:', global_variables.app_configs['white_list']['advanced'])
+        # print('Auto-run:', global_variables.app_configs['auto_run'])
+        # print('----------------------------------------------')
+        # print('Starting application...')
 
     def exit(self):
         if self.host_mail:
