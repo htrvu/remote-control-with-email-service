@@ -2,9 +2,9 @@ import base64
 import yaml
 import re
 import email.message
-import datetime
+import subprocess
 
-import GlobalVariables
+from win32com.client import Dispatch
 
 def base64_decode(str):
     str = base64.b64decode(str)
@@ -54,15 +54,15 @@ class text_format:
     RED = ['\033[91m', '']
     EXCEPTION = ['\033[91m', '[Exception]: ']
 
-def load_config(config_file = GlobalVariables.checkpoint_file_path):
+def load_config(config_file):
     with open(config_file, 'r') as f:
         return yaml.safe_load(f)
     
 def save_config(config, file_Path):
-    with open(file_Path, 'r') as fp:
-        return yaml.safe_load(config, fp)
+    with open(file_Path, 'w') as fp:
+        return yaml.dump(config, fp)
 
-def update_config_value(key, value, filename = GlobalVariables.checkpoint_file_path):
+def update_config_value(key, value, filename):
     yaml_dict = load_config(filename)
     
     yaml_dict[key] = value
@@ -80,23 +80,33 @@ def print_indent(messages, level = 1, option = text_format.NORMAL, end = '\n'):
     for message in messages:
         print('\t' * level, end = '')
         print_color(message, option, end = end)
-    
-def date_format_str():
-    return r"%Y-%m-%d"
 
-def datetime_format_str():
-    return r"%Y-%m-%d %H:%M:%S"
+def get_startup_path():
+    cmd = '''echo %appdata%\Microsoft\Windows\Start Menu\Programs\Startup'''
 
-def date_today():
-    return datetime.datetime.now().strftime(date_format_str())
+    result = subprocess.check_output(cmd, shell=True)
 
-def datetime_now_str():
-    return datetime.datetime.now().strftime(datetime_format_str())
+    result = result.decode('utf-8')
+    result = result.replace('\n', '')
+    result = result.replace('\r', '')
+    result = result.replace('"', '')
 
-def time_in_range(start: datetime.datetime, end: datetime.datetime, x: datetime.datetime):
-    
-    start = start.timestamp()
-    end = end.timestamp()
-    x = x.timestamp()
-    
-    return start <= x <= end
+    return result
+
+def create_shortcut(path, target='', wDir='', icon=''):
+    '''
+    Example:
+        path = os.path.join(desktop, "Media Player Classic.lnk")
+        target = r"P:\Media\Media Player Classic\mplayerc.exe"
+        wDir = r"P:\Media\Media Player Classic"
+        icon = r"P:\Media\Media Player Classic\mplayerc.ico"
+    '''
+    shell = Dispatch('WScript.Shell')
+    shortcut = shell.CreateShortCut(path)
+    shortcut.Targetpath = target
+    shortcut.WorkingDirectory = wDir
+    if icon == '':
+        pass
+    else:
+        shortcut.IconLocation = icon
+    shortcut.save()
