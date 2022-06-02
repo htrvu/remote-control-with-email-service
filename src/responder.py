@@ -8,16 +8,29 @@ def respond(host_mail: MailService, mail):
     parse_result = parse_request(mail)
     
     response = None
-    
-    if not parse_result or 'function' not in parse_result:
+
+    if parse_result['msg'] == 'Permission denied.':
         response = {
-            'html': html_msg(parse_result['msg'], False),
-            'data': None 
+            'html': html_msg('You are not allowed to controller this PC.', status=False, bold_all=True),
+            'data': None
         }
     else:
-        func = parse_result['function']
-        params = parse_result['params']
-        response = func(*params)
+        
+        if not parse_result or 'function' not in parse_result:
+            response = {
+                'html': html_msg(parse_result['msg'], status=False, bold_all=True),
+                'data': None 
+            }
+        else:
+            func = parse_result['function']
+            params = parse_result['params']
+            try:
+                response = func(*params)
+            except:
+                response = {
+                    'html': html_msg('The format of arguments might be incorrect.', status=False, bold_all=True),
+                    'data': None
+                }
         
     content = {
         'html': html_mail(parse_result['command'], response['html']),
