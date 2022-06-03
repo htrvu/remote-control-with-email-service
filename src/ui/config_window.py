@@ -172,8 +172,8 @@ class ConfigWindow(QtWidgets.QMainWindow):
                 runner = 'python'
                 argument = '"' + global_variables.app_location + "\\" + sys.argv[0] + '"'
             else:
-                runner = 'cmd.exe'
-                argument = f'/C "{sys.argv[0]}"'
+                runner = sys.argv[0]
+                argument = None
 
             create_shortcut(path, runner, argument, w_dir, icon)
    
