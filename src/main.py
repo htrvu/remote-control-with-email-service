@@ -2,7 +2,6 @@ from utils import *
 from constants import *
 from thread_targets import *
 
-from mail_service import MailService
 from remote_control import RemoteControl
 
 import global_variables
