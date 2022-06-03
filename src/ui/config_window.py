@@ -165,14 +165,15 @@ class ConfigWindow(QtWidgets.QMainWindow):
             is_running_with_script = sys.argv[0].endswith('.py')
             path = get_startup_path() + '\\' + 'RemoteControl.lnk'
             
-            runner = 'python' if is_running_with_script else 'cmd.exe'
             target = global_variables.app_location + "\\" + sys.argv[0]
-            
-            # target = 'python ' + global_variables.app_location + "\\" + sys.argv[0]
             
             w_dir = global_variables.app_location
             icon = global_variables.app_location + '\\ui\\assets\\icons\\remote_logo.ico'
-            create_shortcut(path, runner, target, w_dir, icon)
+            
+            if is_running_with_script:
+                create_shortcut(path, 'python', target, w_dir, icon)
+            else:
+                create_shortcut(path, target, '', w_dir, icon)
         else:
             path = get_startup_path() + '\\' + 'RemoteControl.lnk'
             if os.path.exists(path):
