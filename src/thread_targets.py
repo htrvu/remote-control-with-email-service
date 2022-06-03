@@ -13,9 +13,9 @@ def show_notification_thread(timeout = 300):
     logging.log('Notification thread is running')
     while True:
         notification.notify (
-            title = "Remote control with email service",
-            message = "Remote control is running",
-            app_name = 'Remote control with email service',
+            title = "Remote Control with Email Service",
+            message = "Remote Control is running",
+            app_name = 'Remote Control with Email Service',
             app_icon = 'ui/assets/icons/remote_logo.ico',
             timeout = 5
         )
