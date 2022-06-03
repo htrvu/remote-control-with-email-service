@@ -94,19 +94,21 @@ def get_startup_path():
 
     return result
 
-def create_shortcut(path, runner, target='', wDir='', icon=''):
+def create_shortcut(path, runner, argument='', wDir='', icon=''):
     '''
     Example:
         path = os.path.join(desktop, "Media Player Classic.lnk")
-        target = r"P:\Media\Media Player Classic\mplayerc.exe"
-        wDir = r"P:\Media\Media Player Classic"
-        icon = r"P:\Media\Media Player Classic\mplayerc.ico"
+        runner = 'cmd.exe'
+        argument = r'/C "P:\Media\Media Player Classic\mplayerc.exe"'
+        wDir = r'P:\Media\Media Player Classic'
+        icon = r'P:\Media\Media Player Classic\mplayerc.ico'
     '''
     
     shell = Dispatch('WScript.Shell')
     shortcut = shell.CreateShortCut(path)
     shortcut.Targetpath = runner
-    shortcut.Arguments  = target
+    if argument != '':
+        shortcut.Arguments  = argument
     shortcut.WorkingDirectory = wDir
     
     if icon == '':
