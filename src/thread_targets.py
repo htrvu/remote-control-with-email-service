@@ -30,7 +30,7 @@ def logging_thread(logfilepath = './g8rc.log', timeout = 5):
         logging.save()
         time.sleep(timeout)
 
-def check_email_thread(host_mail, timeout = 15):
+def check_email_thread(host_mail, timeout = 8):
     logging.log('Check mail thread is running')
     try:
         while True:
