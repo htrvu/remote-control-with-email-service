@@ -15,7 +15,7 @@ from utils import *
 
 class MySignals(QObject):
     open = pyqtSignal()
-    run = pyqtSignal()
+    run = pyqtSignal(bool, bool)    # close_window, is_running
     exit = pyqtSignal()
 
 class ConfigWindow(QtWidgets.QMainWindow):
@@ -190,13 +190,15 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(0)
 
     def __run(self, close = True):
+        is_running = self.is_running
+
         if not self.is_running:
-            self.signals.run.emit()
             self.ui.runBtn.setText("Hide")
             self.is_running = True
+        
+        self.signals.run.emit(close, is_running)
 
-        if close:
-            self.close()
+
 
     def __exit(self):
         self.close()
