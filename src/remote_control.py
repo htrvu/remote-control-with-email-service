@@ -7,15 +7,16 @@ from mail_service import MailService
 
 from utils import *
 from thread_targets import *
+import app_logging as logging
 
 class RemoteControl():
-    def __init__(self, host_mail: MailService):
+    def __init__(self):
         self.app = QApplication(sys.argv)
         QApplication.setQuitOnLastWindowClosed(False)
 
         self.config_window = ConfigWindow()
         self.tray_icon = TrayIcon('ui/assets/icons/remote_tray.png', parent=self.app)
-        self.host_mail = host_mail
+        self.host_mail = None
 
         # Signals from ConfigWindow
         self.config_window.signals.run.connect(self.__run)
@@ -35,6 +36,22 @@ class RemoteControl():
         '''
             Run the app (first save time of configurations)
         '''
+        
+        try:
+            print_color('Login to mail server...', text_format.OKGREEN)
+            logging.log('Login to mail server...')
+            self.host_mail = MailService()
+            self.host_mail.login(REMOTE_MAIL, REMOTE_PWD)
+            print_color('Login successfully', text_format.OKGREEN)
+        except Exception as e:
+            print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)
+            print_color('Full detail below:', text_format.YELLOW)
+            
+            logging.log(f'Failed to login with login with name: {REMOTE_MAIL}\nTraceback: \n{e}')
+            
+            print_indent(str(e), level = 1, option = text_format.RED)
+            exit(1)
+        
         # Start checking mail box and show notifications
         self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
         self.checking_thread.daemon = True
@@ -54,8 +71,12 @@ class RemoteControl():
     def exit(self):
         if self.host_mail:
             try:
+                logging.log('Logout mail server...')
                 self.host_mail.logout()
             except:
+                logging.log('Exceptinon raised white loging out')
                 pass
-
+        
+        logging.log('App close')
+        logging.save()
         sys.exit()
