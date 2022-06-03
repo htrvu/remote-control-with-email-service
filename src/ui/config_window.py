@@ -168,12 +168,12 @@ class ConfigWindow(QtWidgets.QMainWindow):
             w_dir = global_variables.app_location
             icon = global_variables.app_location + '\\ui\\assets\\icons\\remote_logo.ico'
             
+            argument = ''
             if is_running_with_script:
                 runner = 'python'
                 argument = '"' + global_variables.app_location + "\\" + sys.argv[0] + '"'
             else:
                 runner = sys.argv[0]
-                argument = None
 
             create_shortcut(path, runner, argument, w_dir, icon)
    

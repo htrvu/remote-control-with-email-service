@@ -107,7 +107,8 @@ def create_shortcut(path, runner, argument='', wDir='', icon=''):
     shell = Dispatch('WScript.Shell')
     shortcut = shell.CreateShortCut(path)
     shortcut.Targetpath = runner
-    shortcut.Arguments  = argument
+    if argument != '':
+        shortcut.Arguments  = argument
     shortcut.WorkingDirectory = wDir
     
     if icon == '':
