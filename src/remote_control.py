@@ -67,7 +67,6 @@ class RemoteControl():
             After that, the Run button will become Hide button, the config window will closed or not based on close_window
         '''
         self.__dialog.close()
-        print(close_window)
         if status == True:
             # Start checking mail box and show notifications
             self.checking_thread = threading.Thread(target = check_email_thread, args = (self.host_mail, ))
@@ -82,7 +81,7 @@ class RemoteControl():
 
     def __run(self, close_window):
         '''
-            Run the app (first save time of configurations or auto-run)
+            Run the app (first run button click or auto-run)
         '''
         self.__dialog = MyDialog('Message', 'Loginning to Mail Server...', self.config_window)
         self.__dialog.show()
