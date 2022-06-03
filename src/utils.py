@@ -96,12 +96,16 @@ def get_startup_path():
 
 def create_shortcut(path, runner, argument='', wDir='', icon=''):
     '''
-    Example:
-        path = os.path.join(desktop, "Media Player Classic.lnk")
-        runner = 'cmd.exe'
-        argument = r'/C "P:\Media\Media Player Classic\mplayerc.exe"'
-        wDir = r'P:\Media\Media Player Classic'
-        icon = r'P:\Media\Media Player Classic\mplayerc.ico'
+    If this shorcut leads to an exe file, runner will be path to exe and we will not set argument.
+    Otherwise, for example, .py file is target, so:
+        runner = 'python'
+        argument = ' " <path to .py file> " '
+    
+    wDir is the folder that contains target file
+        Ex: wDir = r'P:\Media\Media Player Classic'
+    
+    icon is just the path to the icon of shortcut
+        Ex: icon = r'P:\Media\Media Player Classic\mplayerc.ico'
     '''
     
     shell = Dispatch('WScript.Shell')
