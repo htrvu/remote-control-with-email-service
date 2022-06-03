@@ -15,7 +15,7 @@ from utils import *
 
 class MySignals(QObject):
     open = pyqtSignal()
-    run = pyqtSignal(bool, bool)    # close_window, is_running
+    run = pyqtSignal(bool)    # close_window flag
     exit = pyqtSignal()
 
 class ConfigWindow(QtWidgets.QMainWindow):
@@ -82,7 +82,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.insBtn.clicked.connect(self.__stacked_index_slots(1))
         self.ui.configBtn.clicked.connect(self.__open_config_page)  # the data represented in this page is just a 'copy' of self.config
         self.ui.aboutBtn.clicked.connect(self.__stacked_index_slots(3))
-        self.ui.runBtn.clicked.connect(lambda: self.__run(close = True))
+        self.ui.runBtn.clicked.connect(lambda: self.__run(True))
         self.ui.exitBtn.clicked.connect(self.__exit)
 
         # Configurations buttons
@@ -190,15 +190,21 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(0)
 
     def __run(self, close = True):
-        is_running = self.is_running
+        if self.is_running:
+            self.background_setup(True)
+        else:
+            self.signals.run.emit(close)
 
+    def background_setup(self, close_window):
+        '''
+            Close window for running background
+        '''
         if not self.is_running:
             self.ui.runBtn.setText("Hide")
             self.is_running = True
-        
-        self.signals.run.emit(close, is_running)
 
-
+        if close_window:
+            self.close()
 
     def __exit(self):
         self.close()
