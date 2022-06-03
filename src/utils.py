@@ -2,6 +2,7 @@ import base64
 import yaml
 import re
 import email.message
+import os
 import subprocess
 
 from win32com.client import Dispatch
@@ -93,7 +94,7 @@ def get_startup_path():
 
     return result
 
-def create_shortcut(path, target='', wDir='', icon=''):
+def create_shortcut(path, runner, target='', wDir='', icon=''):
     '''
     Example:
         path = os.path.join(desktop, "Media Player Classic.lnk")
@@ -101,12 +102,16 @@ def create_shortcut(path, target='', wDir='', icon=''):
         wDir = r"P:\Media\Media Player Classic"
         icon = r"P:\Media\Media Player Classic\mplayerc.ico"
     '''
+    
     shell = Dispatch('WScript.Shell')
     shortcut = shell.CreateShortCut(path)
-    shortcut.Targetpath = target
+    shortcut.Targetpath = runner
+    shortcut.Arguments  = target
     shortcut.WorkingDirectory = wDir
+    
     if icon == '':
         pass
     else:
         shortcut.IconLocation = icon
+    
     shortcut.save()
