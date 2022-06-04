@@ -53,7 +53,7 @@ def __webcam_record(elapse_time=10):
 
     return filename
 
-def webcam_record(elapse_time=10):
+def get_webcam_record(elapse_time=10):
     filename = __webcam_record(elapse_time)
 
     msg = 'The webcam record is attached below.'
@@ -92,7 +92,7 @@ def __webcam_shot():
 
     return filename
 
-def webcam_shot():
+def get_webcam_shot():
     filename = __webcam_shot()
 
     msg = 'The webcam capture is attached below.'

@@ -27,7 +27,7 @@ def __screen_shot():
 
     return filename
 
-def screen_shot():
+def get_screen_shot():
     filename = __screen_shot()
     msg = 'The screenshot is attached below.'
     data = open(filename, 'rb').read()
@@ -62,7 +62,7 @@ def __screen_record(elapse_time=10):
 
     return filename
 
-def screen_record(elapse_time=10):
+def get_screen_record(elapse_time=10):
     filename = __screen_record(elapse_time)
 
     msg = 'The screen record is attached below.'
