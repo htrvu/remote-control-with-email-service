@@ -8,7 +8,7 @@ from .html_generator import html_msg
 sys.path.append('..')
 import global_variables
 
-def webcam_record(elapse_time=10):
+def __webcam_record(elapse_time=10):
     elapse_time = int(elapse_time)
     
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -51,6 +51,11 @@ def webcam_record(elapse_time=10):
     out.release()
     cv2.destroyAllWindows()
 
+    return filename
+
+def webcam_record(elapse_time=10):
+    filename = __webcam_record(elapse_time)
+
     msg = 'The webcam record is attached below.'
     data = open(filename, 'rb').read()
     response = {
@@ -60,7 +65,7 @@ def webcam_record(elapse_time=10):
     os.remove(filename)
     return response
 
-def webcam_shot():
+def __webcam_shot():
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if cap is None or not cap.isOpened():
         msg = 'Cannot capture from webcam.'
@@ -84,6 +89,11 @@ def webcam_shot():
     # Release everything when finished
     cap.release()
     cv2.destroyAllWindows()
+
+    return filename
+
+def webcam_shot():
+    filename = __webcam_shot()
 
     msg = 'The webcam capture is attached below.'
     data = open(filename, 'rb').read()
