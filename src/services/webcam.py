@@ -1,12 +1,8 @@
 import cv2
 import time
-import sys
 import os
 
 from .html_generator import html_msg
-
-sys.path.append('..')
-import global_variables
 
 def __webcam_record(elapse_time=10):
     elapse_time = int(elapse_time)
@@ -21,16 +17,7 @@ def __webcam_record(elapse_time=10):
         return response
 
     fps = 30
-
-    records_path = global_variables.webcam_path + '/records'
-    try:
-        if not os.path.exists(global_variables.webcam_path):
-            os.mkdir(global_variables.webcam_path)
-        os.mkdir(records_path)
-    except:
-        pass
-    
-    filename = f'{records_path}/webcam_{int(time.time())}_{elapse_time}s.mp4'
+    filename = f'./webcam_{int(time.time())}_{elapse_time}s.mp4'
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') # codec
 
@@ -58,11 +45,14 @@ def get_webcam_record(elapse_time=10):
 
     msg = 'The webcam record is attached below.'
     data = open(filename, 'rb').read()
+    
     response = {
         'html': html_msg(msg, True, bold_all=True),
         'data': (os.path.basename(filename), data)
     }
+    
     os.remove(filename)
+    
     return response
 
 def __webcam_shot():
@@ -76,14 +66,7 @@ def __webcam_shot():
         return response
 
     _, frame = cap.read()
-
-    shots_path = global_variables.webcam_path + '/shots'
-    try:
-        if not os.path.exists(global_variables.webcam_path):
-            os.mkdir(global_variables.webcam_path)
-        os.mkdir(shots_path)
-    except: pass
-    filename = f'{shots_path}/webcam_{int(time.time())}.png'
+    filename = f'./webcam_{int(time.time())}.png'
     cv2.imwrite(filename, frame)
 
     # Release everything when finished
@@ -101,5 +84,7 @@ def get_webcam_shot():
         'html': html_msg(msg, True, bold_all=True),
         'data': (os.path.basename(filename), data)
     }
+
     os.remove(filename)
+    
     return response
