@@ -1,7 +1,7 @@
 import os
 from .html_generator import html_msg
 
-def shutdown():
+def __shutdown():
     msg = ''
     try:
         os.system(f'shutdown -s -t 5')
@@ -10,16 +10,17 @@ def shutdown():
     except Exception as e:
         msg = 'There is an error when trying to shut down this device.'
         status = False
+    return status, msg
 
+def shutdown():
+    status, msg = __shutdown()
     result = {
         'html': html_msg(msg, status, bold_all=True),
         'data': None
     }
-
     return result
 
-
-def restart():
+def __restart():
     msg = ''
     try:
         os.system(f'shutdown -r -t 5')
@@ -28,6 +29,10 @@ def restart():
     except Exception as e:
         msg = 'There is an error when trying to restart this device.'
         status = False
+    return status, msg
+
+def restart():
+    status, msg = __restart()
 
     result = {
         'html': html_msg(msg, status, bold_all=True),

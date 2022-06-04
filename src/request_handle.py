@@ -22,14 +22,14 @@ request_tree = {
         },
         'screen': {
             'get' : {
-                'image': [0, screen.screen_shot],
-                'video': [1, screen.screen_record]
+                'image': [0, screen.get_screen_shot],
+                'video': [1, screen.get_screen_record]
             },
         }, 
         'webcam': {
             'get' : {
-                'image': [0, webcam.webcam_shot],
-                'video': [1, webcam.webcam_record]
+                'image': [0, webcam.get_webcam_shot],
+                'video': [1, webcam.get_webcam_record]
             }
         },
         'help': [0, help.show_helps]

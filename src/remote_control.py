@@ -14,29 +14,29 @@ from thread_targets import *
 import app_logging as logging
 
 class LoggingThread(QObject):
-        ok = pyqtSignal(MailService)
-        fail = pyqtSignal()
-        finished = pyqtSignal()
+    ok = pyqtSignal(MailService)
+    fail = pyqtSignal()
+    finished = pyqtSignal()
 
-        def __init__(self, host_mail: MailService):
-            super(LoggingThread, self).__init__()
-            self.host_mail = host_mail
-    
-        def start(self):
-            print_color('Login to mail server...', text_format.OKGREEN)
-            logging.log('Login to mail server...')
-            status = self.host_mail.login(REMOTE_MAIL, REMOTE_PWD)
-            
-            if status:
-                print_color('Login successfully', text_format.OKGREEN)
-                logging.log('Login successfully')
-                self.ok.emit(self.host_mail)
-            else:
-                print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)                
-                logging.log(f'Failed to login with login with name: {REMOTE_MAIL}')
-                self.fail.emit()
-            
-            self.finished.emit()
+    def __init__(self, host_mail: MailService):
+        super(LoggingThread, self).__init__()
+        self.host_mail = host_mail
+
+    def start(self):
+        print_color('Login to mail server...', text_format.OKGREEN)
+        logging.log('Login to mail server...')
+        status = self.host_mail.login(REMOTE_MAIL, REMOTE_PWD)
+        
+        if status:
+            print_color('Login successfully', text_format.OKGREEN)
+            logging.log('Login successfully')
+            self.ok.emit(self.host_mail)
+        else:
+            print_color('Failed to login with login with name: ' + REMOTE_MAIL, text_format.YELLOW)                
+            logging.log(f'Failed to login with login with name: {REMOTE_MAIL}')
+            self.fail.emit()
+        
+        self.finished.emit()
 
 class RemoteControl():
     def __init__(self):
