@@ -1,15 +1,9 @@
-import base64
 import yaml
 import re
 import email.message
-import os
 import subprocess
 
 from win32com.client import Dispatch
-
-def base64_decode(str):
-    str = base64.b64decode(str)
-    return str.decode('utf-8')
 
 def build_email_content(mail_from, mail_to, subject, content, format = 'html'):
     '''
