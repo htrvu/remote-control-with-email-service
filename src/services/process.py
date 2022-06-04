@@ -15,7 +15,7 @@ def __process_df():
     for process in psutil.process_iter():
         try:
             cnt += 1
-            data.append([cnt, process.name(), process.pid, process.num_threads()])
+            data.append([cnt, process.name(), str(process.pid), process.num_threads()])
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             cnt -= 1
             pass
