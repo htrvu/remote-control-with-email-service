@@ -14,7 +14,7 @@ from .html_generator import html_msg
 sys.path.append('..')
 import global_variables
 
-def screen_shot():
+def __screen_shot():
     im = ImageGrab.grab()
     shots_path = global_variables.screen_path + '/shots'
     try:
@@ -25,6 +25,10 @@ def screen_shot():
     filename = f'{shots_path}/screen_{int(time.time())}.png'
     im.save(filename, 'PNG')
 
+    return filename
+
+def screen_shot():
+    filename = __screen_shot()
     msg = 'The screenshot is attached below.'
     data = open(filename, 'rb').read()
     response = {
@@ -34,7 +38,7 @@ def screen_shot():
     os.remove(filename)
     return response
 
-def screen_record(elapse_time=10):
+def __screen_record(elapse_time=10):
     elapse_time = int(elapse_time)
     
     SCREEN_SIZE = GetSystemMetrics(0), GetSystemMetrics(1) 
@@ -55,6 +59,11 @@ def screen_record(elapse_time=10):
         frame = cv2.cvtColor(np.array(im), cv2.COLOR_BGR2RGB)
         out.write(frame)
     out.release()
+
+    return filename
+
+def screen_record(elapse_time=10):
+    filename = __screen_record(elapse_time)
 
     msg = 'The screen record is attached below.'
     data = open(filename, 'rb').read()
