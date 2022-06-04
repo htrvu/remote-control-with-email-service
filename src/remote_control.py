@@ -83,7 +83,7 @@ class RemoteControl():
         '''
             Run the app (first run button click or auto-run)
         '''
-        self.__dialog = MyDialog('Message', 'Loginning to Mail Server...', self.config_window)
+        self.__dialog = MyDialog('Message', 'Logging in Mail Server...', self.config_window)
         self.__dialog.show()
 
         # create thread and start
