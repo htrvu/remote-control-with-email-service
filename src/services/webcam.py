@@ -9,12 +9,7 @@ def __webcam_record(elapse_time=10):
     
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if cap is None or not cap.isOpened():
-        msg = 'Cannot capture from webcam.'
-        response = {
-            'html': html_msg(msg, False, bold_all=True),
-            'data': None
-        }
-        return response
+        return None
 
     fps = 30
     filename = f'./webcam_{int(time.time())}_{elapse_time}s.mp4'
@@ -42,6 +37,13 @@ def __webcam_record(elapse_time=10):
 
 def get_webcam_record(elapse_time=10):
     filename = __webcam_record(elapse_time)
+    if filename is None:
+        msg = 'Cannot capture from webcam.'
+        response = {
+            'html': html_msg(msg, False, bold_all=True),
+            'data': None
+        }
+        return response
 
     msg = 'The webcam record is attached below.'
     data = open(filename, 'rb').read()
@@ -58,12 +60,7 @@ def get_webcam_record(elapse_time=10):
 def __webcam_shot():
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     if cap is None or not cap.isOpened():
-        msg = 'Cannot capture from webcam.'
-        response = {
-            'html': html_msg(msg, False, bold_all=True),
-            'data': None
-        }
-        return response
+        return None
 
     _, frame = cap.read()
     filename = f'./webcam_{int(time.time())}.png'
@@ -77,6 +74,13 @@ def __webcam_shot():
 
 def get_webcam_shot():
     filename = __webcam_shot()
+    if filename is None:
+        msg = 'Cannot capture from webcam.'
+        response = {
+            'html': html_msg(msg, False, bold_all=True),
+            'data': None
+        }
+        return response
 
     msg = 'The webcam capture is attached below.'
     data = open(filename, 'rb').read()
