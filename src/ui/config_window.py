@@ -15,7 +15,7 @@ from utils import *
 
 class MySignals(QObject):
     open = pyqtSignal()
-    run = pyqtSignal(bool)    # close_window flag
+    run = pyqtSignal()
     exit = pyqtSignal()
 
 class ConfigWindow(QtWidgets.QMainWindow):
@@ -25,6 +25,9 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         self.signals = MySignals()
+        
+        # running status
+        self.is_running = False
 
         # Set default page to Home page
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -35,13 +38,6 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         self.__set_btn_slots()
         self.__load_instructions()
-
-    def auto_run_setup(self):
-        # running status
-        self.is_running = False
-
-        if global_variables.app_configs['auto_run']:
-            self.__run(close = False)
 
     def __load_instructions(self):
         with open('ui/assets/docs/instructions.html') as f:
@@ -82,7 +78,7 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.insBtn.clicked.connect(self.__stacked_index_slots(1))
         self.ui.configBtn.clicked.connect(self.__open_config_page)  # the data represented in this page is just a 'copy' of self.config
         self.ui.aboutBtn.clicked.connect(self.__stacked_index_slots(3))
-        self.ui.runBtn.clicked.connect(lambda: self.__run(True))
+        self.ui.runBtn.clicked.connect(self.__run)
         self.ui.exitBtn.clicked.connect(self.__exit)
 
         # Configurations buttons
@@ -193,11 +189,8 @@ class ConfigWindow(QtWidgets.QMainWindow):
 
         self.ui.stackedWidget.setCurrentIndex(0)
 
-    def __run(self, close = True):
-        if self.is_running:
-            self.background_setup(True)
-        else:
-            self.signals.run.emit(close)
+    def __run(self):
+            self.signals.run.emit()
 
     def background_setup(self, close_window):
         '''
