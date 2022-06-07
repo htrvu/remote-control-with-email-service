@@ -9,6 +9,8 @@ from ui.tray_icon import TrayIcon
 
 from mail_service import MailService
 
+import global_variables
+
 from utils import *
 from thread_targets import *
 import app_logging as logging
@@ -48,17 +50,21 @@ class RemoteControl():
         self.tray_icon = TrayIcon('ui/assets/icons/remote_tray.png', parent=self.app)
 
         # Signals from ConfigWindow
-        self.config_window.signals.run.connect(self.__run)
+        self.config_window.signals.run.connect(lambda: self.__run(close_window = True))
         self.config_window.signals.exit.connect(self.exit)
         
         # Signals from TrayIcon
         self.tray_icon.signals.open.connect(self.config_window.show)
         self.tray_icon.signals.exit.connect(self.exit)
 
+    def auto_run_check(self):
+        if global_variables.app_configs['auto_run']:
+            self.__run(close_window = False)
+
     def start(self):
         self.tray_icon.show()
         self.config_window.show()
-        self.config_window.auto_run_setup()
+        self.auto_run_check()
         sys.exit(self.app.exec_())
 
     def __run_thread(self, status, close_window):
