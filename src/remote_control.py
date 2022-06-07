@@ -115,9 +115,9 @@ class RemoteControl():
                 logging.log('Logout mail server...')
                 self.host_mail.logout()
             except:
-                logging.log('Exception raised white loging out')
+                logging.log('Exception raised while loging out')
                 pass
         
-        logging.log('App close')
+        logging.log('App closed')
         logging.save()
         sys.exit()
