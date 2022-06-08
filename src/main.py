@@ -6,7 +6,7 @@ from remote_control import RemoteControl
 
 import global_variables
 import colorama
-import app_logging as logging
+import app_logging as logging   
 
 def setup():
     threading.Thread(target = logging_thread, args = ('./g8rc.log', 5, ), daemon = True).start()
@@ -20,4 +20,4 @@ def main():
     RemoteControl().start()
 
 if __name__ == '__main__':
-    main()  
+    main()

@@ -15,13 +15,13 @@ from utils import *
 from thread_targets import *
 import app_logging as logging
 
-class LoggingThread(QObject):
+class LoginThread(QObject):
     ok = pyqtSignal(MailService)
     fail = pyqtSignal()
     finished = pyqtSignal()
 
     def __init__(self, host_mail: MailService):
-        super(LoggingThread, self).__init__()
+        super(LoginThread, self).__init__()
         self.host_mail = host_mail
 
     def start(self):
@@ -94,7 +94,7 @@ class RemoteControl():
 
         # create thread and start
         self.__thread = QThread()
-        self.__target = LoggingThread(self.host_mail)
+        self.__target = LoginThread(self.host_mail)
         self.__target.moveToThread(self.__thread)
 
         self.__thread.started.connect(self.__target.start)
