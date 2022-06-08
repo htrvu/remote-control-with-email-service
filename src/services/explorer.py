@@ -52,7 +52,7 @@ def __cut(src, dst):
             shutil.move(src, dst)
         else:
             shutil.move(src, dst, dirs_exist_ok=True)
-        return True, f'The source {type} is cut successfuly.'
+        return True, f'The source {type} is cut successfully.'
     except:
         return False, f'The destination path might be wrong.'
 

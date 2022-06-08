@@ -16,7 +16,7 @@ def respond(host_mail: MailService, mail):
     
     if parse_result['msg'] == 'Permission denied.':
         response = {
-            'html': html_msg('You are not allowed to controller this PC.', status = False, bold_all=True),
+            'html': html_msg('You are not allowed to control this PC.', status = False, bold_all=True),
             'data': None
         }
     else:
