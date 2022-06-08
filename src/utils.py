@@ -1,3 +1,4 @@
+from random import randint
 import yaml
 import re
 import email.message
@@ -115,3 +116,9 @@ def create_shortcut(path, runner, argument='', wDir='', icon=''):
         shortcut.IconLocation = icon
     
     shortcut.save()
+
+def random_key(length: int = 10):
+    key = ''
+    for i in range(length):
+        key += str(randint(0, 9) % 10)
+    return key
