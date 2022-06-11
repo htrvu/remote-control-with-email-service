@@ -59,8 +59,8 @@ request_tree = {
 def parse_request(mail_content):
     sender, header = mail_content['sender'], mail_content['subject']
     tokens = shlex.split(header)
-    
-    raw_command = ' '.join(tokens[1:])
+
+    raw_command = ' '.join([token[i] if " " not in token[i] else f'"{token[i]}"' for token in tokens[1:]])
     if sender not in global_variables.app_configs['white_list']['basic'] and sender not in global_variables.app_configs['white_list']['advanced']:
         return {
             'msg': 'Permission denied.',
