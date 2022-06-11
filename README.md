@@ -55,42 +55,51 @@ rm -rf ./src/dist ./src/build
 <h5 id="screenshots"></h5>
 
 ### 3.1. Home page
-<img src='./images/homepage.png' />
+<img src='./images/homepage.png' width = '500'/>
 
 ### 3.2. Configure before running the app
-<img src = './images/configurations.png'/>
+<img src = './images/configurations.png' width = '500'/>
 
 ### 3.3. Pop up notification
 <img src = './images/noti.png'/>
 
 ### 3.4. Some services shots
 * Mail header
-<img src = './images/header.png'/>
+
+<img src = './images/header.png' width = '500'/>
 
 * HELP
-<img src = './images/help.png'/>
+
+<img src = './images/help.png' width = '500'/>
 
 * MAC get
-<img src = './images/mac.png'/>
+
+<img src = './images/mac.png' width = '500'/>
 
 * APP get
-<img src = './images/app.png'/>
+
+<img src = './images/app.png' width = '500'/>
 
 * SCREEN get image
-<img src = './images/screen.png'/>
+
+<img src = './images/screen.png' width = '500'/>
 
 * WEBCAM get video 3
-<img src = './images/webcam.png'/>
+
+<img src = './images/webcam.png' width = '500'/>
 
 * KEYLOGGER get 15
-<img src = './images/keylogger.png'/>
+
+<img src = './images/keylogger.png' width = '500'/>
 
 * REGISTRY get 
-<img src = './images/registry.png'/>
+
+<img src = './images/registry.png' width = '500'/>
 
 * PC shutdown
-<img src = './images/shutdown.png'/>
+
+<img src = './images/shutdown.png' width = '500'/>
 
 ### 3.5. About us
-<img src = './images/about_us.png'/>
+<img src = './images/about_us.png' width = '500'/>
 
