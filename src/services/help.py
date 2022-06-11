@@ -79,7 +79,7 @@ def show_helps():
             For example, APP, App or app are the same meaning.
             </li>
             <li>
-            <span style="font-weight: bold;">&lt;duration&gt;</span> must be a non-negative integer and <span style="font-weight: bold;">&lt;path&gt;</span> must be put between 2 single (or double) quotes if it contains spaces.
+            <span style="font-weight: bold;">&lt;duration&gt;</span> must be a non-negative integer and <span style="font-weight: bold;">&lt;path&gt;</span> must be put between 2 single (or double) quotes.
             <br>
             For example, &lt;path&gt; = \'C:/User/Some thing\' and &lt;path&gt; = "C:/User/Some thing" are valid.
             </li>
