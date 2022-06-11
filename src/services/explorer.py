@@ -52,7 +52,7 @@ def __cut(src, dst):
             shutil.move(src, dst)
         else:
             shutil.move(src, dst, dirs_exist_ok=True)
-        return True, f'The source {type} is cut successfully.'
+        return True, f'The source {type} is moved successfully.'
     except:
         return False, f'The destination path might be wrong.'
 
@@ -69,7 +69,7 @@ def __delete(path):
             shutil.rmtree(path)
         return True, f'The {type} is deleted successfuly.'
     except:
-        return False, f'There is an error when deleteing that {type}.'  
+        return False, f'There is an error when deleting that {type}.'  
 
 
 '''
