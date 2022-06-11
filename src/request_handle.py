@@ -50,7 +50,7 @@ request_tree = {
         'explorer': {
             'tree': [1, explorer.show_tree],
             'copy': [2, explorer.copy],
-            'cut': [2, explorer.cut],
+            'move': [2, explorer.cut],
             'delete': [1, explorer.delete]
         }
     }
