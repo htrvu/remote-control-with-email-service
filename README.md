@@ -32,10 +32,10 @@ cd remote-control-with-email-service
 ### 2.2. Build the source codes
 
 ```bash
-cd ./src/ # path to client folder
+cd ./src/ # path to source folder
 pyinstaller main.spec
 
-cd .. # path to source folder
+cd .. # path to project folder
 
 mkdir ./G8-Remote-Control
 mkdir ./G8-Remote-Control/ui
