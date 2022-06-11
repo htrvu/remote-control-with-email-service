@@ -190,7 +190,10 @@ class ConfigWindow(QtWidgets.QMainWindow):
         self.ui.stackedWidget.setCurrentIndex(0)
 
     def __run(self):
+        if not self.is_running:
             self.signals.run.emit()
+        else:
+            self.close()
 
     def background_setup(self, close_window):
         '''
