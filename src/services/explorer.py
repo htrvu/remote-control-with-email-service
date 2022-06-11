@@ -48,10 +48,7 @@ def __cut(src, dst):
         return False,  f'The source {type} is not exist on this device.'
 
     try:
-        if type == 'file':
-            shutil.move(src, dst)
-        else:
-            shutil.move(src, dst, dirs_exist_ok=True)
+        shutil.move(src, dst)
         return True, f'The source {type} is moved successfully.'
     except:
         return False, f'The destination path might be wrong.'
