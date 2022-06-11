@@ -36,7 +36,8 @@ def check_email_thread(host_mail, timeout = 8):
     try:
         while True:
             print('Reading unread mails in primary mail box...')
-            
+            logging.log('Reading unread mails in primary mail box...')
+
             mail_list = host_mail.read_email()
 
             for mail in mail_list:
@@ -50,6 +51,6 @@ def check_email_thread(host_mail, timeout = 8):
                 process_thread.start()
             
             time.sleep(timeout)
-    except KeyboardInterrupt:
+    except:
         logging.log('Stop checking mail box')
         print_color('Stop checking mail box', text_format.OKGREEN)
