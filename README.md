@@ -21,7 +21,7 @@ unzip -q G8-Remote-Control.zip -d G8-Remote-Control
 ## 2. Build the app from source codes
 <h5 id="build-app"></h5>
 
-Firstly, you must have `python`,`pyinstaller`, and `pyqt5` installed. Then, follow these steps:
+Firstly, make sure that `python`, `pyinstaller`, and `pyqt5` were  installed on your device. Then, follow these steps:
 
 ### 2.1. Clone this repository
 ```bash
