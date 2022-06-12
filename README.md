@@ -55,51 +55,83 @@ rm -rf ./src/dist ./src/build
 <h5 id="screenshots"></h5>
 
 ### 3.1. Home page
+
+<center>
 <img src='./images/homepage.png' width = '500'/>
+</center>
+
 
 ### 3.2. Configure before running the app
+
+<center>
 <img src = './images/configurations.png' width = '500'/>
+</center>
 
 ### 3.3. Pop up notification
+
+<center>
 <img src = './images/noti.png'/>
+</center>
+
+
 
 ### 3.4. Some services shots
 * Mail header
 
+<center>
 <img src = './images/header.png' width = '500'/>
+</center>
 
 * HELP
-
+ 
+<center>
 <img src = './images/help.png' width = '500'/>
+</center>
 
 * MAC get
-
+ 
+<center>
 <img src = './images/mac.png' width = '500'/>
+</center>
 
 * APP get
 
+<center>
 <img src = './images/app.png' width = '500'/>
+</center>
 
 * SCREEN get image
 
+<center>
 <img src = './images/screen.png' width = '500'/>
+</center>
 
 * WEBCAM get video 3
 
+<center>
 <img src = './images/webcam.png' width = '500'/>
+</center>
 
 * KEYLOGGER get 15
 
+<center>
 <img src = './images/keylogger.png' width = '500'/>
+</center>
 
 * REGISTRY get 
 
+<center>
 <img src = './images/registry.png' width = '500'/>
+</center>
 
 * PC shutdown
 
+<center>
 <img src = './images/shutdown.png' width = '500'/>
+</center>
 
 ### 3.5. About us
-<img src = './images/about_us.png' width = '500'/>
 
+<center>
+<img src = './images/about_us.png' width = '500'/>
+</center>
