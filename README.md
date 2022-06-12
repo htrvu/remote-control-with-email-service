@@ -46,6 +46,7 @@ mkdir ./G8-Remote-Control/ui
 
 mv ./src/dist/G8-Remote-Control.exe ./G8-Remote-Control/G8-Remote-Control.exe 
 cp -r ./src/ui/assets ./G8-Remote-Control/ui
+cp -r ./src/configs ./G8-Remote-Control
 
 rm -rf ./src/dist ./src/build
 ```
